@@ -16,4 +16,4 @@ class Solution:
                   minSumAbove = min(minSumAbove, dp[i - 1][j+1])
                 dp[i][j]=minSumAbove+matrix[i][j]
 
-        return min(dp[n-1])
+        return min(dp[m-1])
