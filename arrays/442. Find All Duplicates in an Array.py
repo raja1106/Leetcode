@@ -10,7 +10,9 @@ class Solution:
                 if nums[d] != nums[i]:
                     nums[d], nums[i] = nums[i], nums[d]
                 else:
-                    result.append(nums[d])
                     break
+        for i in range(len(nums)):
+            if(i+1 != nums[i]):
+                result.append(nums[i])
 
         return result
