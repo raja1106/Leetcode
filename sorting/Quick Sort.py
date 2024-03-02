@@ -1,3 +1,4 @@
+import random
 from typing import List
 class QuickSort:
     def sort(self, nums: List[int]) -> List[int]:
@@ -13,6 +14,8 @@ class QuickSort:
         self.quicksortHelper(nums,partition_index+1,end)
 
     def partition(self,nums: List[int],start: int,end: int) -> int:
+        rand_index = random.randint(start,end)
+        nums[rand_index], nums[start] = nums[start], nums[rand_index]
         pivot = start
         left = start+1
         right =end
