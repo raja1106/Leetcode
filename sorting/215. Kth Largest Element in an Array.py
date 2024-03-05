@@ -11,9 +11,9 @@ class Solution:
         if partition_idx == len(nums)-k:
             return nums[partition_idx]
         elif partition_idx < len(nums)-k:
-            self.quick_select(nums,partition_idx+1,end,k)
+            return self.quick_select(nums,partition_idx+1,end,k)
         else:
-            self.quick_select(nums, start, partition_idx - 1,k)
+            return self.quick_select(nums, start, partition_idx - 1,k)
 
 
     def partition(self, nums: List[int],start: int, end: int) -> int:
