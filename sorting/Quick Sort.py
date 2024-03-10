@@ -23,6 +23,8 @@ class QuickSort:
         while left <= right:
             if nums[left] > nums[pivot] > nums[right]:
                 nums[left],nums[right] = nums[right],nums[left]
+                left += 1
+                right -= 1
             if nums[left] <= nums[pivot]:
                 left += 1
             if nums[right] >= nums[pivot]:
