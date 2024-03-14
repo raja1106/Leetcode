@@ -34,4 +34,4 @@ class QuickSort:
         return right
 
 sort = QuickSort()
-print(sort.sort([4,6,1,2,3,5]))
+print(sort.sort([4,6,1,4,4,4,2,3,5]))

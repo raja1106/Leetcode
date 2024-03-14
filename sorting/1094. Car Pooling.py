@@ -1,7 +1,7 @@
 import heapq
 from typing import List
 class Solution: #TODOO with correct custom minheap approach
-    def carPooling(self, trips: List[List[int]], capacity: int) -> bool:
+    def carPooling(self, trips: List[List[int]], capacity: int) -> bool: #This also working
         trips.sort(key = lambda x:x[1])
         required_capacity=0
         min_heap =[]
