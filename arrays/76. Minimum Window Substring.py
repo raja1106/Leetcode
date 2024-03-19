@@ -57,7 +57,7 @@ class Solution:
 
         for i in range(k,len(s)):
             s_map[s[i]] = s_map.get(s[i], 0) + 1
-            while left < i and ismatching(s_map,t_map):
+            while left <= i and ismatching(s_map,t_map):
                 if min_window >= i-left+1:
                     ans = s[left:i + 1]
                     min_window= i-left+1
