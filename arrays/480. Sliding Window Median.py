@@ -31,7 +31,7 @@ Input: nums = [1,2,3,4,2,3,1,4,2], k = 3
 Output: [2.00000,3.00000,3.00000,3.00000,2.00000,3.00000,2.00000]
 """
 
-class MedianFinder: #This is not working
+class MedianFinder:
     def __init__(self, k: int):
         self.k = k  # size of the sliding window
         self.small_max_heap = []  # max heap to store the smaller half of numbers
