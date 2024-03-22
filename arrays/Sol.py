@@ -138,6 +138,65 @@ class Solution:
         return '' if min_left < 0 else source[min_left:min_left + min_size]
 
 
+    def findDuplicate(self, nums: List[int]) -> int:
+
+        def swap(s,d):
+            if nums[s] == nums[d]:
+                return nums[s]
+            nums[s],nums[d] = nums[d],nums[s]
+
+        for i in range(len(nums)):
+            while nums[i] != i+1:
+                d=nums[i]-1
+                if d >len(nums)-1:
+                    break
+                swap(i,d)
+
+    def totalFruit(self, fruits: List[int]) -> int:
+        max_count=-1
+        bucket1=-1
+
+
+        for i in range(len(fruits)):
+            local_count = 0
+            bucket1 = fruits[i]
+            bucket2 = -1
+
+            for j in range(i+1, len(fruits)):
+                if fruits[j] == bucket1:
+                    local_count += 1
+                    continue
+
+                if bucket2 == -1:
+                    bucket2 = fruits[j]
+                    local_count += 1
+                    continue
+
+                if fruits[j] == bucket2:
+                    local_count += 1
+                else:
+                    break
+            max_count = max(max_count,local_count)
+            return max_count
+
+    def totalFruit_usingsort(self, fruits: List[int]) -> int:
+        fruit_map =Counter()
+        left =0
+        max_size=-1
+        for i in range(len(fruits)):
+            fruit_map[fruits[i]] += 1
+
+            while left<i and len(fruit_map)>2:
+                fruit_map[fruits[left]] -= 1
+                if fruit_map[fruits[left]] == 0:
+                    del fruit_map[fruits[left]]
+                left += 1
+            max_size =max(max_size,i-left+1)
+
+        return max_size
+
+
+
 
 
 obj=Solution()
