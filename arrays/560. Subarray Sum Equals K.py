@@ -18,3 +18,16 @@ class Solution:
                 hmap[prefixSum]=1
         
         return globalCount
+
+    def subarraySumUsingCounter(self, nums: List[int], k: int) -> int:
+        sum_frequency = Counter()
+        sum_frequency[0]=1
+        prefix_sum=0
+        total_count = 0
+        for i in range(len(nums)):
+            prefix_sum +=nums[i]
+            if prefix_sum-k in sum_frequency:
+                total_count += sum_frequency[prefix_sum - k]
+            sum_frequency[prefix_sum] += 1
+
+        return total_count

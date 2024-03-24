@@ -196,6 +196,56 @@ class Solution:
         return max_size
 
 
+    def subarraySum(self, nums: List[int], k: int) -> int:
+        nums.sort()
+        count=0
+        window_sum =0
+        left =0
+
+        for i in range(len(nums)):
+            window_sum += nums[i]
+
+            while left<=i and window_sum >k:
+                window_sum -=nums[left]
+                left +=1
+
+            if window_sum == k:
+                count += 1
+
+        return count
+
+    def minOperations(self, nums: List[int], x: int) -> int:
+        target_sum = sum(nums)-x
+        window_sum=left=0
+        max_window_size =-1
+
+        for i in range(len(nums)):
+            window_sum += nums[i]
+
+            while left <=i and window_sum >target_sum:
+                window_sum -= nums[left]
+                left += 1
+
+            if window_sum == target_sum:
+                max_window_size =max(max_window_size,i-left+1)
+
+        return -1 if max_window_size == -1 else len(nums)-max_window_size
+
+    def lengthOfLongestSubstringTwoDistinct(self, s: str) -> int:
+        count_char = Counter()
+        left=0
+        max_length=-1
+
+        for i in range(len(s)):
+            count_char[s[i]] += 1
+            while left <= i and len(count_char.items())>2:
+                count_char[s[left]] -=1
+                if count_char[s[left]] == 0:
+                    del count_char[s[left]]
+                left +=1
+            max_length =max(max_length,i-left+1)
+
+        return max_length
 
 
 
