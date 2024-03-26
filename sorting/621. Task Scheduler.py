@@ -41,12 +41,12 @@ class Solution:
         heapq.heapify(max_heap)
         time = 0
         while max_heap:
-            cycle = n + 1
+            cycle = n
             store = []
             task_count = 0
             # execute tasks in ech cycle
 
-            while cycle > 0 and max_heap:
+            while cycle >= 0 and max_heap:
                 count_freq = -heapq.heappop(max_heap)
                 count_freq -= 1
                 if count_freq > 0:
