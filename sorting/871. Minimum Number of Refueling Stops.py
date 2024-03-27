@@ -34,22 +34,6 @@ We made 2 refueling stops along the way, so we return 2.
 
 
 class Solution:
-    def minRefuelStops(self, target: int, startFuel: int, stations: List[List[int]]) -> int:
-        current_fuel =startFuel
-        count=0
-        current_position=0
-        for position,fuel in stations:
-            if current_fuel > position:
-                continue
-            elif current_fuel < position:
-                return -1
-            else:
-                current_position = position
-                current_fuel = fuel
-                if target == current_position:
-                    return count
-                else:
-                    count += 1
 
     def minRefuelStops_Monst(self, target: int, startFuel: int, stations: List[List[int]]) -> int:
         # Max-heap to store available fuel at stations we have passed
@@ -75,17 +59,35 @@ class Solution:
             if startFuel < 0:
                 return -1
 
-            # If the station offers fuel, add it to the heap (store as negative for max-heap)
             heappush(fuel_maxheap, -fuel)
 
-            # Update the previous station position
             previous_station_position = position
 
-        # Return the number of refueling stops after processing all stations
         return refuel_stops
 
 
 
+"""
+Time Complexity
+The given code snippet involves iterating through the list of fuel stations once, which means the time complexity is at least O(N) 
+where N is the number of fuel stations. However, since there are heap operations within the loop (specifically heappop and heappush),
+ we have to consider their impact as well.
+
+The worst-case time complexity for both heappush and heappop is O(log M), where M is the number of elements in the heap.
+ In the worst-case scenario, every station could potentially be added to the heap, so M can be at most N.
+
+Since a heappop operation could potentially occur for each station in the list (thus iterating through the list N times), 
+the worst-case time complexity becomes O(N * log N).
+
+To sum up, the total time complexity of the function is O(N * log N).
+
+Space Complexity
+The space complexity of the function is primarily due to the usage of the priority queue (q). 
+In the worst case, the priority queue could contain an entry for every station if no refueling was needed until the end, 
+thus containing N elements. Hence, the space complexity is O(N) because that's the maximum amount of space that the
+ priority queue will use. No other data structures in the solution use a significant amount of memory proportional to the input size, 
+ so they do not influence the space complexity beyond O(N).
+"""
 
 
 
