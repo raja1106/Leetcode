@@ -1,9 +1,30 @@
 from typing import List
 from collections import Counter
+from collections import deque
 
 class Solution:
 
-    def arrays_intersection_ALgomonster(self, arr1: List[int], arr2: List[int], arr3: List[int]) -> List[int]:
+    def arraysIntersection(self, arr1: List[int], arr2: List[int], arr3: List[int]) -> List[int]:
+        # Time Complexity: O(n)
+        i=j=k=0
+        result= []
+        while i<len(arr1) and j<len(arr2) and k<len(arr3):
+            min_val = min(arr1[i], arr2[j], arr3[k])
+            if arr1[i] == arr2[j] == arr3[k]:
+                result.append(arr1[i])
+                i += 1
+                j += 1
+                k += 1
+            elif arr1[i] == min_val:
+                i += 1
+            elif arr2[j] == min_val:
+                j += 1
+            else:
+                k += 1
+        return result
+
+    def arrays_intersection_UsingHashTable(self, arr1: List[int], arr2: List[int], arr3: List[int]) -> List[int]:
+        #Time Complexity: O(n)
         # Create a counter object which will store the frequency of each number across all three arrays
         elements_count = Counter(arr1 + arr2 + arr3)
 

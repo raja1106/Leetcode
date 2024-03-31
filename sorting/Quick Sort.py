@@ -21,6 +21,8 @@ class QuickSort:
         right =end
 
         while left <= right:
+            if left == right:
+                print(left)
             if nums[left] > nums[pivot] > nums[right]:
                 nums[left],nums[right] = nums[right],nums[left]
                 left += 1
@@ -34,4 +36,4 @@ class QuickSort:
         return right
 
 sort = QuickSort()
-print(sort.sort([4,6,1,4,4,4,2,3,5]))
+print(sort.sort([8, 5, 2, 9, 5, 6, 3]))

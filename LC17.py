@@ -28,3 +28,34 @@ class LC17:
         combinations = []
         backtrack(0, [])
         return combinations
+
+    def mostBooked(self, n: int, meetings: List[List[int]]) -> int:
+        meetings.sort()
+
+        min_heap = []
+        for i in range(n):
+            min_heap.append([0,i]) #end_time,room_number
+        heapify(min_heap)
+        count = [0] * n
+        # meeting_count = Counter()
+        q = deque()
+
+        for start_time, end_time in meetings:
+            temp=[]
+            while min_heap and min_heap[0] <= start_time:
+                temp.append(heappop(min_heap))
+
+            if min_heap:
+                room_index = heappop(min_heap)
+                count[room_index] += 1
+                heappush(busy_rooms_heap, [end_time, room_index])
+            else:  # No idle rooms; wait for the first available room
+                earliest_end, room_index = heappop(busy_rooms_heap)
+                count[room_index] += 1
+                heappush(busy_rooms_heap, [earliest_end + end_time - start_time, room_index])
+
+        # room_list = meeting_count.most_common()
+        # return room_list[0][0]
+        return count.index(max(count))
+
+

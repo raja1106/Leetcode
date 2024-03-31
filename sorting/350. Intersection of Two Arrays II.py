@@ -1,7 +1,8 @@
 from typing import List
 
 class Solution:
-    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
+    def intersect_memory_efficient(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        #Time Complexity:  O(nlogn + mlogm)
         nums1.sort()
         nums2.sort()
 
@@ -21,7 +22,15 @@ class Solution:
 
         return result
 
-    def intersect_AlgoMonster(self, nums1: List[int], nums2: List[int]) -> List[int]:
+    def intersect_AlgoMonster_time_efficient(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        """
+        Time Complexity:  O(n + m)
+The time complexity of the given code can be analyzed in two parts:
+
+Building a counter from nums1 takes O(n) time, where n is the length of nums1, as each element is processed once.
+Iterating over nums2 and updating the counter takes O(m) time, where m is the length of nums2, as each element is processed once.
+Hence, the overall time complexity is O(n + m), where n is the length of nums1 and m is the length of nums2.
+        """
 
         element_counter = Counter(nums1)
 
