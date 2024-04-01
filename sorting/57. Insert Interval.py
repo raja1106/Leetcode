@@ -1,9 +1,9 @@
 from typing import List
 
 class Solution:
-    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
-        stop_index=len(intervals)
-        result=[]
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]: #T(n): O(n)
+        stop_index = len(intervals)
+        result = []
         for i in range(len(intervals)):
             if intervals[i][1] >= newInterval[0]:
                 stop_index = i
@@ -16,6 +16,20 @@ class Solution:
                 result.append(intervals[i])
             else:
                 result[-1]= [min(result[-1][0],intervals[i][0]),max(result[-1][1],intervals[i][1])]
+
+        return result
+
+    def insertUsingSorting(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]: #T(n)=O(n log n)
+        intervals.append(newInterval)
+        intervals.sort(key=lambda pair: pair[0])
+        result = []
+        result.append(intervals[0])
+        for i in range(1, len(intervals)):
+
+            if result[-1][1] >= intervals[i][0]:
+                result[-1][1] = max(result[-1][1], intervals[i][1])
+            else:
+                result.append(intervals[i])
 
         return result
 

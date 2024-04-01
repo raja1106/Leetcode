@@ -31,9 +31,23 @@ class Solution1:
 
     prevEnd = intervals[0].end
 
+
     for interval in intervals:
       if interval.start > prevEnd:
         ans.append(Interval(prevEnd, interval.start))
       prevEnd = max(prevEnd, interval.end)
 
     return ans
+
+  def employeeFreeTime_March31(self, schedule: '[[Interval]]') -> '[Interval]':
+      sorted_schedule=[]
+      for interval in schedule:
+          sorted_schedule.append(interval)
+
+      sorted_schedule.sort(key=lambda interval:interval.start)
+      result=[sorted_schedule[0]]
+
+      return result
+
+
+

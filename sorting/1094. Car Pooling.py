@@ -1,6 +1,24 @@
 import heapq
 from typing import List
 class Solution:
+
+    def carPoolingMarch31(self, trips: List[List[int]], capacity: int) -> bool: #This also working
+        trips.sort(key = lambda x:x[1])
+        min_heap =[]
+
+        for passengers,start,end in trips:
+            while min_heap and min_heap[0][0] <= start:
+                capacity += heapq.heappop(min_heap)[1]
+
+            if passengers>capacity:
+                return False
+
+            capacity -= passengers
+
+            heapq.heappush(min_heap,(end,passengers))
+
+        return True
+
     def carPooling(self, trips: List[List[int]], capacity: int) -> bool: #This also working
         trips.sort(key = lambda x:x[1])
         required_capacity=0
@@ -39,6 +57,7 @@ class Solution:
                 required_capacity -= heapq.heappop(min_heap)[0]
 
         return True
+
 
 
 

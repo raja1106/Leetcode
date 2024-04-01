@@ -17,7 +17,7 @@ class Solution:
 
         return result
 
-    def intervalIntersection(self, firstList: List[List[int]], secondList: List[List[int]]) -> List[List[int]]:
+    def intervalIntersection(self, firstList: List[List[int]], secondList: List[List[int]]) -> List[List[int]]:#This is not working
         merged_list = []
         merged_list.extend(firstList)
         merged_list.extend(secondList)
