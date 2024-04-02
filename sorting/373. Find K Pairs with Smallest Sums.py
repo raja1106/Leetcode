@@ -38,3 +38,25 @@ Output List: The list ans to store the answer pairs. In the worst case, it will 
 The overall space complexity combines the heap space and the output list, but since both are O(k), the total space complexity remains O(k).
 
 '''
+
+
+def kSmallestPairsUsingMaxHeap(self, nums1: List[int], nums2: List[int], k: int) -> List[List[int]]: #This is not working
+        result = []
+        max_heap = [[nums1[0]+v, [nums1[0], v]] for i, v in enumerate(nums2[:k])]
+        heapify(max_heap)
+        i=1
+        j=0
+        while i<len(nums1) and j<len(nums2):
+            if len(max_heap) < k:
+               heappush(max_heap,[nums1[i]+nums2[j],[nums1[i],nums2[j]]])
+               continue
+
+            if nums1[i]+nums2[j]>max_heap[0][0]:
+                break
+            else:
+                heappop(max_heap)
+                heappush(max_heap, [nums1[i] + nums2[j], [nums1[i], nums2[j]]])
+
+        while max_heap:
+            result.append(heappop(max_heap))
+        return result
