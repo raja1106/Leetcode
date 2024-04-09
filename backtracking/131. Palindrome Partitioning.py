@@ -3,6 +3,7 @@ class Solution:
     def partition(self, s: str) -> List[List[str]]: # TODOO This is not working
         result= []
         self.helper(0,s,[],result)
+        return result
 
     def helper(self,i:int,s:str,slate: List[str],result:List[List[str]]):
         if i == len(s):

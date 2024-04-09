@@ -42,21 +42,21 @@ The overall space complexity combines the heap space and the output list, but si
 
 def kSmallestPairsUsingMaxHeap(self, nums1: List[int], nums2: List[int], k: int) -> List[List[int]]: #This is not working
         result = []
-        max_heap = [[nums1[0]+v, [nums1[0], v]] for i, v in enumerate(nums2[:k])]
-        heapify(max_heap)
+        min_heap = [[nums1[0]+v, [nums1[0], v]] for i, v in enumerate(nums2[:k])]
+        heapify(min_heap)
         i=1
         j=0
         while i<len(nums1) and j<len(nums2):
-            if len(max_heap) < k:
-               heappush(max_heap,[nums1[i]+nums2[j],[nums1[i],nums2[j]]])
+            if len(min_heap) < k:
+               heappush(min_heap,[nums1[i]+nums2[j],[nums1[i],nums2[j]]])
                continue
 
-            if nums1[i]+nums2[j]>max_heap[0][0]:
+            if nums1[i]+nums2[j]>min_heap[0][0]:
                 break
             else:
-                heappop(max_heap)
-                heappush(max_heap, [nums1[i] + nums2[j], [nums1[i], nums2[j]]])
+                heappop(min_heap)
+                heappush(min_heap, [nums1[i] + nums2[j], [nums1[i], nums2[j]]])
 
-        while max_heap:
-            result.append(heappop(max_heap))
+        while min_heap:
+            result.append(heappop(min_heap))
         return result

@@ -35,5 +35,24 @@ class QuickSort:
 
         return right
 
+    def partition_This_Also_works(array, start, end):
+        rand_index = random.randint(start, end)
+        array[rand_index], array[start] = array[start], array[rand_index]
+        pivot = start
+        left = start + 1
+        right = end
+
+        while left <= right:
+            if array[left] > array[pivot] > array[right]:
+                array[left], array[right] = array[right], array[left]
+                left += 1
+                right -= 1
+            elif array[left] <= array[pivot]:
+                left += 1
+            else:
+                right -= 1
+        array[right], array[start] = array[start], array[right]
+        return right
+
 sort = QuickSort()
 print(sort.sort([8, 5, 2, 9, 5, 6, 3]))

@@ -27,7 +27,7 @@ class Solution:
 
         #Base case
         if i == len(digits):
-            result.append(''.join(slate))
+            result.append(''.join(slate[:]))
             return
 
         #Recursive case
@@ -43,6 +43,11 @@ class Solution:
 
 
 
+if __name__ == "__main__":
+    # obj = Solution()
+    print(Solution.letter_combinations('23'))
+
+# pytest poetry  Poetry run  my_file.py
 
 
 
