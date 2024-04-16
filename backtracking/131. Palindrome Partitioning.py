@@ -12,7 +12,9 @@ class Solution:
 
         for end in range(i,len(s)-1):
             if self.isPalindrome(s[i:end]):
-                self.helper(i+1,s,slate+[s[i:end]],result)
+                slate.append(s[i:end])
+                self.helper(i+1,s,slate,result)
+                slate.pop()
 
 
     def isPalindrome(self,temp: str)->False:

@@ -18,7 +18,46 @@ Output: [1]
 """
 
 class Solution:
-    def topKFrequent(self, nums: List[int], k: int) -> List[int]: #T(n)=O(n log k)
+
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        element_count = Counter(nums)
+        print(element_count)
+        return []
+
+    def quick_select(self,nums:List[int],start: int, end: int,k: int)->int:
+        partition_idx = self.partition(nums, start, end)
+        if partition_idx == len(nums)-k:
+            return nums[partition_idx]
+        elif partition_idx < len(nums)-k:
+            return self.quick_select(nums,partition_idx+1,end,k)
+        else:
+            return self.quick_select(nums, start, partition_idx - 1,k)
+
+    def partition(self, nums: List[int],start: int, end: int) -> int:
+        rand_index = random.randint(start, end)
+        nums[rand_index], nums[start] = nums[start], nums[rand_index]
+        pivot =start
+        left = start+1
+        right =end
+
+        while left <= right:
+            if nums[right] < nums[pivot] <nums[left]:
+                nums[right], nums[left] = nums[left], nums[right]
+                left += 1
+                right -=1
+            if nums[left] <= nums[pivot]:
+                left += 1
+            if nums[right] >= nums[pivot]:
+                right -=1
+
+        nums[right], nums[pivot] = nums[pivot], nums[right]
+        return right
+
+
+
+
+
+    def topKFrequentUsingMinHeap(self, nums: List[int], k: int) -> List[int]: #T(n)=O(n log k)
         element_count = Counter(nums)
         min_heap = []
         for num, freq in element_count.items():

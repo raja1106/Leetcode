@@ -22,19 +22,17 @@ class Solution:
 
         #Intermediate mgr
         for col in range(0,n):
-            if self.noconflict(slate,col):
+            if self.noconflict(slate,i,col):
                 slate.append(col)
                 self.helper(i+1,n,slate,result)
                 slate.pop()
 
 
-    def noconflict(self,slate,col):
-
-        for queenrow in range(len(slate)):
+    def noconflict(self,slate,row,col):
+        for queenrow in range(row):
             if slate[queenrow] == col:
                 return False
-
-            rowdiff = abs(len(slate)-queenrow)
+            rowdiff = abs(row-queenrow)
             coldiff = abs(col-slate[queenrow])
             if rowdiff == coldiff:
                 return False
@@ -42,3 +40,8 @@ class Solution:
 
 obj=Solution()
 print(obj.solveNQueens(4))
+"""
+[[1, 3, 0, 2], [2, 0, 3, 1]]
+[[1, 3, 0, 2], [2, 0, 3, 1]]
+
+"""
