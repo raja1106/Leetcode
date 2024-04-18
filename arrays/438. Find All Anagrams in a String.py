@@ -3,7 +3,30 @@ from typing import List
 
 
 class Solution:
+
     def findAnagrams(self, s: str, p: str) -> List[int]:
+        s_length, p_length = len(s), len(p)
+        result = []
+        if s_length < p_length:
+            return result
+
+        pattern_count = Counter(p)
+        window_count = Counter(s[:len(p)])
+
+        if pattern_count == window_count:
+            result.append(0)
+        k = len(p)
+        for i in range(p_length, s_length):
+            window_count[s[i]] += 1
+            window_count[s[i-k]] -= 1
+            if window_count[s[i-k]] == 0:
+                del window_count[s[i-k]]
+
+            if pattern_count == window_count:
+                result.append(i-k+1)
+        return result
+
+    def findAnagramsOldApproach(self, s: str, p: str) -> List[int]:
         map1 = Counter()
         map2 = Counter()
         anagram_indices=[]

@@ -1,16 +1,17 @@
 import sys
 from typing import List
+
+
 class Solution:
     def maxSubArrayLen(self, nums: List[int], k: int) -> int:
-        hmap={}
-        hmap[0]=0
-        prefixsum=0
-        maxv=0
+        sum_to_index = {0: 0}
+        prefix_sum = 0
+        max_value = 0
         for i in range(len(nums)):
-            prefixsum=prefixsum+nums[i]
-            if prefixsum-k in hmap:
-                maxv=max(maxv,i+1-hmap[prefixsum-k])
-            if  prefixsum not in hmap:
-                hmap[prefixsum]=i
+            prefix_sum = prefix_sum + nums[i]
+            if prefix_sum - k in sum_to_index:
+                max_value = max(max_value, i + 1 - sum_to_index[prefix_sum - k])
+            if prefix_sum not in sum_to_index:
+                sum_to_index[prefix_sum] = i
 
-        return maxv
+        return max_value

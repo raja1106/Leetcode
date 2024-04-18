@@ -32,4 +32,35 @@ class Solution: #Not Working
 
         return  global_count
 
+    def subarraysWithKDistinctRecursion(self, nums: List[int], k: int) -> int: #Working with Time limit exceeded
+        return self.helper(nums, k, 0, {})
+
+    def helper(self, nums: List[int], k: int, index: int, counter):
+        if (index == len(nums)):
+            return 0
+        self.addElement(counter, nums[index])
+        result = 0
+        if len(counter) == k:
+            result += 1
+        if len(counter) > k:
+            self.removeElement(counter, nums[index])
+            return result
+        result += self.helper(nums, k, index + 1, counter)
+        self.removeElement(counter, nums[index])
+        if (len(counter) == 0):
+            result += self.helper(nums, k, index + 1, counter)
+        return result
+
+    def addElement(self, counter, element):
+        if element in counter:
+            counter[element] += 1
+        else:
+            counter[element] = 1
+
+    def removeElement(self, counter, element):
+        if counter[element] == 1:
+            del counter[element]
+        else:
+            counter[element] -= 1
+
 
