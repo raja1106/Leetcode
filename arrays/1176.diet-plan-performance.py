@@ -2,30 +2,7 @@ from typing import List
 
 
 class Solution:
-    def dietPlanPerformance_mycode(self, calories: List[int], k: int, lower: int, upper: int) -> int:
 
-        result = 0
-        total = 0
-        nums = calories
-        for i in range(k):
-            total += nums[i]
-
-        if total > upper:
-            result += 1
-        if total < lower:
-            result -= 1
-
-        for i in range(k, len(calories)):
-            total += calories[i]
-            total -= calories[i - k]
-            if total > upper:
-                result += 1
-            if total < lower:
-                result -= 1
-
-        return result
-
-class Solution_AlgoMonster:
     def dietPlanPerformance(self, calories: List[int], k: int, lower: int, upper: int) -> int:
         # Helper function to evaluate the points for the given sum of calories
         def evaluate_points(calories_sum):
@@ -49,9 +26,9 @@ class Solution_AlgoMonster:
         # Iterate over the remaining elements, updating the sum and score
         for i in range(k, n):
             # Update the sliding window sum by adding the current element and removing the oldest one
-            sliding_window_sum += calories[i] - calories[i - k]
+            sliding_window_sum += calories[i]
+            sliding_window_sum -= calories[i - k]
             # Update the score based on the updated sum
             score += evaluate_points(sliding_window_sum)
-
         # Return the total score after evaluating all sliding windows
         return score
