@@ -3,16 +3,26 @@ from typing import List
 
 class Solution:
 
-    def maxSatisfied_Algomonster(self, customers: List[int], grumpy: List[int], minutes: int) -> int:
-        unsatisfied = sum(customer * grumpiness for customer, grumpiness in zip(customers, grumpy))
-        total_customers = sum(customers)
-        temp_improved = max_improved = 0
-        for minute_index, (customer, grumpiness) in enumerate(zip(customers, grumpy), 1):
-            temp_improved += customer * grumpiness
-            if (start_index := minute_index - minutes) >= 0:
-                max_improved = max(max_improved, total_customers - (unsatisfied - temp_improved))
-                temp_improved -= customers[start_index] * grumpy[start_index]
-        return max_improved
+    def maxSatisfied(self, customers: List[int], grumpy: List[int], minutes: int) -> int:
+        k = minutes
+        current_unsatisfied = 0
+        for i in range(k):
+            if grumpy[i] == 1:
+                current_unsatisfied += customers[i]
+        max_unsatisfied = current_unsatisfied
+        for i in range(k, len(customers)):
+            if grumpy[i] == 1:
+                current_unsatisfied += customers[i]
+            if grumpy[i - k] == 1:
+                current_unsatisfied -= customers[i - k]
+            max_unsatisfied = max(max_unsatisfied, current_unsatisfied)
+
+        satisfied_customers = 0
+        for j in range(len(customers)):
+            if grumpy[j] == 0:
+                satisfied_customers += customers[j]
+
+        return satisfied_customers + max_unsatisfied
     def maxSatisfied_mysolution(self, customers: List[int], grumpy: List[int], minutes: int) -> int:
         #findout in which window max grumy people
         k=minutes
