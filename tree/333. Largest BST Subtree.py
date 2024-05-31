@@ -5,7 +5,7 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def largestBSTSubtree(self, root: Optional[TreeNode]) -> int:
+    def largestBSTSubtree_usual_template(self, root: Optional[TreeNode]) -> int:
         max_size = 1
         if root is None:
             return 0
@@ -16,18 +16,18 @@ class Solution:
             amibst = True
             my_size = 1
             if node.left:
-                (is_leftbst, smallest, largest, left_size) = dfs(node.left)
-                if not is_leftbst or largest >= node.val:
+                (is_leftbst, left_smallest, left_largest, left_size) = dfs(node.left)
+                if not is_leftbst or left_largest >= node.val:
                     amibst = False
                 else:
-                    my_smallest = smallest
+                    my_smallest = left_smallest
                     my_size += left_size
             if node.right:
-                (is_rightbst, smallest, largest, right_size) = dfs(node.right)
-                if not is_rightbst or smallest <= node.val:
+                (is_rightbst, right_smallest, right_largest, right_size) = dfs(node.right)
+                if not is_rightbst or right_smallest <= node.val:
                     amibst = False
                 else:
-                    my_largest = largest
+                    my_largest = right_largest
                     my_size += right_size
             nonlocal max_size
             if amibst and my_size > max_size:
@@ -36,3 +36,26 @@ class Solution:
 
         dfs(root)
         return max_size
+
+    def largestBSTSubtree_optimized(self, root: Optional[TreeNode]) -> int:
+        def dfs(node):
+            if not node:
+                # Base case: Empty subtree
+                return (True, float('inf'), float('-inf'), 0)
+
+            left_is_bst, left_min, left_max, left_size = dfs(node.left)
+            right_is_bst, right_min, right_max, right_size = dfs(node.right)
+
+            # Check if the current node is a valid BST root
+            if left_is_bst and right_is_bst and left_max < node.val < right_min:
+                current_min = min(left_min, node.val)
+                current_max = max(right_max, node.val)
+                current_size = left_size + right_size + 1
+                self.max_size = max(self.max_size, current_size)
+                return (True, current_min, current_max, current_size)
+            else:
+                return (False, float('-inf'), float('inf'), 0)
+
+        self.max_size = 0
+        dfs(root)
+        return self.max_size
