@@ -5,7 +5,7 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+    def invertTree_1(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
         def invert(node):
             if node is None:
                 return node
@@ -14,6 +14,19 @@ class Solution:
             right = node.right
             node.left = invert(right)
             node.right = invert(left)
+            return node
+
+        invert(root)
+        return root
+
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        def invert(node):
+            if node is None:
+                return node
+            cached_left = invert(node.left)
+            cached_right = invert(node.right)
+            node.left = cached_right
+            node.right = cached_left
             return node
 
         invert(root)

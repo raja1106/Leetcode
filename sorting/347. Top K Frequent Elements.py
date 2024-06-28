@@ -20,37 +20,38 @@ Output: [1]
 class Solution:
 
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
-        element_count = Counter(nums)
+        element_count = Counter(nums) # map (num-> freq)
         print(element_count)
-        return []
+        ans= self.quick_select(nums,list(element_count.items()),0,len(element_count)-1,k)
 
-    def quick_select(self,nums:List[int],start: int, end: int,k: int)->int:
-        partition_idx = self.partition(nums, start, end)
-        if partition_idx == len(nums)-k:
-            return nums[partition_idx]
-        elif partition_idx < len(nums)-k:
-            return self.quick_select(nums,partition_idx+1,end,k)
+        result = [val for val in ans
+
+    def quick_select(self, nums_freq, start, end, k):
+        partition_idx = self.partition(nums_freq, start, end)
+        if partition_idx == len(nums_freq)-k:
+            return nums_freq[partition_idx:]
         else:
-            return self.quick_select(nums, start, partition_idx - 1,k)
+            return self.quick_select(nums_freq, partition_idx + 1, end, k)
 
-    def partition(self, nums: List[int],start: int, end: int) -> int:
+
+    def partition(self, nums_freq, start, end):
         rand_index = random.randint(start, end)
-        nums[rand_index], nums[start] = nums[start], nums[rand_index]
+        nums_freq[rand_index], nums_freq[start] = nums_freq[start], nums_freq[rand_index]
         pivot =start
         left = start+1
         right =end
 
         while left <= right:
-            if nums[right] < nums[pivot] <nums[left]:
-                nums[right], nums[left] = nums[left], nums[right]
+            if nums_freq[right] < nums_freq[pivot] <nums_freq[left]:
+                nums_freq[right], nums_freq[left] = nums_freq[left], nums_freq[right]
                 left += 1
                 right -=1
-            if nums[left] <= nums[pivot]:
+            if nums_freq[left] <= nums_freq[pivot]:
                 left += 1
-            if nums[right] >= nums[pivot]:
+            if nums_freq[right] >= nums_freq[pivot]:
                 right -=1
 
-        nums[right], nums[pivot] = nums[pivot], nums[right]
+        nums_freq[right], nums_freq[pivot] = nums_freq[pivot], nums_freq[right]
         return right
 
 

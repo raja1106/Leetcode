@@ -33,3 +33,20 @@ class Solution:
             return 0
         dfs(root)
         return max_length
+
+    def longestConsecutive_June8(self, root: Optional[TreeNode]) -> int:
+        def dfs(node: TreeNode) -> int:
+            if not node:
+                return 0
+            left_length = dfs(node.left) if node.left and node.left.val == node.val + 1 else 0
+            right_length = dfs(node.right) if node.right and node.right.val - 1 == node.val else 0
+            local_max_length = max(left_length, right_length) + 1
+            nonlocal max_length
+            max_length = max(max_length, local_max_length)
+            return local_max_length
+
+        max_length = 1
+        if root is None:
+            return 0
+        dfs(root)
+        return max_length

@@ -42,5 +42,5 @@ class Solution:
                 left += 1
 
             max_length =max(max_length,i-left+1)
-
+            #max_length =max(max_length,len(sorted_list))
         return max_length

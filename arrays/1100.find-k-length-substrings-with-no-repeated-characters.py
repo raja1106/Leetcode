@@ -1,6 +1,27 @@
 class Solution:
-    #initialization
+
     def numKLenSubstrNoRepeats(self, s: str, k: int) -> int:
+
+        if k > len(s) or k > 26:
+            return 0
+        char_count = Counter(s[:k])
+        count = 0
+
+        if len(char_count) == k:
+            count += 1
+
+        for i in range(k, len(s)):
+            char_count[s[i]] += 1
+            char_count[s[i - k]] -= 1
+
+            if char_count[s[i - k]] == 0:
+                del char_count[s[i - k]]
+
+            if len(char_count) == k:
+                count += 1
+
+        return count
+    def numKLenSubstrNoRepeatsUsingMap(self, s: str, k: int) -> int:
         window_map={}
         result=0
         for i in range(k):

@@ -39,7 +39,6 @@ class Solution:
         self.buildSubsets(i + 1, nums, current_subset, result_set)
         del current_subset[-1]
         #current_subset.pop()
-        return
 
 """
 Time Complexity:
