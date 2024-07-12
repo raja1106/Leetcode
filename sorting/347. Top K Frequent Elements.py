@@ -24,7 +24,7 @@ class Solution:
         print(element_count)
         ans= self.quick_select(nums,list(element_count.items()),0,len(element_count)-1,k)
 
-        result = [val for val in ans
+        result = [val for val in ans]
 
     def quick_select(self, nums_freq, start, end, k):
         partition_idx = self.partition(nums_freq, start, end)

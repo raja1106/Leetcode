@@ -44,31 +44,6 @@ from typing import List
 from heapq import heapify,heappop,heappush
 from collections import Counter
 class Solution:
-    def mostBooked(self, n: int, meetings: List[List[int]]) -> int:
-        rooms_available = []
-        for i in range(n):
-            rooms_available.append([0, i])
-
-        heapify(rooms_available)
-        map = Counter()
-        meetings.sort(key=lambda x: x[0])
-
-        for i in range(len(meetings)):
-            earliest_available_rooms =[]
-            while rooms_available and rooms_available[0] <= meetings[0]:
-                room =heappop(rooms_available)
-                earliest_available_rooms.append([room[1],room[0]])
-
-            earliest_available_room = heappop(rooms_available)
-            map[earliest_available_room[1]] += 1
-            earliest_available_room[0] = max(earliest_available_room[0], meetings[i][0]) + (
-                        meetings[i][1] - meetings[i][0])
-            heappush(rooms_available, earliest_available_room)
-
-        room_list = map.most_common()
-        print(type(room_list))
-        return room_list[0][0]
-
     def mostBookedMonster(self, n: int, meetings: list[list[int]]) -> int:
         meetings.sort()
 

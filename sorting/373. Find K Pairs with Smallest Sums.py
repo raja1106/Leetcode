@@ -18,6 +18,24 @@ class Solution:
 
         return result
 
+    def kSmallestPairsUsingMax_heap(self, nums1: List[int], nums2: List[int], k: int) -> List[List[int]]:
+        result =[]
+        max_heap = []
+        i = 0
+        for j in range(k):
+            local_sum = nums1[i]+nums2[j]
+            heappush(max_heap,(-local_sum,0,j))
+        j = 0
+        for i in range(1,k):
+            local_sum = nums1[i] + nums2[j]
+            if local_sum >= -max_heap[0]:
+                break
+            else:
+                heappop(max_heap)
+                heappush(max_heap, (-local_sum, i, 0))
+
+        return [pair[1] for pair in max_heap]
+
 '''
 Time Complexity
 The time complexity of the algorithm is as follows:

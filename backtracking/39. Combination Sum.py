@@ -1,4 +1,5 @@
 from typing import List
+
 """
 Given an array of distinct integers candidates and a target integer target, return a list of all unique combinations of candidates where the chosen numbers sum to target. You may return the combinations in any order.
 
@@ -28,13 +29,14 @@ Input: candidates = [2], target = 1
 Output: []
 """
 
+
 class Solution:
-    def combinationSum_NotWorking(self, candidates: List[int], target: int) -> List[List[int]]: # Why it is not working
-        result=set()
-        self.combinationSumHelper(candidates,target,0,[],result)
+    def combinationSum_NotWorking(self, candidates: List[int], target: int) -> List[List[int]]:  # Why it is not working
+        result = set()
+        self.combinationSumHelper(candidates, target, 0, [], result)
         return list(result)
 
-    def combinationSumHelper(self,i,candidates,target,path_sum,slate,result):
+    def combinationSumHelper(self, i, candidates, target, path_sum, slate, result):
         if path_sum == target:
             slate.sort()
             result.add(tuple(slate[:]))
@@ -46,18 +48,19 @@ class Solution:
         for i in range(len(candidates)):
             slate.append(candidates[i])
             path_sum += candidates[i]
-            self.combinationSumHelper(candidates,target,path_sum,slate,result)
+            self.combinationSumHelper(candidates, target, path_sum, slate, result)
             path_sum -= candidates[i]
             slate.pop()
         return
 
-    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:#TODOO Not sure how this is working correctly
+    def combinationSum(self, candidates: List[int], target: int) -> List[
+        List[int]]:  # TODOO Not sure how this is working correctly
         result = set()
         candidates.sort()
-        self.combinationSumHelper(0,candidates, target, [], result)
+        self.combinationSumHelper(0, candidates, target, [], result)
         return list(result)
 
-    def combinationSumHelper(self, i,candidates, target, slate, result):
+    def combinationSumHelper(self, i, candidates, target, slate, result):
         if sum(slate) == target:
             slate.sort()
             result.add(tuple(slate[:]))
@@ -66,18 +69,37 @@ class Solution:
         if sum(slate) > target:
             return
 
-        #Base Case
+        # Base Case
         if i == len(candidates):
             return
 
-        #exclusive case
-        self.combinationSumHelper(i+1,candidates, target, slate, result)
+        # exclusive case
+        self.combinationSumHelper(i + 1, candidates, target, slate, result)
 
-        #inclusive case
+        # inclusive case
         slate.append(candidates[i])
-        self.combinationSumHelper(i, candidates, target, slate, result) # here in this problem you are sending subproblem size same except you have updated target
+        self.combinationSumHelper(i, candidates, target, slate,
+                                  result)  # here in this problem you are sending subproblem size same except you have updated target
         slate.pop()
 
+        return
+
+class Solution1:  # This is working.. not sure
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        result = []
+        self.combinationSumHelper(candidates, target, 0, [], result)
+        return result
+
+    def combinationSumHelper(self, candidates, target, start, slate, result):
+        if target == 0:
+            result.append(slate[:])
+            return
+        if target < 0:
+            return
+        for i in range(start, len(candidates)):
+            slate.append(candidates[i])
+            self.combinationSumHelper(candidates, target - candidates[i], i, slate, result)
+            slate.pop()
         return
 
 
@@ -90,35 +112,3 @@ The space complexity of the algorithm is also important to consider. It is mainl
 
 However, if we look at the auxiliary space excluding the space taken by the output (which is the space ans takes), then the space complexity is O(target) due to the depth of the recursive call stack and the temporary list t.
 """
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

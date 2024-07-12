@@ -9,16 +9,6 @@ class Solution:
             adjlist[dst].append(src)
         visited = [-1] * n
 
-        def bfs(source):
-            visited[source] = 1
-            queue = collections.deque([source])
-            while queue:
-                node = queue.popleft()
-                for neighbor in adjlist[node]:
-                    if visited[neighbor] == -1:
-                        visited[neighbor] = 1
-                        queue.append(neighbor)
-
         def dfs(source):
             visited[source] = 1
             for neighbor in adjlist[source]:
@@ -32,6 +22,8 @@ class Solution:
                 if components > 1:
                     return False
                 dfs(v)
+        if len(edges) != n - 1:
+            return False
         return True
 
 '''

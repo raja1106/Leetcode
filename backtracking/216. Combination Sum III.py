@@ -15,8 +15,7 @@ class Solution:
         if i == len(nums):
             return
 
-            # exclusive case
-
+        # exclusive case
         self.buildcombinationSum3(i + 1, nums, slate, result, k, n)
 
         # inclusive case
