@@ -8,7 +8,7 @@ class Solution:
 
             if arr[mid-1] < arr[mid] > arr[mid+1]:
                 return mid
-            elif arr[mid+1] > arr[mid]:
+            elif arr[mid+1] > arr[mid]: #if mid is in Ascending zone
                 start = mid+1
-            else:
+            else:  #if mid is in Descending zone
                 end=mid-1
