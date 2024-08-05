@@ -20,7 +20,7 @@ Output: [[],[0]]
 """
 class Solution:
     def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
-        result_set=set([])
+        result_set=set()
         nums.sort()
         self.buildSubsets(0, nums, [], result_set)
         return list(result_set)

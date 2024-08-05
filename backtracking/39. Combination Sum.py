@@ -87,18 +87,18 @@ class Solution:
 class Solution1:  # This is working.. not sure
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
         result = []
-        self.combinationSumHelper(candidates, target, 0, [], result)
+        self.combinationSumHelper(0, candidates, [], result, 0, target)
         return result
 
-    def combinationSumHelper(self, candidates, target, start, slate, result):
-        if target == 0:
+    def combinationSumHelper(self, i, candidates, slate, result, current_sum, target):
+        if current_sum == target:
             result.append(slate[:])
             return
-        if target < 0:
+        if current_sum > target:
             return
-        for i in range(start, len(candidates)):
-            slate.append(candidates[i])
-            self.combinationSumHelper(candidates, target - candidates[i], i, slate, result)
+        for j in range(i, len(candidates)):
+            slate.append(candidates[j])
+            self.combinationSumHelper(j, candidates, slate, result, current_sum + candidates[j], target)
             slate.pop()
         return
 

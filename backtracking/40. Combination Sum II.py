@@ -52,10 +52,30 @@ class Solution:# TLE exception for 2 edges cases
 
         #include
         current_combination.append(candidates[i])
-        current_sum += candidates[i]
-        self.combinationSum2Helper(i + 1, candidates, target, current_combination, result,current_sum)
-        current_sum -= candidates[i]
+        self.combinationSum2Helper(i + 1, candidates, target, current_combination, result,current_sum+candidates[i])
         current_combination.pop()
+
+class Solution3: # same as 131 Palindrom Partioning
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        result = []
+        candidates.sort()
+        self._find_combinations(0, candidates, target, [], result)
+        return result
+
+    def _find_combinations(self, i, candidates, target, current_combination, result):
+        if target < 0:
+            return
+        if target == 0:
+            result.append(current_combination[:])
+            return
+        for end in range(i, len(candidates)):
+            if end > i and candidates[end] == candidates[end - 1]:
+                continue
+            if candidates[end] > target:
+                break
+            current_combination.append(candidates[end])
+            self._find_combinations(end + 1, candidates, target - candidates[end], current_combination, result)
+            current_combination.pop()
 
 class Solution2:
     def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:

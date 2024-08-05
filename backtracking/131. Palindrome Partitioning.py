@@ -1,3 +1,4 @@
+from typing import List
 class Solution:
     """
 Input: s = "aab"
@@ -13,7 +14,7 @@ Output: [["a","a","b"],["aa","b"]]
             result.append(list(slate))
             return
 
-        for end in range(i, len(s) + 1):
+        for end in range(i+1, len(s) + 1):
             if self.isPalindrome(s[i:end]):
                 slate.append(s[i:end])
                 self.helper(end, s, slate, result)
@@ -30,3 +31,6 @@ Output: [["a","a","b"],["aa","b"]]
             left += 1
             right -= 1
         return True
+
+obj = Solution()
+print(obj.partition("aab"))
