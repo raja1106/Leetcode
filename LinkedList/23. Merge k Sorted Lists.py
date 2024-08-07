@@ -1,56 +1,124 @@
-from heapq import heappush, heappop
 from typing import List, Optional
+import heapq
 
 
+# Definition for singly-linked list.
 class ListNode:
-    def __init__(self, value=0, next=None):
-        self.value = value
+    def __init__(self, val=0, next=None):
+        self.val = val
         self.next = next
 
-    def __lt__(self, other):
-        return self.value < other.value
 
+class Solution_Using_MinHeap: #Time complexity : O(Nlogk) where k is the number of linked lists.
 
-class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
-        if not lists:
-            return None
-
         min_heap = []
 
-        # Initialize the heap with the head of each list
-        for l in lists:
-            if l:
-                heappush(min_heap, l)
+        # Push the head of each list into the min_heap
+        for i in range(len(lists)):
+            if lists[i]:
+                heapq.heappush(min_heap, (lists[i].val, i, lists[i]))
 
         dummy = ListNode()
         current = dummy
 
         while min_heap:
-            # Get the smallest node
-            smallest_node = heappop(min_heap)
-            current.next = smallest_node
+            val, idx, node = heapq.heappop(min_heap)
+            current.next = node
             current = current.next
-
-            # If there's a next node, push it into the heap
-            if smallest_node.next:
-                heappush(min_heap, smallest_node.next)
+            if node.next:
+                heapq.heappush(min_heap, (node.next.val, idx, node.next))
 
         return dummy.next
 
 
-# Example usage
-# Creating linked lists: 1 -> 4 -> 5, 1 -> 3 -> 4, 2 -> 6
-l1 = ListNode(1, ListNode(4, ListNode(5)))
-l2 = ListNode(1, ListNode(3, ListNode(4)))
-l3 = ListNode(2, ListNode(6))
-lists = [l1, l2, l3]
+from typing import List, Optional
 
-solution = Solution()
-merged_head = solution.mergeKLists(lists)
 
-# Printing the merged linked list
-current = merged_head
-while current:
-    print(current.value, end=" -> " if current.next else "\n")
-    current = current.next
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+
+class Solution_Using_DivideAndConqure: #Time complexity : O(Nlogk) where k is the number of linked lists.
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        if not lists:
+            return None
+        if len(lists) == 1:
+            return lists[0]
+        def merge(list1: ListNode, list2: ListNode) -> ListNode:
+            dummy = ListNode()
+            current = dummy
+            while list1 and list2:
+                if list1.val < list2.val:
+                    current.next = list1
+                    list1 = list1.next
+                else:
+                    current.next = list2
+                    list2 = list2.next
+                current = current.next
+            # Attach the remaining nodes
+            if list1:
+                current.next = list1
+            else:
+                current.next = list2
+            return dummy.next
+        def merge_lists(lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+            if len(lists) == 0:
+                return None
+            if len(lists) == 1:
+                return lists[0]
+            if len(lists) == 2:
+                return merge(lists[0], lists[1])
+
+            mid = len(lists) // 2
+            left = merge_lists(lists[:mid])
+            right = merge_lists(lists[mid:])
+            return merge(left, right)
+
+        return merge_lists(lists)
+
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:#Time complexity : O(kN) where k is the number of linked lists.
+
+
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        def merge(list1, list2):
+            temp = ListNode()
+            head = temp
+            while list1 and list2:
+                if list1.val < list2.val:
+                    head.next = list1
+                    list1 = list1.next
+                else:
+                    head.next = list2
+                    list2 = list2.next
+                head = head.next
+            while list1:
+                head.next = list1
+                list1 = list1.next
+                head = head.next
+            while list2:
+                head.next = list2
+                list2 = list2.next
+                head = head.next
+            return temp.next
+
+        if not lists:
+            return None
+        if len(lists) == 1:
+            return lists[0]
+
+        result = lists[0]
+        for i in range(1, len(lists)):
+            result = merge(result, lists[i])
+
+        return result
+
