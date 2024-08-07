@@ -21,32 +21,45 @@ Output: 2
 
 # 2,5,5,0,2   k=7
 class Solution:
+    from typing import List
+
     def subarraySum(self, nums: List[int], k: int) -> int:
-        hmap = {}
-        hmap[0] = 1
-        prefixSum = 0
-        globalCount = 0
-        for i in range(len(nums)):
-            prefixSum += nums[i]
-            if prefixSum - k in hmap:
-                globalCount += hmap[prefixSum - k]
+        # Initialize hashmap to store the frequency of prefix sums
+        prefix_sum_count = {0: 1}
+        prefix_sum = 0
+        count = 0
 
-            if prefixSum in hmap:
-                hmap[prefixSum] += 1
+        # Iterate through the list of numbers
+        for num in nums:
+            # Update the prefix sum
+            prefix_sum += num
+
+            # Check if there is a prefix sum that, when subtracted from the current prefix sum, equals k
+            if prefix_sum - k in prefix_sum_count:
+                count += prefix_sum_count[prefix_sum - k]
+
+            # Update the hashmap with the current prefix sum
+            if prefix_sum in prefix_sum_count:
+                prefix_sum_count[prefix_sum] += 1
             else:
-                hmap[prefixSum] = 1
+                prefix_sum_count[prefix_sum] = 1
 
-        return globalCount
+        return count
 
     def subarraySumUsingCounter(self, nums: List[int], k: int) -> int:
-        sum_frequency = Counter()
-        sum_frequency[0] = 1
+        prefix_sum_count = Counter()
+        prefix_sum_count[0] = 1
         prefix_sum = 0
         total_count = 0
         for i in range(len(nums)):
+            # Update the prefix sum
             prefix_sum += nums[i]
-            if prefix_sum - k in sum_frequency:
-                total_count += sum_frequency[prefix_sum - k]
-            sum_frequency[prefix_sum] += 1
+
+            # Check if there is a prefix sum that, when subtracted from the current prefix sum, equals k
+            if prefix_sum - k in prefix_sum_count:
+                total_count += prefix_sum_count[prefix_sum - k]
+
+            # Update the Counter with the current prefix sum
+            prefix_sum_count[prefix_sum] += 1
 
         return total_count

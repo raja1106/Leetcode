@@ -17,46 +17,50 @@ Input: nums = [1], k = 1
 Output: [1]
 """
 
+import random
+from collections import Counter
+from typing import List, Tuple
+
+
 class Solution:
-
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
-        element_count = Counter(nums) # map (num-> freq)
-        print(element_count)
-        ans= self.quick_select(nums,list(element_count.items()),0,len(element_count)-1,k)
+        # Step 1: Count the frequency of each element
+        element_count = Counter(nums)
 
-        result = [val for val in ans]
+        # Convert the frequency dictionary to a list of tuples (num, freq)
+        freq_list = list(element_count.items())
 
-    def quick_select(self, nums_freq, start, end, k):
-        partition_idx = self.partition(nums_freq, start, end)
-        if partition_idx == len(nums_freq)-k:
-            return nums_freq[partition_idx:]
-        else:
-            return self.quick_select(nums_freq, partition_idx + 1, end, k)
+        # Step 2: Use quick select to find the top k frequent elements
+        self.quick_select(freq_list, 0, len(freq_list) - 1, len(freq_list) - k)
 
+        # Step 3: Extract the elements from the top k frequent tuples
+        result = [val for val, freq in freq_list[-k:]]
 
-    def partition(self, nums_freq, start, end):
-        rand_index = random.randint(start, end)
-        nums_freq[rand_index], nums_freq[start] = nums_freq[start], nums_freq[rand_index]
-        pivot =start
-        left = start+1
-        right =end
+        return result
 
-        while left <= right:
-            if nums_freq[right] < nums_freq[pivot] <nums_freq[left]:
-                nums_freq[right], nums_freq[left] = nums_freq[left], nums_freq[right]
-                left += 1
-                right -=1
-            if nums_freq[left] <= nums_freq[pivot]:
-                left += 1
-            if nums_freq[right] >= nums_freq[pivot]:
-                right -=1
+    def quick_select(self, nums_freq: List[Tuple[int, int]], left: int, right: int, k: int):
+        if left < right:
+            pivot_index = self.partition(nums_freq, left, right)
+            if pivot_index == k:
+                return
+            elif pivot_index < k:
+                self.quick_select(nums_freq, pivot_index + 1, right, k)
+            else:
+                self.quick_select(nums_freq, left, pivot_index - 1, k)
 
-        nums_freq[right], nums_freq[pivot] = nums_freq[pivot], nums_freq[right]
-        return right
-
-
-
-
+    def partition(self, nums_freq: List[Tuple[int, int]], left: int, right: int) -> int:
+        pivot_index = random.randint(left, right)
+        pivot_frequency = nums_freq[pivot_index][1]
+        # Move pivot to end
+        nums_freq[pivot_index], nums_freq[right] = nums_freq[right], nums_freq[pivot_index]
+        store_index = left
+        for i in range(left, right):
+            if nums_freq[i][1] < pivot_frequency:
+                nums_freq[store_index], nums_freq[i] = nums_freq[i], nums_freq[store_index]
+                store_index += 1
+        # Move pivot to its final place
+        nums_freq[right], nums_freq[store_index] = nums_freq[store_index], nums_freq[right]
+        return store_index
 
     def topKFrequentUsingMinHeap(self, nums: List[int], k: int) -> List[int]: #T(n)=O(n log k)
         element_count = Counter(nums)
