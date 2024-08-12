@@ -1,36 +1,42 @@
+from typing import List
+
+
 class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        start = 0
+        end = len(nums) - 1
 
-    def search_template(self, nums: List[int], target: int) -> int:
-        start =0
-        end = len(nums)-1
+        if not nums:
+            return -1
 
+        # Check if the target is the last element
         if target == nums[-1]:
-            return len(nums)-1
-        elif target < nums[-1]:
+            return end
+
+        # Determine which region the target belongs to
+        if target < nums[-1]:
             region = "orange"
         else:
             region = "green"
 
         while start <= end:
-            mid = start + (end-start)//2
+            mid = start + (end - start) // 2
 
-            if target == nums[mid]:
+            if nums[mid] == target:
                 return mid
-            if nums[mid] <= nums[-1]:
-                #mid lies in orange region
-                if target < nums[mid] or region == "green":
-                    end = mid-1
+
+            if nums[mid] <= nums[-1]:  # mid-lies in the "orange" region
+                if nums[mid] > target or region == "green":
+                    end = mid - 1
                 else:
-                    start = mid+1
-            else:
-            #mid-lies in green region
-                if target > nums[mid] or region == "orange":
-                    start = mid+1
+                    start = mid + 1
+            else:  # mid-lies in the "green" region
+                if nums[mid] < target or region == "orange":
+                    start = mid + 1
                 else:
-                    end = mid-1
+                    end = mid - 1
 
         return -1
-
 
     def search(self, nums: List[int], target: int) -> int:
         start = 0
@@ -53,6 +59,4 @@ class Solution:
                     start = mid + 1
                 else:  # Target in the left half
                     end = mid - 1
-
         return -1
-

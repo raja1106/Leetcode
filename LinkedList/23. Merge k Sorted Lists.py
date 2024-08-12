@@ -110,15 +110,12 @@ class Solution:#Time complexity : O(kN) where k is the number of linked lists.
                 list2 = list2.next
                 head = head.next
             return temp.next
-
         if not lists:
             return None
         if len(lists) == 1:
             return lists[0]
-
         result = lists[0]
         for i in range(1, len(lists)):
             result = merge(result, lists[i])
-
         return result
 
