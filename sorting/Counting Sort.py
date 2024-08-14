@@ -30,7 +30,32 @@ class Solution:
         # Returns the sorted array
         return sorted_array
 
+    class Solution_Using_Counting_Sort_LC_1122:
+        def relativeSortArray(self, arr1: List[int], arr2: List[int]) -> List[int]:
+            # Find the maximum value in arr1 to determine the size of the count array
+            max_val = max(arr1)
 
+            # Initialize a count array to store frequencies
+            count = [0] * (max_val + 1)
+
+            # Populate the count array with frequencies of each number in arr1
+            for num in arr1:
+                count[num] += 1
+
+            # List to store the result
+            result = []
+
+            # Add elements to result according to the order in arr2
+            for num in arr2:
+                result.extend([num] * count[num])
+                count[num] = 0  # Set to 0 as those elements are already used
+
+            # Add the remaining elements not in arr2, in sorted order
+            for num in range(max_val + 1):
+                if count[num] > 0:
+                    result.extend([num] * count[num])
+
+            return result
 
     # Using counting sort to sort the elements in the basis of significant places
     def countingSort(array, place):
