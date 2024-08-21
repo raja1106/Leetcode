@@ -3,41 +3,24 @@ from typing import List
 from typing import List
 
 
-class Solution1:
+class Solution_Template_version:
     def checkSubarraySum(self, nums: List[int], k: int) -> bool:
-        """
-        Given a list of integers `nums` and an integer `k`, return True if there is a continuous subarray
-        of size at least two that sums up to a multiple of `k`. Otherwise, return False.
+        # Map to store the remainder of the prefix sum divided by k, and the earliest index where it occurs
+        remainder_index_map = {0: 0}  # Length of an empty subarray is zero
 
-        Args:
-        nums (List[int]): List of integers.
-        k (int): The integer to check multiples of.
-
-        Returns:
-        bool: True if such a subarray exists, False otherwise.
-        """
-        if len(nums) < 2:
-            return False
-
-        # Handle the edge case where k is 0
-        if k == 0:
-            for i in range(1, len(nums)):
-                if nums[i] == 0 and nums[i - 1] == 0:
-                    return True
-            return False
-
-        prefix_sum_map = {0: -1}  # Store the index of the prefix sum remainders
         prefix_sum = 0
 
         for i in range(len(nums)):
             prefix_sum += nums[i]
             remainder = prefix_sum % k
 
-            if remainder in prefix_sum_map:
-                if i - prefix_sum_map[remainder] >= 2:
-                    return True
-            else:
-                prefix_sum_map[remainder] = i
+            # Check if the same remainder has been seen before and if the subarray length is at least 2
+            if remainder in remainder_index_map and (i + 1) - remainder_index_map[remainder] >= 2:
+                return True
+
+            # Only store the earliest occurrence of each remainder
+            if remainder not in remainder_index_map:
+                remainder_index_map[remainder] = i + 1
 
         return False
 
