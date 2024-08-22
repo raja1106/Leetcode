@@ -3,27 +3,29 @@ from typing import List
 
 class Solution:
     def validTree(self, n: int, edges: List[List[int]]) -> bool:
-        adjlist = [[] for _ in range(n)]
+
+        if len(edges) != n - 1:
+            return False
+
+        graph = defaultdict(list)
         for (src, dst) in edges:
-            adjlist[src].append(dst)
-            adjlist[dst].append(src)
-        visited = [-1] * n
+            graph[src].append(dst)
+            graph[dst].append(src)
+        visited = [False] * n
 
         def dfs(source):
-            visited[source] = 1
-            for neighbor in adjlist[source]:
-                if visited[neighbor] == -1:
+            visited[source] = True
+            for neighbor in graph[source]:
+                if not visited[neighbor]:
                     dfs(neighbor)
 
         components = 0
         for v in range(n):
-            if visited[v] == -1:
+            if not visited[v]:
                 components += 1
                 if components > 1:
                     return False
                 dfs(v)
-        if len(edges) != n - 1:
-            return False
         return True
 
 '''

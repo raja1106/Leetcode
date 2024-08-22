@@ -3,31 +3,29 @@ import collections
 
 class Solution:
     def countComponents(self, n: int, edges: List[List[int]]) -> int:
-        adjlist = [[] for _ in range(n)]
+        graph =  defaultdict(list)
         for (src,dst) in edges:
-            adjlist[src].append(dst)
-            adjlist[dst].append(src)
-        visited = [-1]*n
+            graph[src].append(dst)
+            graph[dst].append(src)
+        visited = [False]*n
 
         def bfs(source):
-            visited[source] = 1
+            visited[source] = True
             queue = collections.deque([source])
             while queue:
                 node = queue.popleft()
-                for neighbor in adjlist[node]:
-                    if visited[neighbor] == -1:
-                        visited[neighbor] = 1
+                for neighbor in graph[node]:
+                    if not visited[neighbor]:
+                        visited[neighbor] = True
                         queue.append(neighbor)
-
-
         def dfs(source):
-            visited[source] = 1
-            for neighbor in adjlist[source]:
-                if visited[neighbor] == -1:
+            visited[source] = True
+            for neighbor in graph[source]:
+                if not visited[neighbor]:
                     dfs(neighbor)
         components = 0
         for v in range(n):
-            if visited[v] == -1:
+            if not visited[v]:
                 components += 1
                 dfs(v)
         return components
