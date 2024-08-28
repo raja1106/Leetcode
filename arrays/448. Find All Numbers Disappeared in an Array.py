@@ -16,3 +16,23 @@ class Solution:
                 result.append(i+1)
 
         return result
+
+
+class Solution_gpt:
+    def findDisappearedNumbers(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+        for i in range(n):
+            # target_index = nums[i] -1
+            while nums[i] - 1 < n and nums[i] - 1 != i:
+                target_index = nums[i] - 1
+                if nums[i] == nums[target_index]:
+                    break
+                nums[i], nums[target_index] = nums[target_index], nums[i]
+
+        result = []
+        for i in range(n):
+            if i != nums[i] - 1:
+                result.append(i + 1)
+
+        return result
+

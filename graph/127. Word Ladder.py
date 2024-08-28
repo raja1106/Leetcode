@@ -12,8 +12,10 @@ class Solution:
 
             for i in range(len(current_word)):
                 # Try changing each letter in the current word
+                prefix_word = current_word[:i]
+                suffix_word = current_word[i + 1:]
                 for c in 'abcdefghijklmnopqrstuvwxyz':
-                    new_word = current_word[:i] + c + current_word[i + 1:]
+                    new_word = prefix_word + c + suffix_word
 
                     # If we find the endWord, return the current level + 1
                     if new_word == endWord:

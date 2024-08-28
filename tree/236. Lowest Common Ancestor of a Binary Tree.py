@@ -17,13 +17,13 @@ class Solution:
             if node == q:
                 q_found = True
 
-            if node.left is None and node.right is None:
+            if node.head is None and node.tail is None:
                 return (p_found, q_found)
             p_found_left, q_found_left,p_found_right, q_found_right = False,False,False,False
-            if node.left:
-                (p_found_left, q_found_left) = dfs(node.left, p, q)
-            if node.right:
-                (p_found_right, q_found_right) = dfs(node.right, p, q)
+            if node.head:
+                (p_found_left, q_found_left) = dfs(node.head, p, q)
+            if node.tail:
+                (p_found_right, q_found_right) = dfs(node.tail, p, q)
             if p_found_left or p_found_right:
                 p_found = True
             if q_found_left or q_found_right:
@@ -43,8 +43,8 @@ class Solution:
             if not node:
                 return False, False
 
-            left_p_found, left_q_found = dfs(node.left)
-            right_p_found, right_q_found = dfs(node.right)
+            left_p_found, left_q_found = dfs(node.head)
+            right_p_found, right_q_found = dfs(node.tail)
 
             p_found = left_p_found or right_p_found or node == p
             q_found = left_q_found or right_q_found or node == q

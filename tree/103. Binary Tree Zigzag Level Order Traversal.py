@@ -22,10 +22,10 @@ class Solution:
             for _ in range(size):
                 node = queue.popleft()
                 level_list.append(node.val)
-                if node.left:
-                    queue.append(node.left)
-                if node.right:
-                    queue.append(node.right)
+                if node.head:
+                    queue.append(node.head)
+                if node.tail:
+                    queue.append(node.tail)
             if depth % 2 == 1:
                 level_list.reverse()
             result.append(level_list)
@@ -46,17 +46,17 @@ class Solution:
                 if isLeftToRight:
                     node = dq.popleft()
                     currLevel.append(node.val)
-                    if node.left:
-                        dq.append(node.left)
-                    if node.right:
-                        dq.append(node.right)
+                    if node.head:
+                        dq.append(node.head)
+                    if node.tail:
+                        dq.append(node.tail)
                 else:
                     node = dq.pop()
                     currLevel.append(node.val)
-                    if node.right:
-                        dq.appendleft(node.right)
-                    if node.left:
-                        dq.appendleft(node.left)
+                    if node.tail:
+                        dq.appendleft(node.tail)
+                    if node.head:
+                        dq.appendleft(node.head)
             ans.append(currLevel)
             isLeftToRight = not isLeftToRight
 

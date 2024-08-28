@@ -3,26 +3,26 @@ class Solution:
 
         stack = []
 
-        count = 0
+        open_count = 0
 
         for c in s:
-            if c == ')' and count == 0:
+            if c == ')' and open_count == 0:
                 continue
             if c == '(':
-                count += 1
+                open_count += 1
             elif c == ')':
-                count -= 1
+                open_count -= 1
             stack.append(c)
 
-        count = 0
+        closed_count = 0
         answer = []
         for c in reversed(stack):
-            if c == '(' and count == 0:
+            if c == '(' and closed_count == 0:
                 continue
             if c == ')':
-                count += 1
+                closed_count += 1
             elif c == '(':
-                count -= 1
+                closed_count -= 1
             answer.append(c)
 
         return ''.join(reversed(answer))

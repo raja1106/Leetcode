@@ -22,3 +22,5 @@ class Solution:
 
         # If the string is a palindrome or can be made into one by removing a single character
         return True
+
+print(Solution().validPalindrome('radadkar'))

@@ -17,19 +17,19 @@ class Solution:
 
         def dfs(node, slate):
             nonlocal total
-            if node.left is None and node.right is None:
+            if node.head is None and node.tail is None:
                 slate.append(str(node.val))
                 total += getvalue(slate)
                 slate.pop()
                 return
 
-            if node.left:
+            if node.head:
                 slate.append(str(node.val))
-                dfs(node.left, slate)
+                dfs(node.head, slate)
                 slate.pop()
-            if node.right:
+            if node.tail:
                 slate.append(str(node.val))
-                dfs(node.right, slate)
+                dfs(node.tail, slate)
                 slate.pop()
 
         if not root:
@@ -53,12 +53,12 @@ class Solution1: # this one is more efficient
             current_number = current_number * 10 + node.val
 
             # If it's a leaf node, return the current number
-            if not node.left and not node.right:
+            if not node.head and not node.tail:
                 return current_number
 
             # Recursively sum the numbers from the left and right subtrees
-            left_sum = dfs(node.left, current_number)
-            right_sum = dfs(node.right, current_number)
+            left_sum = dfs(node.head, current_number)
+            right_sum = dfs(node.tail, current_number)
 
             return left_sum + right_sum
 

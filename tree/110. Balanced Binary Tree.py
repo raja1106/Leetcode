@@ -9,13 +9,13 @@ class Solution:
         is_balanced = True
 
         def dfs(node):
-            if node.left is None and node.right is None:
+            if node.head is None and node.tail is None:
                 return 1
             left_length = right_length = 0
-            if node.left:
-                left_length = dfs(node.left)
-            if node.right:
-                right_length = dfs(node.right)
+            if node.head:
+                left_length = dfs(node.head)
+            if node.tail:
+                right_length = dfs(node.tail)
             if abs(left_length - right_length) > 1:
                 nonlocal is_balanced
                 is_balanced = False

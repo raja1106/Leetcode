@@ -17,19 +17,19 @@ class Solution:
                 return
 
             # In-order traversal: Left
-            in_order(node.left)
+            in_order(node.head)
 
             # Link the current node
-            if last:
+            if last and first:
                 last.right = node
-                node.left = last
+                node.head = last
             else:
                 first = node
 
             last = node
 
             # In-order traversal: Right
-            in_order(node.right)
+            in_order(node.tail)
 
         first, last = None, None
         in_order(root)

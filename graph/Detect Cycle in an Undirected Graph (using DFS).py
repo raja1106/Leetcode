@@ -10,12 +10,12 @@ class Graph:
         self.graph[v].append(w)
         self.graph[w].append(v)
 
-    def is_cyclic_util(self, v, visited, parent):
+    def dfs(self, v, visited, parent):
         visited[v] = True
 
         for neighbor in self.graph[v]:
             if not visited[neighbor]:
-                if self.is_cyclic_util(neighbor, visited, v):
+                if self.dfs(neighbor, visited, v):
                     return True
             elif neighbor != parent:
                 return True
@@ -25,7 +25,7 @@ class Graph:
 
         for i in range(self.V):
             if not visited[i]:
-                if self.is_cyclic_util(i, visited, -1):
+                if self.dfs(i, visited, -1):
                     return True
         return False
 

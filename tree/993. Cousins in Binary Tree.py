@@ -23,15 +23,15 @@ class Solution:
 
             for _ in range(size):
                 node = queue.popleft()
-                if node.left:
+                if node.head:
                     parent_x, parent_y = self.finding_parents(node, parent_x, parent_y, x, y)
-                    queue.append(node.left)
-                if node.right:
-                    if node.right.val == x:
+                    queue.append(node.head)
+                if node.tail:
+                    if node.tail.val == x:
                         parent_x = node.val
-                    if node.right.val == y:
+                    if node.tail.val == y:
                         parent_y = node.val
-                    queue.append(node.right)
+                    queue.append(node.tail)
 
             if parent_x and parent_y:
                 if parent_x != parent_y:
@@ -42,9 +42,9 @@ class Solution:
         return False
 
     def finding_parents(self, node, parent_x, parent_y, x, y):
-        if node.left.val == x:
+        if node.head.val == x:
             parent_x = node.val
-        if node.left.val == y:
+        if node.head.val == y:
             parent_y = node.val
         return parent_x, parent_y
 

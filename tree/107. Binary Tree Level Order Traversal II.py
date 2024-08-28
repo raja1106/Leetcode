@@ -20,10 +20,10 @@ class Solution:
             for _ in range(size):
                 node = queue.popleft()
                 level_list.append(node.val)
-                if node.left:
-                    queue.append(node.left)
-                if node.right:
-                    queue.append(node.right)
+                if node.head:
+                    queue.append(node.head)
+                if node.tail:
+                    queue.append(node.tail)
 
             result.append(level_list)
 

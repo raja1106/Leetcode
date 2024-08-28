@@ -1,19 +1,19 @@
 class Solution:
     def upsideDownBinaryTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
-        if not root or not root.left:
+        if not root or not root.head:
             return root
 
         def dfs(node):
-            if not node.left:
+            if not node.head:
                 return node
 
-            new_root = dfs(node.left)
+            new_root = dfs(node.head)
 
-            node.left.left = node.right  # new left child
-            node.left.right = node  # new right child
+            node.head.head = node.tail  # new left child
+            node.head.tail = node  # new right child
 
-            node.left = None
-            node.right = None
+            node.head = None
+            node.tail = None
 
             return new_root
 

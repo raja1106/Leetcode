@@ -10,17 +10,17 @@ class Solution:
             return 0
 
         def dfs(node) -> int:
-            if node.left is None and node.right is None:
+            if node.head is None and node.tail is None:
                 return 0
             left_path = right_path = 0
-            if node.left:
-                left_path_length = dfs(node.left)
-                if node.left.val == node.val:
+            if node.head:
+                left_path_length = dfs(node.head)
+                if node.head.val == node.val:
                     left_path = left_path_length + 1
 
-            if node.right:
-                right_path_length = dfs(node.right)
-                if node.right.val == node.val:
+            if node.tail:
+                right_path_length = dfs(node.tail)
+                if node.tail.val == node.val:
                     right_path = right_path_length + 1
             local_max = left_path+right_path
             nonlocal max_path

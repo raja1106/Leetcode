@@ -23,8 +23,8 @@ class Solution:
                     level_list.append(None)
                     continue
                 level_list.append(node.val)
-                queue.append(node.left)
-                queue.append(node.right)
+                queue.append(node.head)
+                queue.append(node.tail)
             if not is_palindrom(level_list):
                 return False
         return True
@@ -39,7 +39,7 @@ class Solution:
             if node1 is None or node2 is None or node1.val != node2.val:
                 return False
             # Check the outer and inner pairs of subtrees
-            return is_mirror(node1.left, node2.right) and is_mirror(node1.right, node2.left)
+            return is_mirror(node1.head, node2.tail) and is_mirror(node1.tail, node2.head)
 
         # Start the recursion with root as both parameters, as the check is for the tree with itself
         return is_mirror(root, root)

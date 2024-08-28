@@ -7,19 +7,19 @@
 class Solution:
     def longestConsecutive(self, root: Optional[TreeNode]) -> int:
         def dfs(node: TreeNode) -> int:
-            if node.left is None and node.right is None:
+            if node.head is None and node.tail is None:
                 return 1
             left_length = right_length = 0
 
-            if node.left:
-                left_length = dfs(node.left)
-                if node.val + 1 == node.left.val:
+            if node.head:
+                left_length = dfs(node.head)
+                if node.val + 1 == node.head.val:
                     left_length += 1
                 else:
                     left_length = 1
-            if node.right:
-                right_length = dfs(node.right)
-                if node.val + 1 == node.right.val:
+            if node.tail:
+                right_length = dfs(node.tail)
+                if node.val + 1 == node.tail.val:
                     right_length += 1
                 else:
                     right_length = 1
@@ -38,8 +38,8 @@ class Solution:
         def dfs(node: TreeNode) -> int:
             if not node:
                 return 0
-            left_length = dfs(node.left) if node.left and node.left.val == node.val + 1 else 0
-            right_length = dfs(node.right) if node.right and node.right.val - 1 == node.val else 0
+            left_length = dfs(node.head) if node.head and node.head.val == node.val + 1 else 0
+            right_length = dfs(node.tail) if node.tail and node.tail.val - 1 == node.val else 0
             local_max_length = max(left_length, right_length) + 1
             nonlocal max_length
             max_length = max(max_length, local_max_length)

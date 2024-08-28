@@ -12,8 +12,8 @@ class Solution:
             nonlocal max_diameter
             if not node:
                 return 0
-            left_length = dfs(node.left)
-            right_length = dfs(node.right)
+            left_length = dfs(node.head)
+            right_length = dfs(node.tail)
             local_diameter = left_length + right_length
             max_diameter = max(max_diameter, local_diameter)
             return 1 + max(left_length, right_length)

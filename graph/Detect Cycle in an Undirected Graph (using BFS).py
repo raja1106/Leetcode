@@ -8,7 +8,7 @@ class Graph:
     def add_edge(self, v, w):
         self.graph[v].append(w)
         self.graph[w].append(v)
-    def is_cyclic_util(self, v, visited):
+    def bfs(self, v, visited):
         queue = deque([(v, -1)])  # (current node, parent node)
         visited[v] = True
 
@@ -27,7 +27,7 @@ class Graph:
 
         for i in range(self.V):
             if not visited[i]:
-                if self.is_cyclic_util(i, visited):
+                if self.bfs(i, visited):
                     return True
         return False
 

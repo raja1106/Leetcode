@@ -16,8 +16,8 @@ class Solution:
             nonlocal max_path_sum
             if not node:
                 return 0
-            left_max = max(dfs(node.left), 0)
-            right_max = max(dfs(node.right), 0)
+            left_max = max(dfs(node.head), 0)
+            right_max = max(dfs(node.tail), 0)
             max_path_sum = max(max_path_sum, node.val + left_max + right_max)
             return node.val + max(left_max, right_max)
 
@@ -32,8 +32,8 @@ class Solution:
             if not node:
                 return 0
             local_path_sum = node.val
-            left = dfs(node.left)
-            right = dfs(node.right)
+            left = dfs(node.head)
+            right = dfs(node.tail)
             local_max = max(node.val, node.val + max(left, right))
             local_path_sum += left if left > 0 else 0
             local_path_sum += right if right > 0 else 0
