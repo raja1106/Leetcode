@@ -1,5 +1,9 @@
 from typing import List
 
+'''
+        #if you can't decide without looking into all the the info in the right direction.. 
+        so coming from n-1 to 0 is natural way
+'''
 
 class Solution:
     def findBuildings(self, heights: List[int]) -> List[int]:
