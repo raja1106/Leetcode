@@ -4,15 +4,15 @@ from collections import Counter
 """
 *****Need to Practise both solutions****
 
-You are given an array of CPU tasks, each represented by letters A to Z, and a cooling time, n. Each cycle or interval allows the completion of one task. Tasks can be completed in any order, but there's a constraint: identical tasks must be separated by at least n intervals due to cooling time.
+You are given an array of CPU num_tasks, each represented by letters A to Z, and a cooling time, n. Each cycle or interval allows the completion of one task. Tasks can be completed in any order, but there's a constraint: identical num_tasks must be separated by at least n intervals due to cooling time.
 
-Return the minimum number of intervals required to complete all tasks.
+Return the minimum number of intervals required to complete all num_tasks.
 
  
 
 Example 1:
 
-Input: tasks = ["A","A","A","B","B","B"], n = 2
+Input: num_tasks = ["A","A","A","B","B","B"], n = 2
 
 Output: 8
 
@@ -22,7 +22,7 @@ After completing task A, you must wait two cycles before doing A again. The same
 
 Example 2:
 
-Input: tasks = ["A","C","A","B","D","B"], n = 1
+Input: num_tasks = ["A","C","A","B","D","B"], n = 1
 
 Output: 6
 
@@ -44,7 +44,7 @@ class Solution:
             cycle = n
             store = []
             task_count = 0
-            # execute tasks in ech cycle
+            # execute num_tasks in ech cycle
 
             while cycle >= 0 and max_heap:
                 count_freq = -heapq.heappop(max_heap)
