@@ -1,4 +1,5 @@
-from collections import defaultdict
+from typing import List
+
 
 class UnionFind:
     def __init__(self, size):
@@ -26,25 +27,21 @@ class UnionFind:
             else:
                 self.parent[rootY] = rootX  # Union by rank
                 self.rank[rootX] += 1  # Increment rank if ranks are equal
+
 class Solution:
-    def possibleBipartition(self, n, dislikes):
-        graph = defaultdict(list)  # Create adjacency list for dislikes
-        for a, b in dislikes:
-            graph[a].append(b)
-            graph[b].append(a)
+    def isBipartite(self, graph: List[List[int]]) -> bool:
+        n = len(graph)
+        uf = UnionFind(n)
 
-        uf = UnionFind(n + 1)  # Initialize UnionFind structure
-        for node in range(1, n + 1):
-            if not graph[node]:
-                continue  # Skip if the node has no dislikes
+        # Iterate through each node
+        for node in range(n):
+            # Iterate through its neighbors
             for neighbor in graph[node]:
+                # If the node and its neighbor have the same root, it's not bipartite
                 if uf.find(node) == uf.find(neighbor):
-                    return False  # If they are in the same set, return false
-                uf.union(graph[node][0], neighbor)  # Union all neighbors into the same set as the first neighbor
-        return True  # If no conflicts, return true
+                    return False
+                # Union the node with one of its neighbors' neighbors
+                # Ensure all neighbors are in a different set from the node
+                uf.union(graph[node][0], neighbor)
 
-# Test cases
-sol = Solution()
-print(sol.possibleBipartition(5, [[1, 2], [2, 3], [3, 4], [4, 5]]))  # true
-print(sol.possibleBipartition(6, [[1, 2], [2, 4], [4, 6], [4, 5], [5, 6]]))  # false
-print(sol.possibleBipartition(3, [[1, 2], [1, 3]]))  # true
+        return True
