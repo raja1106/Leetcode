@@ -3,6 +3,20 @@ from typing import List
 class Solution:
     def nextGreaterElements(self, nums: List[int]) -> List[int]:
         result = [-1] * len(nums)
+        st = nums[::-1] #Appending circular elements in stack
+        for i in range(len(nums) - 1, -1, -1):
+            while st and st[-1] <= nums[i]:
+                st.pop()
+            if st:
+                result[i] = st[-1]
+            else:
+                result[i] = -1
+            st.append(nums[i])
+        return result
+
+class Solution:
+    def nextGreaterElements(self, nums: List[int]) -> List[int]:
+        result = [-1] * len(nums)
         st = []
         for i in range(len(nums) - 1, -1, -1):
             while st and st[-1] <= nums[i]:
