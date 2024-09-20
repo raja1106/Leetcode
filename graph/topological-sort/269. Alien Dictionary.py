@@ -1,49 +1,51 @@
+from collections import defaultdict, deque
+
+
 class Solution:
     def alienOrder(self, words: List[str]) -> str:
+        # Step 1: Build the graph
+        graph = defaultdict(list)  # adjacency list graph
+        in_degree = defaultdict(int)  # count of incoming edges
 
-        graph = defaultdict(list)
-
-        def compare(i, j):
-            # Compare two words and add an edge for the first difference
-            for a, b in zip(words[i], words[j]):
-                if a != b:
-                    graph[a].append(b)
-                    return True
-            # If no difference was found, check if the first word is longer than the second
-            return len(words[i]) <= len(words[j])
-
-        # Initialize the graph with all unique characters
+        # Initialize in_degree for each character
         for word in words:
             for char in word:
-                if char not in graph:
-                    graph[char] = []
-        # Compare adjacent words to build the graph
-        num_words = len(words)
-        for i in range(num_words - 1):
-            if not compare(i, i + 1):
+                in_degree[char] = 0
+
+        # Step 2: Add edges and update in-degrees
+        for i in range(len(words) - 1):
+            first, second = words[i], words[i + 1]
+            min_len = min(len(first), len(second))
+
+            # Check for invalid case where prefix is longer than the word after it
+            if len(first) > len(second) and first[:min_len] == second[:min_len]:
                 return ""
-        visited = set()
-        stack = []
-        rec_stack = set()
 
-        def has_cycle(u):
-            visited.add(u)
-            rec_stack.add(u)
-            for neighbor in graph[u]:
-                if neighbor not in visited:
-                    if has_cycle(neighbor):
-                        return True
-                elif neighbor in rec_stack:
-                    return True
-            stack.append(u)
-            rec_stack.remove(u)
-            return False
+            # Compare characters and build the graph
+            for j in range(min_len):
+                if first[j] != second[j]:
+                    if second[j] not in graph[first[j]]:
+                        graph[first[j]].append(second[j])
+                        in_degree[second[j]] += 1
+                    break  # Stop after the first different character
 
-        # Perform DFS on each node
-        for u in graph:
-            if u not in visited:
-                if has_cycle(u):
-                    return ""
+        # Step 3: Topological sort using BFS (Kahn’s algorithm)
+        # Initialize queue with nodes having zero in-degree
+        queue = deque([char for char in in_degree if in_degree[char] == 0])
+        alien_order = []
 
-        # Return the topologically sorted characters
-        return "".join(stack[::-1])
+        while queue:
+            current_char = queue.popleft()
+            alien_order.append(current_char)
+
+            # Decrease the in-degree of the neighbors
+            for neighbor in graph[current_char]:
+                in_degree[neighbor] -= 1
+                if in_degree[neighbor] == 0:
+                    queue.append(neighbor)
+
+        # Step 4: If we processed all characters, return the result
+        if len(alien_order) == len(in_degree):
+            return ''.join(alien_order)
+        else:
+            return ""  # There exists a cycle, hence no valid ordering
