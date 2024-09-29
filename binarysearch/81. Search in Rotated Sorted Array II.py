@@ -1,9 +1,21 @@
-from typing import List
-
-
 class Solution:
     def search(self, nums: List[int], target: int) -> bool:
-        start = 0
+        if not nums:
+            return False
+        # Check if the target is the last element
+        if target == nums[0]:
+            return True
+        if target == nums[-1]:
+            return True
+
+        left_found = None
+        for i in range(len(nums)):
+            if nums[i] != nums[-1]:
+                left_found = i
+                break
+        if left_found is None:
+            return False
+        start = left_found
         end = len(nums) - 1
 
         while start <= end:
@@ -11,12 +23,6 @@ class Solution:
 
             if nums[mid] == target:
                 return True
-
-            # If there are duplicates, we can skip them
-            while start < mid and nums[start] == nums[mid]:
-                start += 1
-            while end > mid and nums[end] == nums[mid]:
-                end -= 1
 
             # Determine the sorted half
             if nums[start] <= nums[mid]:  # Left half is sorted
@@ -29,5 +35,4 @@ class Solution:
                     start = mid + 1
                 else:  # Target in the left half
                     end = mid - 1
-
         return False

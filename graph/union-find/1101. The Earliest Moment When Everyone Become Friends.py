@@ -21,14 +21,13 @@ class UnionFind:
         rootY = self.find(y)  # Find root of y
 
         if rootX != rootY:
-            # Union by rank
-            if self.rank[rootX] > self.rank[rootY]:
-                self.parent[rootY] = rootX
-            elif self.rank[rootX] < self.rank[rootY]:
+            # Union by size: Attach the smaller tree under the larger tree
+            if self.size[rootX] < self.size[rootY]:
                 self.parent[rootX] = rootY
+                self.size[rootY] += self.size[rootX]  # Update the size of rootY
             else:
                 self.parent[rootY] = rootX
-                self.rank[rootX] += 1
+                self.size[rootX] += self.size[rootY]  # Update the size of rootX
             # Decrease the number of components after a successful union
             self.components -= 1
 
