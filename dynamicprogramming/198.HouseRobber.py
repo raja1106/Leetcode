@@ -13,4 +13,6 @@ class Solution:
 
         for i in range (3,len(nums)):
             dp[i]=max(dp[i-1],nums[i]+dp[i-2])
+            # nums[i]+dp[i-2]  -->  This is include option of nums[i]
+            # dp[i-1]  -->  This is exclude option of nums[i]
         return dp[-1]

@@ -1,19 +1,12 @@
-from typing import List
-
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
-        dp=[float('inf')]*(amount+1)
-        dp[0]=0
-        for coin in coins:
-            if(amount>=coin):
-                dp[coin]=1
-
-        for i in range(1,amount+1):
-            if(dp[i]==1):
-                continue
+        dp = [float('inf')] * (amount + 1)
+        dp[0] = 0
+        for i in range(1, amount + 1):
+            min_coins = float('inf')
             for coin in coins:
-                if(i-coin>=0):
-                    dp[i]=min(dp[i],dp[i-coin]+1)
-        if(dp[amount]==float('inf')):
-            return -1
-        return dp[amount]
+                if coin <= i:
+                    min_coins = min(min_coins, 1 + dp[i - coin])
+            dp[i] = min_coins
+        return dp[amount] if dp[amount] != float('inf') else -1
+
