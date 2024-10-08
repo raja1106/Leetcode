@@ -11,7 +11,23 @@ class Solution:
                 nr, nc = row + dr, col + dc
                 if 0 <= nr < num_rows and 0 <= nc < num_cols and grid[nr][nc] == 1:
                     area += dfs(nr, nc)
+            return area
 
+        def bfs(r, c):
+            queue = deque()
+            area = 1
+            grid[r][c] = 2
+            queue.append((r, c))
+            while queue:
+                current_row, current_col = queue.popleft()
+                for dr, dc in directions:
+                    nr = current_row + dr
+                    nc = current_col + dc
+
+                    if 0 <= nr < rows and 0 <= nc < cols and grid[nr][nc] == 1:
+                        grid[nr][nc] = '2'
+                        area += 1
+                        queue.append((nr, nc))
             return area
 
         if not grid or not grid[0]:
