@@ -22,10 +22,10 @@ class Solution:
             for _ in range(size):
                 node = queue.popleft()
                 local_sum += node.val
-                if node.head:
-                    queue.append(node.head)
-                if node.tail:
-                    queue.append(node.tail)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
 
             if local_sum > max_sum:
                 max_level = level

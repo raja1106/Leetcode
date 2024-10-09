@@ -21,8 +21,8 @@ class Solution:
                 node = queue.popleft()
                 if node.val != tree_val:
                     return False
-                if node.head:
-                    queue.append(node.head)
-                if node.tail:
-                    queue.append(node.tail)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
         return True

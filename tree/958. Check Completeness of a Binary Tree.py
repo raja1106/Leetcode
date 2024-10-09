@@ -17,14 +17,14 @@ class Solution:
             level_size = len(queue)
             for i in range(level_size):
                 node = queue.popleft()
-                if node.head:
-                    queue.append(node.head)
+                if node.left:
+                    queue.append(node.left)
                     if is_node_missing:
                         return False
                 else:
                     is_node_missing = True
-                if node.tail:
-                    queue.append(node.tail)
+                if node.right:
+                    queue.append(node.right)
                     if is_node_missing:
                         return False
                 else:

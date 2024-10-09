@@ -16,10 +16,10 @@ class Solution:
             level_size = len(queue)
             for _ in range(level_size):
                 node = queue.popleft()
-                if node.head:
-                    queue.append(node.head)
-                if node.tail:
-                    queue.append(node.tail)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
         return depth
 
     def maxDepth(self, root: Optional[TreeNode]) -> int:
@@ -27,13 +27,13 @@ class Solution:
 
         def dfs(node, depth):
             nonlocal max_depth
-            if node.head is None and node.tail is None:
+            if node.left is None and node.right is None:
                 max_depth = max(max_depth, depth)
                 return
-            if node.head:
-                dfs(node.head, depth + 1)
-            if node.tail:
-                dfs(node.tail, depth + 1)
+            if node.left:
+                dfs(node.left, depth + 1)
+            if node.right:
+                dfs(node.right, depth + 1)
             return
 
         if not root:

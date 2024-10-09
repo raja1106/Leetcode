@@ -9,7 +9,7 @@ class Solution:
     def boundaryOfBinaryTree(self, root: Optional[TreeNode]) -> List[int]:
         boundary_values = []
         def isLeaf(node: TreeNode) -> bool:
-            return node is not None and node.head is None and node.tail is None
+            return node is not None and node.left is None and node.right is None
 
         def addLeaves(node: TreeNode, boundary_values: List[int]):
             # Base case: if it is a leaf node, add to the list
@@ -17,10 +17,10 @@ class Solution:
                 boundary_values.append(node.val)
 
             # Recursively add left and right leaves
-            if node.head:
-                addLeaves(node.head, boundary_values)
-            if node.tail:
-                addLeaves(node.tail, boundary_values)
+            if node.left:
+                addLeaves(node.left, boundary_values)
+            if node.right:
+                addLeaves(node.right, boundary_values)
 
         if not root:
             return boundary_values

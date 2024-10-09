@@ -23,8 +23,8 @@ class Solution:
                     level_list.append(None)
                     continue
                 level_list.append(node.val)
-                queue.append(node.head)
-                queue.append(node.tail)
+                queue.append(node.left)
+                queue.append(node.right)
             if not is_palindrom(level_list):
                 return False
         return True

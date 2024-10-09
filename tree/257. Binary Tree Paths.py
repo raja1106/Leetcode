@@ -1,16 +1,16 @@
 class Solution:
     def binaryTreePaths(self, root: Optional[TreeNode]) -> List[str]:
         def dfs(node, slate):
-            if node.head is None and node.tail is None:
+            if node.left is None and node.right is None:
                 slate.append(str(node.val))
                 result.append('->'.join(slate))
                 slate.pop()
                 return
             slate.append(str(node.val))
-            if node.head:
-                dfs(node.head, slate)
-            if node.tail:
-                dfs(node.tail, slate)
+            if node.left:
+                dfs(node.left, slate)
+            if node.right:
+                dfs(node.right, slate)
             slate.pop()
             return
 

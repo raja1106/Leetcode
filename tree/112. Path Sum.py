@@ -10,13 +10,13 @@ class Solution:
         def dfs(node, current_sum):
             nonlocal has_path_sum
             current_sum += node.val
-            if not node.head and not node.tail:
+            if not node.left and not node.right:
                 if current_sum == targetSum:
                     has_path_sum = True
-            if node.head and not has_path_sum:
-                dfs(node.head, current_sum)
-            if node.tail and not has_path_sum:
-                dfs(node.tail, current_sum)
+            if node.left and not has_path_sum:
+                dfs(node.left, current_sum)
+            if node.right and not has_path_sum:
+                dfs(node.right, current_sum)
             current_sum -= node.val
         if not root:
             return False

@@ -13,7 +13,7 @@ class Solution:
             return root
         if depth == 1:
             new_node = TreeNode(val)
-            new_node.head = root
+            new_node.left = root
             return new_node
         queue = collections.deque([root])
         level = 0
@@ -22,18 +22,18 @@ class Solution:
             level += 1
             for _ in range(level_size):
                 node = queue.popleft()
-                if node.head:
-                    queue.append(node.head)
-                if node.tail:
-                    queue.append(node.tail)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
 
                 if level == depth - 1:
-                    cached_left = node.head
-                    cached_right = node.tail
-                    node.head = TreeNode(val)
-                    node.tail = TreeNode(val)
-                    node.head.head = cached_left
-                    node.tail.tail = cached_right
+                    cached_left = node.left
+                    cached_right = node.right
+                    node.left = TreeNode(val)
+                    node.right = TreeNode(val)
+                    node.left.head = cached_left
+                    node.right.tail = cached_right
             if level == depth - 1:
                 break
         return root
@@ -49,17 +49,17 @@ class Solution:
     def helper(self, node, val, depth, level):
         # base case
         if level == depth - 1:
-            cached_left = node.head
-            cached_right = node.tail
-            node.head = TreeNode(val)
-            node.tail = TreeNode(val)
-            node.head.head = cached_left
-            node.tail.tail = cached_right
+            cached_left = node.left
+            cached_right = node.right
+            node.left = TreeNode(val)
+            node.right = TreeNode(val)
+            node.left.head = cached_left
+            node.right.tail = cached_right
             return
 
         #   recursive case
-        if node.head:
-            self.helper(node.head, val, depth, level + 1)
+        if node.left:
+            self.helper(node.left, val, depth, level + 1)
 
-        if node.tail:
-            self.helper(node.tail, val, depth, level + 1)
+        if node.right:
+            self.helper(node.right, val, depth, level + 1)

@@ -13,14 +13,14 @@ class Solution:
         min_depth = sys.maxsize
 
         def dfs(node, row):
-            if node.head is None and node.tail is None:
+            if node.left is None and node.right is None:
                 nonlocal min_depth
                 min_depth = min(min_depth, row)
                 return
-            if node.head:
-                dfs(node.head, row + 1)
-            if node.tail:
-                dfs(node.tail, row + 1)
+            if node.left:
+                dfs(node.left, row + 1)
+            if node.right:
+                dfs(node.right, row + 1)
             return
         if root is None:
             return 0
@@ -38,12 +38,12 @@ class Solution:
             size = len(queue)
             for i in range(size):
                 node = queue.popleft()
-                if node.head is None and node.tail is None:
+                if node.left is None and node.right is None:
                     return depth
-                if node.head:
-                    queue.append(node.head)
-                if node.tail:
-                    queue.append(node.tail)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
             depth += 1
 
 

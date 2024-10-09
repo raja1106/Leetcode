@@ -21,10 +21,10 @@ class Solution:
             local = []
             for i in range(size):
                 node = queue.popleft()
-                if node.head:
-                    queue.append(node.head)
-                if node.tail:
-                    queue.append(node.tail)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
                 local.append(node.val)
             result.append(local[-1])
         return result
@@ -41,10 +41,10 @@ class Solution:
             size = len(queue)
             for i in range(size):
                 node = queue.popleft()
-                if node.head:
-                    queue.append(node.head)
-                if node.tail:
-                    queue.append(node.tail)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
                 if i == size-1:
                     result.append(node.val)
         return result

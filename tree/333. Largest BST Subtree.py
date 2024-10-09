@@ -11,19 +11,19 @@ class Solution:
             return 0
         def dfs(node):
             my_smallest = my_largest = node.val
-            if node.head is None and node.tail is None:
+            if node.left is None and node.right is None:
                 return (True, my_smallest, my_largest, 1)
             amibst = True
             my_size = 1
-            if node.head:
-                (is_leftbst, left_smallest, left_largest, left_size) = dfs(node.head)
+            if node.left:
+                (is_leftbst, left_smallest, left_largest, left_size) = dfs(node.left)
                 if not is_leftbst or left_largest >= node.val:
                     amibst = False
                 else:
                     my_smallest = left_smallest
                     my_size += left_size
-            if node.tail:
-                (is_rightbst, right_smallest, right_largest, right_size) = dfs(node.tail)
+            if node.right:
+                (is_rightbst, right_smallest, right_largest, right_size) = dfs(node.right)
                 if not is_rightbst or right_smallest <= node.val:
                     amibst = False
                 else:
@@ -43,8 +43,8 @@ class Solution:
                 # Base case: Empty subtree
                 return (True, float('inf'), float('-inf'), 0)
 
-            left_is_bst, left_min, left_max, left_size = dfs(node.head)
-            right_is_bst, right_min, right_max, right_size = dfs(node.tail)
+            left_is_bst, left_min, left_max, left_size = dfs(node.left)
+            right_is_bst, right_min, right_max, right_size = dfs(node.right)
 
             # Check if the current node is a valid BST root
             if left_is_bst and right_is_bst and left_max < node.val < right_min:

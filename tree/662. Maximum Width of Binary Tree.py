@@ -25,8 +25,8 @@ class Solution:
                 element = queue.popleft()
                 node = element[0]
                 col = element[1]
-                if node.head:
-                    queue.append((node.head, 2 * col + 1))
-                if node.tail:
-                    queue.append((node.tail, 2 * col + 2))
+                if node.left:
+                    queue.append((node.left, 2 * col + 1))
+                if node.right:
+                    queue.append((node.right, 2 * col + 2))
         return max_width

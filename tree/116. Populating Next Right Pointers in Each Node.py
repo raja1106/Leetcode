@@ -22,10 +22,10 @@ class Solution:
                 node = queue.popleft()
                 if previous_node:
                     previous_node.next = node
-                if node.head:
-                    queue.append(node.head)
-                if node.tail:
-                    queue.append(node.tail)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
                 previous_node = node
                 if i == level_size - 1:
                     node.next = None

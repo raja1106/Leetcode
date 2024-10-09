@@ -12,15 +12,15 @@ class Solution:
             nonlocal total_count
             if not node:
                 return True
-            is_left_univalue = is_unival_subtree(node.head)
-            is_right_univalue = is_unival_subtree(node.tail)
+            is_left_univalue = is_unival_subtree(node.left)
+            is_right_univalue = is_unival_subtree(node.right)
 
             if not is_left_univalue or not is_right_univalue:
                 return False
 
-            if node.head and node.head.val != node.val:
+            if node.left and node.left.val != node.val:
                 return False
-            if node.tail and node.tail.val != node.val:
+            if node.right and node.right.val != node.val:
                 return False
 
             total_count += 1
@@ -36,13 +36,13 @@ class Solution:
             nonlocal total_count
             if not node:
                 return True
-            is_left_univalue = is_unival_subtree(node.head)
-            is_right_univalue = is_unival_subtree(node.tail)
+            is_left_univalue = is_unival_subtree(node.left)
+            is_right_univalue = is_unival_subtree(node.right)
 
             if is_left_univalue and is_right_univalue:
-                if node.head and node.head.val != node.val:
+                if node.left and node.left.val != node.val:
                     return False
-                if node.tail and node.tail.val != node.val:
+                if node.right and node.right.val != node.val:
                     return False
                 total_count += 1
                 return True

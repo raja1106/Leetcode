@@ -18,9 +18,9 @@ class Solution:
                 node = queue.popleft()
                 if node.val > large_level_val:
                     large_level_val = node.val
-                if node.head:
-                    queue.append(node.head)
-                if node.tail:
-                    queue.append(node.tail)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
             result.append(large_level_val)
         return result

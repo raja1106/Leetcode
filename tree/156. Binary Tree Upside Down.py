@@ -4,16 +4,16 @@ class Solution:
             return root
 
         def dfs(node):
-            if not node.head:
+            if not node.left:
                 return node
 
-            new_root = dfs(node.head)
+            new_root = dfs(node.left)
 
-            node.head.head = node.tail  # new left child
-            node.head.tail = node  # new right child
+            node.left.head = node.right  # new left child
+            node.left.tail = node  # new right child
 
-            node.head = None
-            node.tail = None
+            node.left = None
+            node.right = None
 
             return new_root
 

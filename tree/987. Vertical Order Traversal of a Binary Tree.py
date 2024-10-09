@@ -47,8 +47,8 @@ class Solution:
             if not node:
                 return
             nodes.append((level, col, node.val))
-            dfs(node.head, level + 1, col - 1)  # Traverse left with increased level and decreased vertical distance
-            dfs(node.tail, level + 1, col + 1)  # Traverse right with increased level and increased vertical distance
+            dfs(node.left, level + 1, col - 1)  # Traverse left with increased level and decreased vertical distance
+            dfs(node.right, level + 1, col + 1)  # Traverse right with increased level and increased vertical distance
 
         nodes = []
         dfs(root, 0, 0)
@@ -75,8 +75,8 @@ class Solution:
             if not node:
                 return
             vertical_map[col].append((level, node.val))
-            dfs(node.head, level + 1, col - 1)  # Traverse left with increased level and decreased vertical distance
-            dfs(node.tail, level + 1, col + 1)  # Traverse right with increased level and increased vertical distance
+            dfs(node.left, level + 1, col - 1)  # Traverse left with increased level and decreased vertical distance
+            dfs(node.right, level + 1, col + 1)  # Traverse right with increased level and increased vertical distance
 
         vertical_map = defaultdict(list)
         dfs(root, 0, 0)
