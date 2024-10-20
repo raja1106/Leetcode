@@ -2,9 +2,7 @@ class Solution:
     def minRemoveToMakeValid(self, s: str) -> str:
 
         stack = []
-
         open_count = 0
-
         for c in s:
             if c == ')' and open_count == 0:
                 continue

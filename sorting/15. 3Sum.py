@@ -99,3 +99,26 @@ class Solution:
                 left += 1
             else:
                 right -= 1
+
+
+class Solution_Without_Sorting:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        result_set = set()  # To store unique triplets
+        seen = set()  # To avoid processing the same number again for 'i'
+
+        # Iterate through the array, treating each element as the first element of the triplet
+        for i in range(len(nums)):
+            if nums[i] in seen:  # Skip if we have already processed this number for 'i'
+                continue
+            seen.add(nums[i])
+            target = -nums[i]  # We are looking for two numbers that sum to -nums[i]
+            complements = set()  # To store numbers that we have seen in the current pass
+            for j in range(i + 1, len(nums)):
+                complement = target - nums[j]  # The number we need to form a triplet
+                if complement in complements:
+                    # If the complement is found, we have a valid triplet
+                    result_set.add(tuple(sorted([nums[i], nums[j], complement])))
+                complements.add(nums[j])  # Add the current number to the complement set
+
+        # Convert the set of tuples into a list of lists for the final result
+        return list(result_set)

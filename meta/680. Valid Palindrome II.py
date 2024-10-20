@@ -24,3 +24,6 @@ class Solution:
         return True
 
 print(Solution().validPalindrome('radadkar'))
+
+
+

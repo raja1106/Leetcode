@@ -6,28 +6,30 @@ class UnionFind:
         self.parent = list(range(size))  # Initialize parent array
         self.rank = [0] * size  # Initialize rank array
         self.components = size  # Number of connected components
-
     def find(self, x):
-        # Path compression
-        if x != self.parent[x]:
-            self.parent[x] = self.find(self.parent[x])  # Path compression
-        return self.parent[x]
-
+        # return root as usual after doing path compression
+        # Base case
+        if x == self.parent[x]:
+            return x
+        # Recursive case
+        root_x = self.find(self.parent[x])  # Path compression
+        self.parent[x] = root_x
+        return root_x
     def union(self, x, y):
-        rootX = self.find(x)
-        rootY = self.find(y)
+        rootX = self.find(x)  # Find root of x
+        rootY = self.find(y)  # Find root of y
 
         if rootX != rootY:
-            # Union by rank
-            if self.rank[rootX] > self.rank[rootY]:
-                self.parent[rootY] = rootX
-            elif self.rank[rootX] < self.rank[rootY]:
+            # Union by size: Attach the smaller tree under the larger tree
+            if self.size[rootX] < self.size[rootY]:
                 self.parent[rootX] = rootY
+                self.size[rootY] += self.size[rootX]  # Update the size of rootY
             else:
                 self.parent[rootY] = rootX
-                self.rank[rootX] += 1
+                self.size[rootX] += self.size[rootY]  # Update the size of rootX
             # Decrease the number of components after a successful union
             self.components -= 1
+
 
 
 class Solution:

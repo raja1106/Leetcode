@@ -1,0 +1,60 @@
+class NestedInteger:
+    def __init__(self, value=None):
+        """
+        If value is not specified, initializes an empty list.
+        Otherwise initializes a single integer equal to value.
+        """
+        if value is None:
+            self._list = []
+            self._integer = None
+        else:
+            self._integer = value
+            self._list = None
+
+    def isInteger(self) -> bool:
+        """
+        @return True if this NestedInteger holds a single integer, otherwise False.
+        """
+        return self._integer is not None
+
+    def add(self, elem):
+        """
+        Adds a NestedInteger element to this list.
+        """
+        if self._list is not None:
+            self._list.append(elem)
+
+    def setInteger(self, value: int):
+        """
+        Set this NestedInteger to hold a single integer.
+        """
+        self._integer = value
+        self._list = None
+
+    def getInteger(self) -> int:
+        """
+        @return the single integer this NestedInteger holds, or None if it holds a nested list.
+        """
+        return self._integer
+
+    def getList(self) -> 'List[NestedInteger]':
+        """
+        @return the nested list this NestedInteger holds, or None if it holds a single integer.
+        """
+        return self._list
+
+class Solution:
+    def depthSum(self, nestedList: List[NestedInteger]) -> int:
+        def dfs(nested, depth):
+            total = 0
+            for item in nested:
+                if item.isInteger():
+                    # If the item is an integer, add it multiplied by its depth.
+                    total += item.getInteger() * depth
+                else:
+                    # If it's a list, recursively call dfs with increased depth.
+                    total += dfs(item.getList(), depth + 1)
+            return total
+
+        # Start DFS with initial depth 1.
+        return dfs(nestedList, 1)

@@ -7,6 +7,30 @@
 import collections
 
 
+class Solution_Optimized_Way: #O(n)
+
+    def verticalOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if root is None:
+            return []
+        queue = collections.deque()
+        column_table = collections.defaultdict(list)
+        queue.append((root, 0))
+        min_column = max_column = 0
+        while queue:
+            size = len(queue)
+            for _ in range(size):
+                node,col = queue.popleft()
+                min_column = min(min_column,col)
+                max_column = max(max_column,col)
+                column_table[col].append(node.val)
+                if node.left:
+                    queue.append((node.left, col - 1))
+                if node.right:
+                    queue.append((node.right, col + 1))
+
+        return [column_table[i] for i in range(min_column,max_column+1)]
+
+
 class Solution:
 
     def verticalOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
