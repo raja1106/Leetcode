@@ -1,16 +1,27 @@
 class Solution:
     def minAddToMakeValid(self, s: str) -> int:
-        balance = 0
-        ans = 0
-        for c in s:
-            if c == '(':
-                balance += 1
+        left_unmatched = 0  # Counts unmatched '('
+        right_unmatched = 0  # Counts unmatched ')'
+
+        for ch in s:
+            if ch == '(':
+                left_unmatched += 1
+            elif ch == ')' and left_unmatched > 0:
+                left_unmatched -= 1
             else:
-                balance -= 1
-            # If balance is negative, we have an unmatched ')'
-            if balance < 0:
-                ans += 1
-                balance = 0  # reset balance to 0 after accounting for an unmatched ')'
-        # Add any unmatched '('
-        ans += balance
-        return ans
+                right_unmatched += 1
+
+        return left_unmatched + right_unmatched
+
+class Solution:
+    def minAddToMakeValid(self, s: str) -> int:
+        st = []
+        for ch in s:
+            if ch == ')':
+                if st and st[-1] == '(':
+                    st.pop()
+                else:
+                    st.append(ch)
+            else:
+                st.append(ch)
+        return len(st)

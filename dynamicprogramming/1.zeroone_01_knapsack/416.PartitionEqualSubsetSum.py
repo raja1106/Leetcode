@@ -39,11 +39,11 @@ class Solution_Bruteforce:
                 else:
                     return False
             # exclude
-            is_left_true = dfs(i + 1, current_sum)
+            exclude_current = dfs(i + 1, current_sum)
             # include
-            is_right_true = dfs(i + 1, current_sum + nums[i])
+            include_current = dfs(i + 1, current_sum + nums[i])
 
-            return is_left_true or is_right_true
+            return exclude_current or include_current
 
         return dfs(0, 0)
 
@@ -67,10 +67,9 @@ class Solution_Using_Memozation:
                 else:
                     return False
             # exclude
-            is_left_true = dfs(i + 1, current_sum)
+            exclude_current = dfs(i + 1, current_sum)
             # include
-            is_right_true = dfs(i + 1, current_sum + nums[i])
-            memo[memo_key] = is_left_true or is_right_true
-            return is_left_true or is_right_true
-
+            include_current = dfs(i + 1, current_sum + nums[i])
+            memo[memo_key] = exclude_current or include_current
+            return exclude_current or include_current
         return dfs(0, 0)
