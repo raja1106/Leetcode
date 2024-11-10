@@ -1,4 +1,34 @@
 from typing import List
+
+from heapq import heappush, heappop
+
+class Solution_Using_Max_Heap: # Not efficient one.. But understandable
+    def findClosestElements(self, arr: List[int], k: int, x: int) -> List[int]:
+        max_heap = []
+
+        for num in arr:
+            diff = abs(num - x)
+            heappush(max_heap, (-diff, -num))  # Use negative to simulate max-heap in min-heap structure
+            if len(max_heap) > k:
+                heappop(max_heap)
+
+        result = sorted([-num for _, num in max_heap])  # Convert back from negative values
+        return result
+
+class Solution_Using_linear: #O(n) time complexity
+    def findClosestElements(self, arr: List[int], k: int, x: int) -> List[int]:
+        left,right = 0, len(arr)-1
+        K = len(arr)-k
+        while K!=0:
+            diff_1 = abs(x-arr[left])
+            diff_2 = abs(x-arr[right])
+            if diff_1 <= diff_2:
+                right -= 1
+            else:
+                left += 1
+            K -= 1
+        return arr[left:right+1]
+
 class Solution_Understandable_one:
     def findClosestElements(self, arr: List[int], k: int, x: int) -> List[int]:
         start, end = 0, len(arr) - 1

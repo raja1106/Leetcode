@@ -17,17 +17,17 @@ class Solution_Using_MinHeap: #Time complexity : O(Nlogk) where k is the number 
         # Push the head of each list into the min_heap
         for i in range(len(lists)):
             if lists[i]:
-                heapq.heappush(min_heap, (lists[i].val, i, lists[i]))
+                heapq.heappush(min_heap, (lists[i].val, lists[i]))
 
         dummy = ListNode()
         current = dummy
 
         while min_heap:
-            val, idx, node = heapq.heappop(min_heap)
+            val, node = heapq.heappop(min_heap)
             current.next = node
             current = current.next
             if node.next:
-                heapq.heappush(min_heap, (node.next.val, idx, node.next))
+                heapq.heappush(min_heap, (node.next.val, node.next))
 
         return dummy.next
 

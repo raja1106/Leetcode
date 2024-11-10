@@ -6,7 +6,7 @@ class Solution:
         exclusive_times = [0] * n
         stack = []
         # Store a pointer to the current time (initially set to an invalid time).
-        current_time = 0
+        prev_time = 0
 
         for log in logs:
             function_id, action, timestamp = log.split(":")
@@ -16,18 +16,18 @@ class Solution:
             if action == "start":
                 # If there's an ongoing function, update its exclusive time.
                 if stack:
-                    exclusive_times[stack[-1]] += timestamp - current_time
+                    exclusive_times[stack[-1]] += timestamp - prev_time
                 stack.append(function_id)
-                current_time = timestamp
+                prev_time = timestamp
             else:  # action == "end"
-                function_id = call_stack.pop()
+                function_id = stack.pop()
                 # Calculate the time spent by the current function from its start to the current timestamp and
                 # update its exclusive time. The +1 accounts for the inclusive nature of the end time.
-                exclusive_times[function_id] += timestamp - current_time + 1
+                exclusive_times[function_id] += timestamp - prev_time + 1
 
                 # Update the current time to the end time + 1 since the next time unit
                 # will indicate the start of the next event.
-                current_time = timestamp + 1
+                prev_time = timestamp + 1
 
         # Return the list of calculated exclusive times.
         return exclusive_times
