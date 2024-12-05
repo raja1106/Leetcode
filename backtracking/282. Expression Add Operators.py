@@ -16,12 +16,13 @@ class Solution:
             return
 
         for j in range(index, len(num)):
-            # Skip numbers with leading zeros
-            if j > index and num[index] == '0':
-                break
 
             current_num_str = num[index:j + 1]
             current_num = int(current_num_str)
+
+            # Skip leading zeros
+            if len(current_num_str) > 1 and current_num_str[0] == '0':
+                break
 
             if index == 0:
                 # First number, no operator
@@ -48,7 +49,7 @@ class Solution:
                 slate.pop()
 
 
-class Solution:
+class Solution_Another_One:
     def addOperators(self, num: str, target: int) -> List[str]:
         result = []
         self.helper(0, num, [], 0, 0, target, result)

@@ -6,17 +6,17 @@ class Solution:
         if not nums:
             return 0
 
-        # Initialize the first pointer. Pointer i keeps track of the position in the array
+        # Initialize the first pointer. Pointer write_pointer keeps track of the position in the array
         # where the next unique element should be placed.
-        i = 0
+        write_pointer = 0
 
         # Start the second pointer from the second element
-        for j in range(1, len(nums)):
+        for read_pointer in range(1, len(nums)):
             # If current element is different from the last unique element
-            if nums[j] != nums[i]:
-                # Move the unique element to the position i+1
-                i += 1
-                nums[i] = nums[j]
+            if nums[read_pointer] != nums[write_pointer]:
+                # Move the unique element to the position write_pointer+1
+                write_pointer += 1
+                nums[write_pointer] = nums[read_pointer]
 
         # The length of the array with unique elements
-        return i + 1
+        return write_pointer + 1

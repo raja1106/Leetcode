@@ -5,20 +5,21 @@ class ListNode:
 
 class Solution:
     def oddEvenList(self, head: ListNode) -> ListNode:
-        if not head:
-            return None
+        if not head or not head.next:
+            return head  # Return as is if the list has 0 or 1 node
 
         odd = head
         even = head.next
-        even_head = even
+        evenHead = even  # Save the head of the even group
 
         while even and even.next:
-            odd.next = even.next
-            odd = odd.next
-            even.next = odd.next
-            even = even.next
+            odd.next = even.next  # Connect odd to the next odd node
+            odd = odd.next  # Move the odd pointer forward
+            even.next = odd.next  # Connect even to the next even node
+            even = even.next  # Move the even pointer forward
 
-        odd.next = even_head
+        # Append the even group to the end of the odd group
+        odd.next = evenHead
         return head
 
 # Example usage
