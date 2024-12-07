@@ -32,39 +32,28 @@ class Solution:
         return max_area
 
 
-class Solution_naive_approach:
+class Solution_nearst_Smallest_element:
     def largestRectangleArea(self, heights: List[int]) -> int:
-        # I am looking for next smaller element
-        glaba_ans = -1
-        length = len(heights)
-        right_area = [0] * length
-        st = []
-        for i in range(length - 1, -1, -1):
-            while st and st[-1][0] >= heights[i]:
-                st.pop()
-            if st:
-                local_area = (st[-1][1] - i) * heights[i]
-            else:
-                local_area = heights[i] * (length - i)
-            right_area[i] = local_area
-            st.append((heights[i], i))
-        # I am looking for previous smaller element
+        n = len(heights)
+        left = [-1] * n  # Nearest smaller element to the left
+        stack = []
 
-        left_area = [0] * length
-        st = []
-        for i in range(length):
-            while st and st[-1][0] >= heights[i]:
-                st.pop()
-            if st:
-                local_area = (i - st[-1][1]) * heights[i]
-            else:
-                local_area = heights[i] * (i + 1)
-            left_area[i] = local_area
-            st.append((heights[i], i))
+        for i in range(n):
+            while stack and heights[stack[-1]] >= heights[i]:
+                stack.pop()
+            left[i] = stack[-1] if stack else -1
+            stack.append(i)
 
-        for i in range(length):
-            total_area = left_area[i] + right_area[i] - heights[i]
-            glaba_ans = max(glaba_ans, total_area)
+        right = [n] * n  # Nearest smaller element to the right
+        stack = []
+        for i in range(n - 1, -1, -1):
+            while stack and heights[stack[-1]] >= heights[i]:
+                stack.pop()
+            right[i] = stack[-1] if stack else n
+            stack.append(i)
 
-        return glaba_ans
+        max_area = 0
+        for i in range(n):
+            max_area = max(max_area, heights[i] * (right[i] - left[i] - 1))
 
+        return max_area
