@@ -1,11 +1,21 @@
+from collections import defaultdict, deque
+from typing import List
+
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
 class Solution:
     def distanceK(self, root: TreeNode, target: TreeNode, k: int) -> List[int]:
-        # Initialize graph to store the adjacency list of the tree.
-        graph = collections.defaultdict(list)
+        # Build the graph representation of the binary tree
+        graph = defaultdict(list)
 
-        # Recursively build an undirected graph from the binary tree.
         def build_graph(node):
-            if node.left is None and node.right is None:
+            if not node:
                 return
             if node.left:
                 graph[node.val].append(node.left.val)
@@ -16,30 +26,25 @@ class Solution:
                 graph[node.right.val].append(node.val)
                 build_graph(node.right)
 
-        # Build the graph from the binary tree
         build_graph(root)
 
-        # List to store the result
+        # BFS to find all nodes at distance K
+        queue = deque([(target.val, 0)])  # Start from the target node
+        visited = set([target.val])  # Track visited nodes
         result = []
 
-        # Initialize a set to track visited nodes
-        visited = set([target.val])
-
-        # BFS queue initialized with the target node and distance 0
-        queue = collections.deque([(target.val, 0)])
-
         while queue:
-            node, distance = queue.popleft()
+            current_node, distance = queue.popleft()
 
-            # If the current node is at the required distance, add to result
+            # If we reach distance K, add to result
             if distance == k:
-                result.append(node)
+                result.append(current_node)
                 continue
 
-            # Explore all neighbors (connected nodes in the graph)
-            for neighbor in graph[node]:
+            # Otherwise, explore neighbors
+            for neighbor in graph[current_node]:
                 if neighbor not in visited:
-                    visited.add(neighbor)  # Mark as visited
-                    queue.append((neighbor, distance + 1))  # Enqueue with incremented distance
+                    visited.add(neighbor)
+                    queue.append((neighbor, distance + 1))
 
         return result
