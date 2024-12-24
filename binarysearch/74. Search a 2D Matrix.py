@@ -10,7 +10,7 @@ class Solution:
             mid = start + (end - start) // 2
             x = mid // cols
             y = mid % cols
-
+            #x, y = divmod(mid, n) this is another way
             if matrix[x][y] == target:
                 return True
             elif matrix[x][y] > target:
