@@ -29,78 +29,59 @@ Input: candidates = [2], target = 1
 Output: []
 """
 
-
-class Solution:
-    def combinationSum_NotWorking(self, candidates: List[int], target: int) -> List[List[int]]:  # Why it is not working
-        result = set()
-        self.combinationSumHelper(candidates, target, 0, [], result)
-        return list(result)
-
-    def combinationSumHelper(self, i, candidates, target, path_sum, slate, result):
-        if path_sum == target:
-            slate.sort()
-            result.add(tuple(slate[:]))
-            return
-
-        if path_sum > target:
-            return
-
-        for i in range(len(candidates)):
-            slate.append(candidates[i])
-            path_sum += candidates[i]
-            self.combinationSumHelper(candidates, target, path_sum, slate, result)
-            path_sum -= candidates[i]
-            slate.pop()
-        return
-
-    def combinationSum(self, candidates: List[int], target: int) -> List[
-        List[int]]:  # TODOO Not sure how this is working correctly
-        result = set()
-        candidates.sort()
-        self.combinationSumHelper(0, candidates, target, [], result)
-        return list(result)
-
-    def combinationSumHelper(self, i, candidates, target, slate, result):
-        if sum(slate) == target:
-            slate.sort()
-            result.add(tuple(slate[:]))
-            return
-
-        if sum(slate) > target:
-            return
-
-        # Base Case
-        if i == len(candidates):
-            return
-
-        # exclusive case
-        self.combinationSumHelper(i + 1, candidates, target, slate, result)
-
-        # inclusive case
-        slate.append(candidates[i])
-        self.combinationSumHelper(i, candidates, target, slate,
-                                  result)  # here in this problem you are sending subproblem size same except you have updated target
-        slate.pop()
-
-        return
-
-class Solution1:  # This is working.. not sure
+class Solution_Option1:  #combinationSumHelper with Explicit Inclusive/Exclusive Branches
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
         result = []
-        self.combinationSumHelper(0, candidates, [], result, 0, target)
+
+        # Inner helper function
+        def combinationSumHelper(i, slate, current_sum):
+            if current_sum == target:
+                result.append(list(slate))
+                return
+            if current_sum > target or i == len(candidates):
+                return
+
+            # EXCLUSIVE CASE: Skip the candidate at index i
+            combinationSumHelper(i + 1, slate, current_sum)
+
+            # INCLUSIVE CASE: Use the candidate at index i
+            slate.append(candidates[i])
+            combinationSumHelper(i, slate, current_sum + candidates[i]) # here i instead of (i+1) in usual template
+            slate.pop()
+
+        combinationSumHelper(0, [], 0)
+
         return result
 
-    def combinationSumHelper(self, i, candidates, slate, result, current_sum, target):
-        if current_sum == target:
-            result.append(slate[:])
-            return
-        if current_sum > target:
-            return
-        for j in range(i, len(candidates)):
-            slate.append(candidates[j])
-            self.combinationSumHelper(j, candidates, slate, result, current_sum + candidates[j], target)
-            slate.pop()
-        return
+class Solution_option_2: #helper with a Loop for Recursive Branches
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        """
+            [2,3,6,7] target =7
+
+        2                   3    6     7
+
+    2  3  6  7 --> for 6,7 here backtracked
+
+
+        """
+
+        result = []
+
+        def helper(i, current_sum, slate):
+            if current_sum == target:
+                result.append(list(slate))
+                return
+            if current_sum > target or i == len(candidates):
+                return
+
+            # Recursive case using a loop
+            for j in range(i, len(candidates)):
+                slate.append(candidates[j])
+                helper(j, current_sum + candidates[j], slate)
+                slate.pop()
+
+        helper(0, 0, [])
+        return result
 
 
 """

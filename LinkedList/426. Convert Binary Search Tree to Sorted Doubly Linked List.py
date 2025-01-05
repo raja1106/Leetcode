@@ -10,6 +10,7 @@ class Solution:
     def treeToDoublyList(self, root: 'Optional[Node]') -> 'Optional[Node]':
         if not root:
             return None
+
         # Helper function to perform in-order traversal and link nodes
         def in_order(node):
             nonlocal first, last
@@ -19,12 +20,13 @@ class Solution:
             # In-order traversal: Left
             in_order(node.left)
 
+            if not first:
+                first = node
+
             # Link the current node
-            if last and first:
+            if last:
                 last.right = node
                 node.left = last
-            else:
-                first = node
 
             last = node
 

@@ -58,3 +58,25 @@ However, it is important to note that in the context of subsets or combinations 
 
 Taking both aspects into account, the total space complexity of the code is O(n * 2^n) considering the space for the output, or O(n) if we are only considering auxiliary space.
 """
+
+
+class Solution_Another_Way:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        result = []
+
+        def backtrack(start, subset):
+            # Add the current subset (make a copy!)
+            result.append(subset[:])
+
+            # Explore further elements
+            for i in range(start, len(nums)):
+                # Choose the current element
+                subset.append(nums[i])
+                # Recurse for the next elements
+                backtrack(i + 1, subset)
+                # Undo the choice (backtrack)
+                subset.pop()
+
+        # Start backtracking from index 0, with an empty subset
+        backtrack(0, [])
+        return result
