@@ -1,104 +1,33 @@
+from collections import defaultdict
 from typing import List
 
 
 class Solution:
     def validTree(self, n: int, edges: List[List[int]]) -> bool:
 
-        if len(edges) != n - 1:
-            return False
-
+        # Build the graph as an adjacency list
         graph = defaultdict(list)
-        for (src, dst) in edges:
+        for src, dst in edges:
             graph[src].append(dst)
             graph[dst].append(src)
-        visited = [False] * n
-
-        def dfs(source):
-            visited[source] = True
-            for neighbor in graph[source]:
-                if not visited[neighbor]:
-                    dfs(neighbor)
-
-        components = 0
-        for v in range(n):
-            if not visited[v]:
-                components += 1
-                if components > 1:
-                    return False
-                dfs(v)
-        return True
-
-'''
-    adjlist = [[] for _ in range(n)]
-        for (src,dst) in edges:
-            adjlist[src].append(dst)
-            adjlist[dst].append(src)
-
-        visited = [-1]*n
-        parent = [-1]*n
-        def dfs(source):
-            visited[source] = 1
-            for neighbor in adjlist[source]:
-                if visited[neighbor] == -1:
-                    parent[neighbor] = source
-                    if dfs(neighbor):
-                        return True
-                else:
-                    if parent[source] != neighbor:
-                        return True
-            return False
-
-        for v in range(n):
-            if visited[v] == -1:
-                dfs(v)
-        return True
-'''
-
-
-class Solution1:
-    isCycle = False
-
-    def bfs(self, src: int, adjList: List[List[int]], visited: set, parent: List[int]):
-
-        visited.add(src)
-        # parent[src] = -1
-        queue = deque()
-        queue.append(src)
-
-        while len(queue) > 0:
-            src = queue.popleft()
-            neighbourList = adjList[src]
-            for neighbour in neighbourList:
-                if neighbour not in visited:
-                    visited.add(neighbour)
-                    queue.append(neighbour)
-                    parent[neighbour] = src
-                else:
-                    if parent[src] != neighbour:
-                        self.isCycle = True
-                        return
-
-    def validTree(self, n: int, edges: List[List[int]]) -> bool:
-        adjList = []
-        parent = []
-
-        # declare the adjacency list
-        for _ in range(n):
-            parent.append(-1)
-            adjList.append([])
-
-        # iterate and insert the edges inside the adj list
-        for edge in edges:
-            src = edge[0]
-            dest = edge[1]
-            adjList[src].append(dest)
-            adjList[dest].append(src)
 
         visited = set()
-        self.bfs(0, adjList, visited, parent)
 
-        if len(visited) != n or self.isCycle == True:
+        # DFS function with parent tracking for cycle detection
+        def dfs(node, parent):
+            visited.add(node)
+            for neighbour in graph[node]:
+                if neighbour not in visited:  # Visit unvisited neighbors
+                    if not dfs(neighbour, node):  # If a cycle is detected, return False
+                        return False
+                elif neighbour != parent:  # Cycle detected
+                    return False
+            return True
+
+        # Check if the graph is connected and has no cycles
+        # Start DFS from node 0
+        if not dfs(0, -1):  # -1 as the parent of the root
             return False
 
-        return True
-
+        # Ensure all nodes are visited (graph is connected)
+        return len(visited) == n

@@ -28,3 +28,35 @@ class Solution:
                     queue.append(neighbor)
 
         return False
+
+
+import collections
+from typing import List
+
+
+class Solution_DFS:
+    def validPath(self, n: int, edges: List[List[int]], source: int, destination: int) -> bool:
+        if source == destination:
+            return True  # If source and destination are the same, return True
+
+        # Step 1: Build the graph
+        graph = collections.defaultdict(list)
+        for src, dst in edges:
+            graph[src].append(dst)
+            graph[dst].append(src)
+
+        # Step 2: Define DFS
+        def dfs(node, visited):
+            if node == destination:
+                return True
+
+            for neighbor in graph[node]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    if dfs(neighbor, visited):
+                        return True
+            return False
+
+        # Step 3: Initialize visited set and start DFS
+        visited = set([source])
+        return dfs(source, visited)

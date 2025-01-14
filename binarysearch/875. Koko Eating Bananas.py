@@ -43,8 +43,14 @@ class Solution_Another_Approach:
         start is min_speed
         end is max_speed here
 
+        1234......27
+        13
+        if can_eat(k)--> returns True, then I am in right region and end = mid-1 else
+            can't eat all --> return False --> start = mid+1
+        ---------Rrrrrrrrr
+
         """
-        min_speed, max_speed = 1, sum(piles)
+        min_speed, max_speed = 1, max(piles)
 
         def can_finish_all(speed: int) -> bool:
             """

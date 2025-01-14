@@ -56,15 +56,15 @@ class Solution_UnionFind_Approach:
         for r in range(n):
             for c in range(n):
                 if grid[r][c] == 0:
-                    seen_components = set()
+                    visited = set()
                     island_size = 1  # This cell itself is now land
 
                     for nr, nc in [(r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)]:
                         if 0 <= nr < n and 0 <= nc < n and grid[nr][nc] == 1:
                             root = uf.find(index(nr, nc))
-                            if root not in seen_components:
+                            if root not in visited:
                                 island_size += uf.get_size(root)
-                                seen_components.add(root)
+                                visited.add(root)
 
                     max_island = max(max_island, island_size)
 
@@ -114,14 +114,14 @@ class Solution:
         for i in range(n):
             for j in range(n):
                 if grid[i][j] == 0:
-                    seen = set()
+                    visited = set()
                     area = 1  # 1 for the flip itself
                     for di, dj in directions:
                         ni, nj = i + di, j + dj
                         if 0 <= ni < n and 0 <= nj < n and grid[ni][nj] > 1:
                             idx = grid[ni][nj]
-                            if idx not in seen:
-                                seen.add(idx)
+                            if idx not in visited:
+                                visited.add(idx)
                                 area += island_sizes[idx]
                     max_area = max(max_area, area)
 

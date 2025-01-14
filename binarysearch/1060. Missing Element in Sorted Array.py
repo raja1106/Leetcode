@@ -40,11 +40,9 @@ class Solution_With_comments:
             else:
                 # If missing elements exceed or equal k, the answer lies to the left
                 end = mid - 1  # Narrow the search to the left
-
         # After the loop, 'end' points to the position where the k-th missing element falls
         # Calculate how many elements are missing up to nums[end]
         missing = nums[end] - (nums[0] + end)
-
         # The k-th missing element is the difference between k and the number of
         # missing elements so far, added to the last known position (nums[end])
         ans = nums[end] + (k - missing)
