@@ -5,6 +5,7 @@ class Solution:
     def alienOrder(self, words: List[str]) -> str:
         # Step 1: Create a graph and an in-degree dictionary
         graph = defaultdict(set)
+        # Python processes the for loops from left to right. {key: value for outer_loop for inner_loop}
         in_degree = {char: 0 for word in words for char in word}
 
         # Step 2: Build the graph and calculate in-degrees

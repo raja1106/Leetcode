@@ -7,6 +7,8 @@ class Solution:
         m, n = len(nums1), len(nums2)
         start, end = 0, m
 
+       # [11 12 17] [13 14 15 16]   m =3 n = 4, pX = 1   pY=4-1=3
+
         while start <= end:
             mid = start + (end - start) // 2
             partitionX = mid

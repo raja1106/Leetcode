@@ -68,7 +68,7 @@ class Solution_UnionFind_Approach:
 
                     max_island = max(max_island, island_size)
 
-        return max_island if max_island != 0 else n * n  # If grid is all 1's, return the total area
+        return max_island
 
 
 # Example usage:
