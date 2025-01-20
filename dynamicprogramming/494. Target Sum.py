@@ -50,3 +50,31 @@ class Solution_UsingMemo_Approach:
 
         # Start the recursion from index 0 and initial sum 0
         return dfs(0, 0)
+
+
+class Solution_Using_DP:
+    def findTargetSumWays(self, nums: List[int], target: int) -> int:
+        totalSum = sum(nums)
+
+        # If (totalSum + target) is odd or target is out of bounds, return 0
+        if (totalSum + target) % 2 != 0 or totalSum < abs(target):
+            return 0
+
+        subsetSum = (totalSum + target) // 2
+
+        # Initialize DP table
+        dp = [[0] * (subsetSum + 1) for _ in range(len(nums) + 1)]
+        dp[0][0] = 1  # Base case: one way to make sum 0 (by selecting nothing)
+
+        # First column should be initialized to 1 (one way to make sum 0)
+        for i in range(len(nums) + 1):
+            dp[i][0] = 1
+
+        # Fill the DP table
+        for i in range(1, len(nums) + 1):
+            for j in range(subsetSum + 1):
+                dp[i][j] = dp[i - 1][j]  # Exclude current number
+                if j - nums[i - 1] >= 0:
+                    dp[i][j] += dp[i - 1][j - nums[i - 1]]  # Include current number
+
+        return dp[len(nums)][subsetSum]
