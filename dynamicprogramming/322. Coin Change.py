@@ -36,7 +36,7 @@ class Solution_Top_Down_Memo:
     def coinChange(self, coins: List[int], amount: int) -> int:
         memo = {}  # Memoization dictionary
 
-        def dfs(i, current_amount):
+        def dfs(i, current_amount): # min number of coins needed
             if current_amount == amount:
                 return 0  # No more coins needed
             if current_amount > amount or i == len(coins):
@@ -54,3 +54,25 @@ class Solution_Top_Down_Memo:
 
         result = dfs(0, 0)
         return result if result != float('inf') else -1
+
+
+from typing import List
+
+
+class Solution_Using_2D_DP:
+    def change(self, amount: int, coins: List[int]) -> int:
+        n = len(coins)
+        dp = [[0] * (amount + 1) for _ in range(n + 1)]
+
+        # Base Case: One way to make amount 0 (by taking nothing)
+        for i in range(n + 1):
+            dp[i][0] = 1
+
+        # Fill DP Table
+        for i in range(1, n + 1):  # Iterate over coins
+            for j in range(amount + 1):  # Iterate over possible amounts
+                dp[i][j] = dp[i - 1][j]  # Exclude current coin
+                if j - coins[i - 1] >= 0:  # Include current coin
+                    dp[i][j] += dp[i][j - coins[i - 1]]
+
+        return dp[n][amount]
