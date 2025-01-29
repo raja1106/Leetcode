@@ -38,6 +38,44 @@ class Solution:
                 return False
         return True
 
+from typing import List
+
+class Solution_Optimized_approach:
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        result = []
+        self.helper(0, n, [], result, set(), set(), set())
+        return self.format_result(result, n)
+
+    def helper(self, row, n, slate, result, cols, diag1, diag2):
+        if row == n:
+            result.append(slate[:])
+            return
+
+        for col in range(n):
+            if col in cols or (row + col) in diag1 or (row - col) in diag2:
+                continue  # Skip invalid placements
+
+            slate.append(col)
+            cols.add(col)
+            diag1.add(row + col)
+            diag2.add(row - col)
+
+            self.helper(row + 1, n, slate, result, cols, diag1, diag2)
+
+            # Backtrack
+            slate.pop()
+            cols.remove(col)
+            diag1.remove(row + col)
+            diag2.remove(row - col)
+
+    def format_result(self, result, n):
+        """
+        Converts column index-based solutions into a board representation.
+        """
+        return [["." * col + "Q" + "." * (n - col - 1) for col in solution] for solution in result]
+
+
+
 obj=Solution()
 print(obj.solveNQueens(4))
 """

@@ -1,3 +1,19 @@
+class Solution_bruteforce:
+    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+        def dfs(i,j,s1,s2):
+            #Base Case
+            if i == len(s1) or j == len(s2):
+                return 0
+            option1 = option2 = option3 =0
+            if s1[i] == s2[j]:
+                option1 = 1+dfs(i+1,j+1,s1,s2)
+            else:
+                option2 = dfs(i,j+1,s1,s2)
+                option3 = dfs(i+1,j,s1,s2)
+            return max(option1,option2,option3)
+        return dfs(0,0,text1,text2)
+
+
 class Solution:
     def longestCommonSubsequence(self, s1: str, s2: str) -> int:
 
