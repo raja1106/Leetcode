@@ -18,3 +18,22 @@ class Solution:
                             dp[end].append(word)
 
         return dp[n]
+
+
+class Solution_bruteforce:
+    def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
+        result = []
+        dict_set = set(wordDict)
+
+        def dfs(i, slate):
+            if i == len(s):
+                result.append(' '.join(slate))
+                return
+            for end in range(i + 1, len(s) + 1):
+                if s[i:end] in dict_set:
+                    slate.append(s[i:end])
+                    dfs(end, slate)
+                    slate.pop()
+
+        dfs(0, [])
+        return result

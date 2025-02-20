@@ -17,6 +17,8 @@ Input: nums = [1], k = 1
 Output: [1]
 """
 
+
+
 import random
 from collections import Counter
 from typing import List, Tuple
@@ -87,3 +89,54 @@ Heap Operations: The function then involves a for loop, iterating over the frequ
 
 The resulting overall time complexity is O(N + N * log K). However, since N * log K is the dominant term, we consider the overall time complexity to be O(N * log K).
 """
+
+import random
+from collections import Counter
+from typing import List
+
+
+class Solution_latest_quick_select:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        """
+        Finds the top k frequent elements in nums using QuickSelect.
+        """
+
+        def partition(start, end):
+            pivot_index = random.randint(start, end)
+            frequency_list[start], frequency_list[pivot_index] = frequency_list[pivot_index], frequency_list[start]
+            pivot = start
+            left, right = start + 1, end
+
+            while left <= right:
+                if frequency_list[left] > frequency_list[pivot] and frequency_list[right] < frequency_list[pivot]:
+                    frequency_list[left], frequency_list[right] = frequency_list[right], frequency_list[left]
+                    left += 1
+                    right -= 1
+                if frequency_list[left] <= frequency_list[pivot]:
+                    left += 1
+                if frequency_list[right] >= frequency_list[pivot]:
+                    right -= 1
+
+            frequency_list[pivot], frequency_list[right] = frequency_list[right], frequency_list[pivot]
+            return right
+
+        def quick_select(start, end):
+            partition_index = partition(start, end)
+            if partition_index == len(frequency_list) - k:
+                return frequency_list[partition_index:]
+            elif partition_index < len(frequency_list) - k:
+                return quick_select(partition_index + 1, end)
+            else:
+                return quick_select(start, partition_index - 1)
+
+        frequency_map = Counter(nums)  # Mapping of number -> frequency
+        frequency_list = list(frequency_map.values())  # Extract frequency values
+
+        top_frequencies = quick_select(0, len(frequency_list) - 1)
+        top_elements = []
+
+        for num, freq in frequency_map.items():
+            if freq in top_frequencies:
+                top_elements.append(num)
+
+        return top_elements

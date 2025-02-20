@@ -33,6 +33,51 @@ With a cooling interval of 1, you can repeat a task after just one other task.
 
 """
 
+from collections import Counter, deque
+from heapq import heapify, heappop, heappush
+from typing import List
+
+
+class Solution_Best_Approach:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        # Edge Case: No tasks
+        if not tasks:
+            return 0
+
+        # Count occurrences of each task
+        task_count = Counter(tasks)
+
+        # Max heap (negative frequencies for max heap behavior)
+        max_heap = [-cnt for cnt in task_count.values()]
+        heapify(max_heap)
+
+        # Queue to store tasks in cooldown (format: (remaining_count, next_available_time))
+        wait_queue = deque()
+
+        # Time counter
+        time = 0
+
+        while max_heap or wait_queue:
+            if max_heap:
+                # Execute the most frequent task
+                time += 1
+                count = -heappop(max_heap)  # Extract highest frequency task
+                count -= 1
+
+                # If the task still has occurrences, add it to cooldown
+                if count > 0:
+                    wait_queue.append((count, time + n))
+            else:
+                # Jump directly to the next available task's time if idle
+                time = wait_queue[0][1]
+
+            # Check and release any tasks from cooldown
+            while wait_queue and wait_queue[0][1] <= time:
+                cnt_ready, _ = wait_queue.popleft()
+                heappush(max_heap, -cnt_ready)
+
+        return time
+
 
 class Solution:
     def leastInterval(self, tasks: List[str], n: int) -> int:
@@ -58,26 +103,4 @@ class Solution:
             for x in store:
                 heapq.heappush(max_heap, -x)
             time += task_count if not max_heap else n + 1
-        return time
-
-    def leastInterval_neetcode(self, tasks: List[str], n: int) -> int:
-        count_map = Counter(tasks)
-        max_heap = [-count for count in count_map.values()]
-        heapq.heapify(max_heap)
-
-        time = 0
-        q = deque()  # pairs of [-cnt, idleTime]
-        while max_heap or q:
-            time += 1
-
-            if max_heap:
-                cnt = -heapq.heappop(max_heap) - 1
-                if cnt > 0:
-                    q.append([cnt, time + n])
-            else:
-                time = q[0][1]
-
-            if q and q[0][1] == time:
-                heapq.heappush(max_heap, -q.popleft()[0])
-
         return time

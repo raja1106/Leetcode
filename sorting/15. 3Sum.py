@@ -1,3 +1,36 @@
+class Solution_Best_Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        result = []
+        nums.sort()  # Sorting takes O(N log N)
+        n = len(nums)
+
+        for i in range(n):
+            # Skip duplicate elements for 'i'
+            if i > 0 and nums[i] == nums[i - 1]:
+                continue
+
+            left, right = i + 1, n - 1
+            target = -nums[i]
+
+            while left < right:
+                combined_value = nums[left] + nums[right]
+                if combined_value == target:
+                    result.append([nums[i], nums[left], nums[right]])
+
+                    # Skip duplicate values for left and right pointers
+                    left += 1
+                    right -= 1
+                    while left < right and nums[left] == nums[left - 1]:
+                        left += 1
+                    while left < right and nums[right] == nums[right + 1]:
+                        right -= 1
+
+                elif combined_value < target:
+                    left += 1
+                else:
+                    right -= 1
+        return result
+
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
         result=set()

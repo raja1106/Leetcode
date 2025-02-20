@@ -33,3 +33,70 @@ class Solution_mine:
                 j -= 1
 
         return dp[n]
+
+
+from typing import List
+
+
+class Solution_Bruteforce:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        def dfs(start):
+            # Base Case: If we've checked all characters, return True
+            if start == len(s):
+                return True
+
+            # Try every possible prefix
+            for end in range(start + 1, len(s) + 1):
+                if s[start:end] in wordDict and dfs(end):  # If valid word found, recurse
+                    return True
+
+            return False
+
+        return dfs(0)
+
+
+class Solution_Memoization:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        """
+        Determines if the given string `s` can be segmented into a space-separated sequence
+        of one or more dictionary words from `wordDict`.
+
+        Args:
+        - s (str): The input string to segment.
+        - wordDict (List[str]): The list of valid words.
+
+        Returns:
+        - bool: True if `s` can be segmented into words from `wordDict`, otherwise False.
+        """
+        memo = {}  # Memoization dictionary to store computed results
+
+        def dfs(start: int) -> bool:
+            """
+            Recursively checks if the substring `s[start:]` can be broken into valid words.
+
+            Args:
+            - start (int): The starting index of the current substring being checked.
+
+            Returns:
+            - bool: True if `s[start:]` can be segmented, otherwise False.
+            """
+
+            # Base Case: If we've checked all characters, return True
+            if start == len(s):
+                return True
+
+            # Check memoization to avoid redundant computations
+            if start in memo:
+                return memo[start]
+
+            # Try every possible prefix `s[start:end]`
+            for end in range(start + 1, len(s) + 1):
+                if s[start:end] in wordDict:  # If this prefix is a valid word
+                    if dfs(end):  # Recursively check the remaining substring
+                        memo[start] = True  # Cache the result (successful segmentation)
+                        return True
+
+            memo[start] = False  # Cache the result (unsuccessful segmentation)
+            return False
+
+        return dfs(0)  # Start checking from index 0

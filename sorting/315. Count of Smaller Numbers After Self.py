@@ -1,38 +1,64 @@
-import collections
 from typing import List
-from collections import deque
 
 
-#TODOO: Need to try with Segment Tree as this solution using Deque doesn't work for all input
-class Solution:
+class Solution_BruteForce:#O(n²)
     def countSmaller(self, nums: List[int]) -> List[int]:
-        dq = collections.deque()
-        result=[]
-        for i in range(len(nums)-1,-1,-1):
-            while dq and dq[-1] > nums[i]:
-                dq.pop()
-            dq.append(nums[i])
-            if i <len(nums)-1 and nums[i] == nums[i+1]:
-                result.append(result[-1])
-            else:
-                result.append(len(dq) - 1)
-        result.reverse()
+        n = len(nums)
+        result = [0] * n
+
+        for i in range(n):
+            count = 0
+            for j in range(i + 1, n):
+                if nums[j] < nums[i]:
+                    count += 1
+            result[i] = count
+
         return result
 
 
+class Solution_Using_BinarySearch:#O(n²)
     def countSmaller(self, nums: List[int]) -> List[int]:
+        st = []  # Acts as a sorted list
+        result = [0] * len(nums)
 
-        q=deque()
-        result= []
-        for i in range(len(nums)-1,-1,-1):
-            while q and q[-1] >= nums[i]:
-                q.pop()
-            q.append(nums[i])
-            result.append(len(q)-1)
+        # Inner function for binary search (Find the correct insert position)
+        def searchInsert(nums: List[int], target: int) -> int:
+            start, end = 0, len(nums) - 1
+            while start <= end:
+                mid = start + (end - start) // 2
+                if nums[mid] < target:
+                    start = mid + 1
+                else:
+                    end = mid - 1
+            return start  # Position to insert `target`
 
-        result.reverse()
+        # Iterate from right to left
+        for i in range(len(nums) - 1, -1, -1):
+            pos = searchInsert(st, nums[i])  # Find the correct position
+            result[i] = pos  # The position gives the count of smaller elements
+            st.insert(pos, nums[i])  # Insert `nums[i]` to maintain order
+
         return result
 
 
-obj =Solution()
-obj.countSmaller([-1,-1])
+from typing import List
+from sortedcontainers import SortedList
+
+class Solution: #O(nlogn)
+    def countSmaller(self, nums: List[int]) -> List[int]:
+        st = SortedList()  # Acts as a sorted list
+        result = [0] * len(nums)
+
+        # Inner function for binary search (Find the correct insert position)
+        def searchInsert(nums: SortedList, target: int) -> int:
+            return nums.bisect_left(target)  # Find position where target should be inserted
+
+        # Iterate from right to left
+        for i in range(len(nums) - 1, -1, -1):
+            pos = searchInsert(st, nums[i])  # Find the correct position O(logn)
+            result[i] = pos  # The position gives the count of smaller elements
+            st.add(nums[i])  # Insert nums[i] to maintain order O(logn) instead of O(n)
+
+        return result
+
+

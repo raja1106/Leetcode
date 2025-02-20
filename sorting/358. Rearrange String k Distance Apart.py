@@ -8,9 +8,6 @@ class Solution:
         if k == 0:
             return s
 
-        if max_freq > (len(s) + 1) // k:
-            return ''
-
         result = []
         frequency_heap = [[-freq, char] for char,freq in char_frequency.items()]
         heapq.heapify(frequency_heap)
