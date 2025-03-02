@@ -32,7 +32,7 @@ class Solution:
         maxaverage = float(sum(q) / k)
         test = len(nums) - k
         for j in range(k, len(nums)):
-            q.pop(0)
+            q.pop(0) #O(n) here.. if we use deque then it is O(1)
             q.append(nums[j])
             maxaverage = max(maxaverage, float(sum(q) / k))
         return maxaverage

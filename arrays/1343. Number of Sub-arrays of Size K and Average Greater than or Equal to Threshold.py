@@ -1,15 +1,16 @@
 from typing import List
 class Solution:
     def numOfSubarrays(self, arr: List[int], k: int, threshold: int) -> int:
-        current_sum = sum(arr[:k])
-        threshold_sum=k*threshold
-        total=0
-        if current_sum >= threshold_sum:
-            total+=1
+        window_sum = sum(arr[:k])
+        required_sum = k*threshold
+        valid_subarray_count=0
+        if window_sum >= required_sum:
+            valid_subarray_count+=1
 
         for i in range(k,len(arr)):
-            current_sum +=arr[i]-arr[i-k]
-            if current_sum >= threshold_sum:
-                total += 1
-        return total
+            window_sum += arr[i]
+            window_sum -= arr[i-k]
+            if window_sum >= required_sum:
+                valid_subarray_count += 1
+        return valid_subarray_count
 

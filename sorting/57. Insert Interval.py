@@ -52,3 +52,30 @@ class Solution:
                     ]
             res.append(newInterval)
             return res
+
+
+class Solution_Feb_2024:
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        result = []
+        intervals.sort()
+        i = 0
+        while i < len(intervals):
+            if intervals[i][1] < newInterval[0]:
+                result.append(intervals[i])
+            else:
+                break
+            i += 1
+
+        result.append(newInterval)
+
+        while i < len(intervals):
+            if result[-1][1] >= intervals[i][0]:
+                result[-1] = [min(result[-1][0], intervals[i][0]), max(result[-1][1], intervals[i][1])]
+            else:
+                result.append(intervals[i])
+            i += 1
+
+        return result
+
+
+

@@ -1,6 +1,31 @@
 from typing import List
 
 
+class Solution_Latest_One_Pass:
+    def maxSatisfied(self, customers: List[int], grumpy: List[int], minutes: int) -> int:
+        # finding out max unsatisfied customers
+
+        current_unsatisfied = 0
+        satisfied_customers = 0
+        for i in range(minutes):
+            if grumpy[i] == 1:
+                current_unsatisfied += customers[i]
+            else:
+                satisfied_customers += customers[i]
+
+        max_unsatisfied = current_unsatisfied
+        for i in range(minutes, len(customers)):
+            if grumpy[i] == 1:
+                current_unsatisfied += customers[i]
+            else:
+                satisfied_customers += customers[i]
+            if grumpy[i - minutes] == 1:
+                current_unsatisfied -= customers[i - minutes]
+            max_unsatisfied = max(max_unsatisfied, current_unsatisfied)
+
+        return satisfied_customers + max_unsatisfied
+
+
 class Solution:
 
     def maxSatisfied(self, customers: List[int], grumpy: List[int], minutes: int) -> int:

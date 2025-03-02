@@ -31,6 +31,70 @@ Explanation: Both 'a's from t must be included in the window.
 Since the largest window of s only has one 'a', return empty string.
 
 '''
+
+
+class Solution_Best_One:
+    def minWindow(self, s: str, t: str) -> str:
+        t_counter = Counter(t)
+        required_matches = len(t_counter)
+        formed_matches = 0
+        window_counter = Counter()
+        left = 0
+        min_length = float('inf')
+        min_window = ""
+
+        for i in range(len(s)):
+            char = s[i]
+            window_counter[char] += 1
+            if char in t_counter and window_counter[char] == t_counter[char]:
+                formed_matches += 1
+
+            while left <= i and formed_matches == required_matches:
+                if i - left + 1 < min_length:
+                    min_length = i - left + 1
+                    min_window = s[left:i + 1]
+                # Contract the window from the left.
+                left_char = s[left]
+                window_counter[left_char] -= 1
+                if left_char in t_counter and window_counter[left_char] < t_counter[left_char]:
+                    formed_matches -= 1
+                left += 1
+            i += 1
+
+        return min_window
+
+
+class Solution_Feb_2024:
+    def minWindow(self, s: str, t: str) -> str:
+        t_counter = Counter(t)
+        window_counter = Counter()
+        left = 0
+        min_length = len(s) + 1
+        min_window = ""
+
+        def is_valid_window():
+            for char, required_count in t_counter.items():
+                if window_counter[char] < required_count:
+                    return False
+            return True
+
+        for right in range(len(s)):
+            window_counter[s[right]] += 1
+
+            while left <= right and is_valid_window():
+                # Update the minimum window if the current one is smaller.
+                if (right - left + 1) < min_length:
+                    min_length = right - left + 1
+                    min_window = s[left:right + 1]
+                # Shrink the window from the left regardless of whether we updated the minimum.
+                window_counter[s[left]] -= 1
+                if window_counter[s[left]] == 0:
+                    del window_counter[s[left]]
+                left += 1
+
+        return min_window
+
+
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
         if not s or not t or len(t)>len(s):
@@ -63,7 +127,6 @@ class Solution:
                     min_window= i-left+1
                 s_map[s[left]] = s_map.get(s[left], 0)-1
                 left += 1
-
         return ans
 
     def minWindow_mons(self, source: str, target: str) -> str:

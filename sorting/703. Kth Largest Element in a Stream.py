@@ -12,27 +12,23 @@ Adding New Elements (add): The class should provide a method to add a new intege
     """
 
     def __init__(self, k: int, nums: List[int]):
-        # Initialize a min heap to store the k largest elements
-        self.min_heap = []
-        # Store the size k to know the kth largest value
         self.k = k
-        # Add the initial elements to the heap
-        for num in nums:
-            self.add(num)
+        self.min_heap = nums
+        heapify(self.min_heap)  # Convert nums into a heap in O(n)
+
+        # Keep only the k largest elements
+        while len(self.min_heap) > k:
+            heappop(self.min_heap)  # Remove the smallest elements until size k
 
     def add(self, val: int) -> int:
-        # Add the new value to the min heap
-        heappush(self.min_heap, val)
-        # If the size of the heap exceeds k, remove the smallest element
-        if len(self.min_heap) > self.k:
-            heappop(self.min_heap)
-        # The root of the min heap is the kth largest value
+        """
+        Adds a new number to the stream and returns the kth largest element.
+        """
+        if len(self.min_heap) < self.k:
+            heappush(self.min_heap, val)
+        else:
+            heappushpop(self.min_heap, val)  # Push & pop in one step (O(log k))
         return self.min_heap[0]
-
-# Your KthLargest object will be instantiated and called as such:
-# obj = KthLargest(k, nums)
-# param_1 = obj.add(val)
-
 """
 Time and Space Complexity
 Time Complexity:

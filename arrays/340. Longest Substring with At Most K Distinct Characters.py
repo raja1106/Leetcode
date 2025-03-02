@@ -20,3 +20,32 @@ class Solution:
             max_length = max(max_length, i - left + 1)
 
         return max_length
+
+
+class Solution_Bruteforce:
+    def lengthOfLongestSubstringKDistinct(self, s: str, k: int) -> int:
+        longest_length = 0
+
+        if k == 0:
+            return 0
+
+        if len(s) == 1 and k > 0:
+            return 1
+
+        for i in range(len(s)):
+            char_set = set([s[i]])
+            is_break = False
+            for j in range(i + 1, len(s)):
+                if s[j] not in char_set:
+                    if len(char_set) == k:
+                        longest_length = max(longest_length, (j - 1) - i + 1)
+                        is_break = True
+                        break
+                    else:
+                        char_set.add(s[j])
+                else:
+                    longest_length = max(longest_length, (j) - i + 1)
+            if not is_break:
+                longest_length = max(longest_length, len(s) - i)
+
+        return longest_length
