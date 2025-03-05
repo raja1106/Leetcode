@@ -9,7 +9,6 @@ class Solution:
         max_length=0
         minQueue, maxQueue = collections.deque(), collections.deque()
         for i in range(len(nums)):
-
             while minQueue and minQueue[-1] > nums[i]:
                 minQueue.pop()
             minQueue.append(nums[i])

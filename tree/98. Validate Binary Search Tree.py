@@ -4,7 +4,7 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
-class Solution:
+class Solution: #Time Complexity: O(N)
     def isValidBST(self, root: Optional[TreeNode]) -> bool:
         def dfs(node, min_value, max_value):
             if node.val >= max_value or node.val <= min_value:

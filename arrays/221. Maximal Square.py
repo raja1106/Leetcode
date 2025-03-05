@@ -6,30 +6,30 @@ class Solution:
         m = len(matrix)
         n = len(matrix[0])
 
-        square_matrix = [[0 for _ in range(n)] for _ in range(m)]
+        dp = [[0 for _ in range(n)] for _ in range(m)]
 
-        global_max = 0
+        max_side = 0
 
         for col in range(n):
             if matrix[0][col] == '1':
-                square_matrix[0][col] = 1
-                global_max = 1
+                dp[0][col] = 1
+                max_side = 1
 
         for row in range(m):
             if matrix[row][0] == '1':
-                square_matrix[row][0] = 1
-                global_max = 1
+                dp[row][0] = 1
+                max_side = 1
 
         for row in range(1, m):
             for col in range(1, n):
                 if matrix[row][col] == '0':
-                    square_matrix[row][col] = 0
+                    dp[row][col] = 0
                 else:
-                    square_matrix[row][col] = 1 + (
-                        min(square_matrix[row][col - 1], square_matrix[row - 1][col], square_matrix[row - 1][col - 1]))
-                global_max = max(global_max, square_matrix[row][col])
+                    dp[row][col] = 1 + (
+                        min(dp[row][col - 1], dp[row - 1][col], dp[row - 1][col - 1]))
+                max_side = max(max_side, dp[row][col])
 
-        return global_max * global_max
+        return max_side * max_side
 
 
 

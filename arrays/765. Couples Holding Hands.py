@@ -34,3 +34,31 @@ class Solution:
                 numOfSwaps += 1
 
         return numOfSwaps
+
+
+class Solution_BruteForce:
+    def minSwapsCouples(self, row: List[int]) -> int:
+        swap_count = 0
+
+        def swap_positions(index1: int, index2: int) -> None:
+            row[index1], row[index2] = row[index2], row[index1]
+
+        # Iterate over the row two seats at a time (each pair is a couple)
+        for i in range(0, len(row), 2):
+            first_person = row[i]
+            # Determine the expected partner: even-indexed person should have partner = first_person + 1,
+            # odd-indexed person should have partner = first_person - 1.
+            expected_partner = first_person + 1 if first_person % 2 == 0 else first_person - 1
+
+            # If the expected partner is already next to the first person, no swap is needed.
+            if row[i + 1] == expected_partner:
+                continue
+
+            # Otherwise, search for the expected partner in the rest of the row.
+            for j in range(i + 2, len(row)):
+                if row[j] == expected_partner:
+                    swap_positions(j, i + 1)
+                    swap_count += 1
+                    break
+
+        return swap_count
