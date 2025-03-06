@@ -1,56 +1,85 @@
 class Node:
-    def __init__(self, key, val):
+    def __init__(self, key: int, value: int):
         self.key = key
-        self.val = val
+        self.value = value
         self.prev = None
         self.next = None
 
 
 class LRUCache:
     def __init__(self, capacity: int):
-        self.cap = capacity
-        self.cache = {}  # map key to node
+        self.capacity = capacity
+        self.cache = {}  # key -> Node
 
-        # Initialize head and tail pointers as dummy nodes
-        self.head, self.tail = Node(0, 0), Node(0, 0)
+        # Create dummy head and tail nodes.
+        self.head = Node(0, 0)
+        self.tail = Node(0, 0)
         self.head.next = self.tail
         self.tail.prev = self.head
 
-    # Helper function to remove a node from the linked list
-    def remove(self, node):
-        prev, nxt = node.prev, node.next
-        prev.next = nxt
-        nxt.prev = prev
+    def _add_node(self, node: Node):
+        """Always add the new node right after the head."""
+        node.prev = self.head
+        node.next = self.head.next
 
-    # Helper function to insert a node at the tail (most recently used)
-    # Insert the new node just before the dummy tail node
-    def insert(self, node):
-        prev, nxt = self.tail.prev, self.tail
-        prev.next = node
-        node.prev = prev
-        node.next = nxt
-        nxt.prev = node
+        self.head.next.prev = node
+        self.head.next = node
+
+    def _remove_node(self, node: Node):
+        """Remove an existing node from the linked list."""
+        prev_node = node.prev
+        next_node = node.next
+
+        prev_node.next = next_node
+        next_node.prev = prev_node
+
+    def _move_to_head(self, node: Node):
+        """Move an existing node to the head (most recently used)."""
+        self._remove_node(node)
+        self._add_node(node)
+
+    def _pop_tail(self) -> Node:
+        """Pop the last node (least recently used)."""
+        res = self.tail.prev
+        self._remove_node(res)
+        return res
 
     def get(self, key: int) -> int:
-        if key in self.cache:
-            # Move the accessed node to the tail (most recently used)
-            self.remove(self.cache[key])
-            self.insert(self.cache[key])
-            return self.cache[key].val
-        return -1
+        node = self.cache.get(key, None)
+        if not node:
+            return -1
+
+        # Move the accessed node to the head (most recently used).
+        self._move_to_head(node)
+        return node.value
 
     def put(self, key: int, value: int) -> None:
-        if key in self.cache:
-            # If the key exists, remove the old node
-            self.remove(self.cache[key])
-        else:
-            # If adding a new key and the cache is full, remove the least recently used (head.next)
-            if len(self.cache) >= self.cap:
-                lru = self.head.next
-                self.remove(lru)
-                del self.cache[lru.key]
+        node = self.cache.get(key)
 
-        # Insert the new key-value pair
-        new_node = Node(key, value)
-        self.cache[key] = new_node
-        self.insert(new_node)
+        if node:
+            # Update the value.
+            node.value = value
+            self._move_to_head(node)
+        else:
+            new_node = Node(key, value)
+            self.cache[key] = new_node
+            self._add_node(new_node)
+
+            if len(self.cache) > self.capacity:
+                # Pop the tail and remove its key from the cache.
+                tail_node = self._pop_tail()
+                del self.cache[tail_node.key]
+
+
+# Example usage:
+if __name__ == "__main__":
+    lru = LRUCache(2)
+    lru.put(1, 1)
+    lru.put(2, 2)
+    print(lru.get(1))  # returns 1
+    lru.put(3, 3)  # evicts key 2
+    print(lru.get(2))  # returns -1 (not found)
+    lru.put(4, 4)  # evicts key 1
+    print(lru.get(1))  # returns -1 (not found)
+    print(lru.get(3))  # returns 3
+    print(lru.get(4))  # returns 4
