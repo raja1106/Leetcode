@@ -1,4 +1,4 @@
-class Solution_Best_Aapproach:
+class Solution_Best_Approach:
     def calculate(self, s: str) -> int:
         """
         Evaluate a basic arithmetic expression including '+', '-', '*', '/'.
