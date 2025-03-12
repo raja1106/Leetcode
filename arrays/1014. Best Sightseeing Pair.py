@@ -14,7 +14,7 @@ class Solution_Bruteforce:
 
 class Solution_Optimized:
     def maxScoreSightseeingPair(self, values: List[int]) -> int:
-        # [2,1,5,2,6]  5+2 6 -i  --> 5+6+i-j (k,p) --> k-p+values[i]+p-i
+        # [2,1,5,3,3,4,6]  5+2 6 -i  --> 5+6+i-j (k,p) --> k-p+values[i]+p-i
         current_max = (values[0], 0)
         max_val = 0
         for i in range(1, len(values)):

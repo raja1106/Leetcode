@@ -1,3 +1,48 @@
+class Solution_Best_Aapproach:
+    def calculate(self, s: str) -> int:
+        """
+        Evaluate a basic arithmetic expression including '+', '-', '*', '/'.
+        Division truncates toward zero.
+
+        Example:
+            "14-3/2" is evaluated as 14 - int(3/2) => 14 - 1 = 13.
+        """
+        def parse_number(i: int) -> (int, int):
+            """Parses the number starting at index i and returns the number and updated index."""
+            num_start = i
+            while i < len(s) and s[i].isdigit():
+                i += 1
+            return int(s[num_start:i]), i
+
+        i = 0
+        st = []
+        s = s.strip().replace(" ", "")
+
+        while i < len(s):
+            if s[i] == '*':
+                last_element = st.pop()
+                i += 1  # skip '*'
+                num, i = parse_number(i)
+                st.append(last_element * num)
+            elif s[i] == '/':
+                last_element = st.pop()
+                i += 1  # skip '/'
+                num, i = parse_number(i)
+                # Truncate division result toward zero.
+                st.append(int(last_element / num))
+            elif s[i] == '-':
+                i += 1  # skip '-'
+                num, i = parse_number(i)
+                st.append(-num)
+            else:
+                # Handles either '+' or a number.
+                if s[i] == '+':
+                    i += 1  # skip '+'
+                num, i = parse_number(i)
+                st.append(num)
+
+        return sum(st)
+
 class Solution:
     def calculate(self, s: str) -> int:
         # Stack to hold numbers and intermediate results
