@@ -5,7 +5,7 @@
 #         self.left = None
 #         self.right = None
 
-class Solution:
+class Solution_Best_Solution: # Keep p_found , q_found as local variables of inner function instead of keeping at global
     def lowestCommonAncestor_usual_template(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
         lca_value = None
 

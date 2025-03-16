@@ -2,19 +2,49 @@ from typing import List, Union
 
 
 class NestedInteger:
+    def __init__(self, value=None):
+        """
+        Initialize a NestedInteger with either a single integer or a nested list.
+
+        :param value: An integer or a list (which can contain integers or lists).
+        """
+        if isinstance(value, int):
+            self._integer = value
+            self._list = None
+        elif isinstance(value, list):
+            self._integer = None
+            self._list = []
+            for item in value:
+                # If the item is already a NestedInteger, use it directly;
+                # otherwise, wrap the item in a NestedInteger.
+                if isinstance(item, NestedInteger):
+                    self._list.append(item)
+                else:
+                    self._list.append(NestedInteger(item))
+        else:
+            # If no value is provided, initialize an empty nested list.
+            self._integer = None
+            self._list = []
+
     def isInteger(self) -> bool:
-        # Returns True if this NestedInteger holds a single integer, rather than a nested list
-        pass
+        """
+        Return True if this NestedInteger holds a single integer, otherwise False.
+        """
+        return self._integer is not None
 
     def getInteger(self) -> int:
-        # Returns the single integer that this NestedInteger holds, if it holds a single integer
-        # The result is undefined if this NestedInteger holds a nested list
-        pass
+        """
+        Return the single integer that this NestedInteger holds.
+        Return None if this NestedInteger holds a nested list.
+        """
+        return self._integer
 
-    def getList(self) -> List['NestedInteger']:
-        # Returns the nested list that this NestedInteger holds, if it holds a nested list
-        # The result is undefined if this NestedInteger holds a single integer
-        pass
+    def getList(self) -> list:
+        """
+        Return the nested list that this NestedInteger holds.
+        Return an empty list if this NestedInteger holds a single integer.
+        """
+        return self._list if self._list is not None else []
 
 
 class Solution:

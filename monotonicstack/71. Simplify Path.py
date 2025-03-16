@@ -3,53 +3,47 @@ class Solution:
         # Initialize an empty list to use as a stack
         stack = []
 
-        # Split the path by "/", iterate over each part
-        for part in path.split('/'):
-            # If the part is an empty string or a ".", simply continue to the next part
-            if not part or part == '.':
+        # Split the path by "/", iterate over each segment
+        for segment in path.split('/'):
+            # If the segment is an empty string or a ".", simply continue to the next segment
+            if not segment or segment == '.':
                 continue
-            # If the part is "..", pop from the stack if it's not empty
-            elif part == '..':
+            # If the segment is "..", pop from the stack if it's not empty
+            elif segment == '..':
                 if stack:
                     stack.pop()
-            # Otherwise, add the part to the stack
+            # Otherwise, add the segment to the stack
             else:
-                stack.append(part)
+                stack.append(segment)
 
         # Join the stack elements to form the simplified path and prepend with "/"
         simplified_path = '/' + '/'.join(stack)
         return simplified_path
 
-    class Solution:
-        def simplifyPath(self, path: str) -> str:
-            # Stack to store the valid parts of the path
-            stack = []
 
-            # Split the path by "/" and iterate over each component
-            for part in path.split('/'):
-                if part == '..':
-                    if stack:  # Go up one directory level if possible
-                        stack.pop()
-                elif part and part != '.':  # Ignore empty strings and current directory symbols
-                    stack.append(part)
-
-            # Join the stack to form the simplified path
-            return '/' + '/'.join(stack)
-
-
-class Solution1:
+class Solution_In_Place_Processing_withoutSplit:
     def simplifyPath(self, path: str) -> str:
-        # Stack to store the valid parts of the path
-        stack = []
+        path_stack = []
+        i = 0
+        n = len(path)
 
-        # Split the path by "/" and iterate over each component
-        for part in path.split('/'):
-            if part == '..':
-                if stack:  # Go up one directory level if possible
-                    stack.pop()
-            elif part and part != '.':  # Ignore empty strings and current directory symbols
-                stack.append(part)
+        while i < n:
+            # Skip consecutive '/' characters
+            while i < n and path[i] == '/':
+                i += 1
 
-        # Join the stack to form the simplified path
-        return '/' + '/'.join(stack)
+            start = i
+            # Identify the current segment (until the next '/')
+            while i < n and path[i] != '/':
+                i += 1
 
+            segment = path[start:i]
+            if segment in ['', '.']:
+                continue
+            elif segment == '..':
+                if path_stack:
+                    path_stack.pop()
+            else:
+                path_stack.append(segment)
+
+        return '/' + '/'.join(path_stack)

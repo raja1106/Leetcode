@@ -9,6 +9,9 @@ class Solution_Best_Approach:
         """
         def parse_number(i: int) -> (int, int):
             """Parses the number starting at index i and returns the number and updated index."""
+            # Skip any leading spaces
+            while i < len(s) and s[i] == ' ':
+                i += 1
             num_start = i
             while i < len(s) and s[i].isdigit():
                 i += 1
@@ -19,7 +22,9 @@ class Solution_Best_Approach:
         s = s.strip().replace(" ", "")
 
         while i < len(s):
-            if s[i] == '*':
+            if s[i] == " ":
+                i += 1
+            elif s[i] == '*':
                 last_element = st.pop()
                 i += 1  # skip '*'
                 num, i = parse_number(i)

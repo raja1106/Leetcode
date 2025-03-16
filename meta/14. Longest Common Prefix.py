@@ -60,3 +60,21 @@ the time complexity approaches 𝑂(𝑆). O(S), similar to the previous solutio
         # If the loop completes, the entire first string is the common prefix
         return first_string
 
+class Solution_March_2025:
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+        if not strs or len(strs) == 0:
+            return ""
+        result = []
+        first_string_length = len(strs[0])
+
+        i = 0
+
+        while i < first_string_length:
+            ch = strs[0][i]
+            for st in strs[1 : len(strs)]:
+                if i >= len(st) or st[i] != ch:
+                    return "".join(result)
+            result.append(ch)
+            i += 1
+
+        return "".join(result)
