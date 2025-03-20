@@ -9,9 +9,9 @@ class Solution:
         prev_time = 0
 
         for log in logs:
-            function_id, action, timestamp = log.split(":")
-            function_id = int(function_id)
-            timestamp = int(timestamp)
+            function_id_str, action, timestamp_str = log.split(":")
+            function_id = int(function_id_str)
+            timestamp = int(timestamp_str)
 
             if action == "start":
                 # If there's an ongoing function, update its exclusive time.
