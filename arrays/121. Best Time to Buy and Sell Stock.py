@@ -12,3 +12,4 @@ class Solution:
             max_profit=max(max_profit,local_profit)
             lowest_sofar=min(lowest_sofar,prices[i])
         return max_profit
+

@@ -15,3 +15,8 @@ class Solution:
             result.append(modified_word)
 
         return ' '.join(result)
+
+
+
+parent = list(range(5))
+print(parent)

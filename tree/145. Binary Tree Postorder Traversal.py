@@ -4,8 +4,8 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
-class Solution_Iterative:
-    def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+class Solution:
+    def postorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
         if root is None:
             return []
 
@@ -21,9 +21,8 @@ class Solution_Iterative:
             if zone is None:
                 # Mark this node as "arrival"
                 stack[-1] = (node, "arrival")
-            # Pre-order means process the node value first
-                result.append(node.val)
-            # If there's a left child, push it onto the stack
+
+                # If there's a left child, push it onto the stack
                 if node.left is not None:
                     stack.append((node.left, None))
 
@@ -38,6 +37,7 @@ class Solution_Iterative:
             # 3) Zone = "interim": left and right subtrees are done
             # Move to "departure" state
             elif zone == "interim":
+                result.append(node.val)
                 stack[-1] = (node, "departure")
 
             # 4) Zone = "departure": we pop the stack
@@ -45,9 +45,3 @@ class Solution_Iterative:
                 stack.pop()
 
         return result
-
-
-class Solution:
-    def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
-        return []
-
