@@ -1,6 +1,5 @@
 class Solution:
     def sortedListToBST(self, head: ListNode) -> TreeNode:
-        # Helper function to find the middle element of the linked list
         def find_middle(head):
             slow, fast = head, head
             prev = None  # To keep track of the node before `slow`
@@ -12,7 +11,6 @@ class Solution:
             if prev:
                 prev.next = None
             return slow
-
         # Base case: If the list is empty
         if not head:
             return None
@@ -30,5 +28,4 @@ class Solution:
         # Step 3: Recursively build the left and right subtrees
         root.left = self.sortedListToBST(head)  # Left half of the list
         root.right = self.sortedListToBST(mid.next)  # Right half of the list
-
         return root

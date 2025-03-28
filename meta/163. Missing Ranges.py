@@ -23,3 +23,21 @@ class Solution:
             result.append([nums[-1] + 1, upper])
 
         return result
+
+
+class Solution1:
+    def findMissingRanges(self, nums: List[int], lower: int, upper: int) -> List[List[int]]:
+        missing_ranges = []
+        current_start = lower  # pointer to the current range start
+
+        for num in nums:
+            if current_start == num:
+                current_start += 1
+            else:
+                missing_ranges.append([current_start, num - 1])
+                current_start = num + 1
+
+        if current_start <= upper:
+            missing_ranges.append([current_start, upper])
+
+        return missing_ranges

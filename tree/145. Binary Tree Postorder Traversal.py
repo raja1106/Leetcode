@@ -45,3 +45,31 @@ class Solution:
                 stack.pop()
 
         return result
+
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution_Best:
+    def postorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        if root is None:
+            return []
+        result = []
+        stack = [(root, 0)]  # (node, state)
+        while stack:
+            node, state = stack.pop()
+
+            if state == 0:
+                stack.append((node, 1))  # Visit node after children
+                if node.right:
+                    stack.append((node.right, 0))  # Right child
+                if node.left:
+                    stack.append((node.left, 0))  # Left child
+
+            elif state == 1:
+                result.append(node.val)  # Post-order: Visit after children
+
+        return result
