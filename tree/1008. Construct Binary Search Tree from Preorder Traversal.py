@@ -1,27 +1,30 @@
-class Solution:  # T(n) = O(n)
+class Solution: #T(n) = O(n)
     def bstFromPreorder(self, preorder: List[int]) -> Optional[TreeNode]:
-        index = 0
-
-        def build_bst(bound):
+        index = 0  # Initialize index pointer for the preorder list.
+        def construct_tree(min_val, max_val):
             nonlocal index
-            # If all nodes are processed or the current node is greater than the bound,
-            # it cannot be part of this subtree.
-            if index == len(preorder) or preorder[index] > bound:
+            # Base case:
+            # If we've processed all nodes or the current node's value is not within
+            # the allowed range [min_val, max_val], then this branch ends.
+            if index == len(preorder) or not (min_val <= preorder[index] <= max_val):
                 return None
+            # The current value in preorder is the root for this subtree.
+            root_value = preorder[index]
+            node = TreeNode(root_value)
+            index += 1  # Move to the next element in preorder.
 
-            # The current element is the root for this subtree.
-            root_val = preorder[index]
-            root = TreeNode(root_val)
+            # Recursively construct the left subtree:
+            # All values must be less than the current root_value.
+            node.left = construct_tree(min_val, root_value)
 
-            index += 1
+            # Recursively construct the right subtree:
+            # All values must be greater than the current root_value but still
+            # within the current allowed maximum (max_val).
+            node.right = construct_tree(root_value, max_val)
+            return node
 
-            # All nodes in the left subtree should be less than the root's value.
-            root.left = build_bst(root_val)
-            # All nodes in the right subtree should be less than the current bound.
-            root.right = build_bst(bound)
-            return root
-
-        return build_bst(float('inf'))
+        # Start constructing the BST with initial bounds set to negative and positive infinity.
+        return construct_tree(float('-inf'), float('inf'))
 
 
 # Definition for a binary tree node.
