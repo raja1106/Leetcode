@@ -14,33 +14,33 @@ Example 3:
 Input: digits = "2"
 Output: ["a","b","c"]
 """
+
+
 class Solution:
     def letterCombinations(self, digits: str) -> List[str]:
         result = []
-        if digits:
-            self.get_words_from_phone_number_util(digits, 0, [], result)
+        if not digits:
+            return []
+        phone_dict = {
+            "2": "abc", "3": "def", "4": "ghi", "5": "jkl",
+            "6": "mno", "7": "pqrs", "8": "tuv", "9": "wxyz"
+        }
+
+        def get_words_from_phone_number_util(i: int, slate: List[str]) -> None:
+
+            # Base case: If the index reaches the end of digits, append the current combination.
+            if i == len(digits):
+                result.append(''.join(slate))
+                return
+
+            # Recursive case: Iterate through the letters corresponding to the current digit.
+            for choice in phone_dict[digits[i]]:
+                slate.append(choice)
+                get_words_from_phone_number_util(i + 1, slate)
+                slate.pop()
+
+        get_words_from_phone_number_util(0, [])
         return result
-
-    def get_words_from_phone_number_util(self, digits: str, i: int, slate: List[str], result: List[str]) -> None:
-        phone_dict = {"2": "abc", "3": "def", "4": "ghi", "5": "jkl",
-                   "6": "mno", "7": "pqrs", "8": "tuv", "9": "wxyz"}
-
-        #Base case
-        if i == len(digits):
-            result.append(''.join(slate[:]))
-            return
-
-        #Recursive case
-        choices = phone_dict[digits[i]]
-
-        for choice in choices:
-            slate.append(choice)
-            self.get_words_from_phone_number_util(digits, i + 1, slate, result)
-            del slate[-1]
-
-
-
-
 
 
 if __name__ == "__main__":
