@@ -9,27 +9,42 @@ class ListNode:
         self.next = next
 
 
-class Solution_Using_MinHeap: #Time complexity : O(Nlogk) where k is the number of linked lists.
+from heapq import heappush, heappop
+from typing import List, Optional
 
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+class Solution_Using_Min_heap:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        """
+        Merge k sorted linked lists into one sorted linked list using a min-heap.
+        """
         min_heap = []
+        if not lists:
+            return None
 
-        # Push the head of each list into the min_heap
-        for i in range(len(lists)):
-            if lists[i]:
-                heapq.heappush(min_heap, (lists[i].val, lists[i]))
+        # Initialize the heap with the head of each list
+        for i, node in enumerate(lists):
+            if node:
+                heappush(min_heap, (node.val, i, node))
 
-        dummy = ListNode()
-        current = dummy
+        dummy_head = ListNode()
+        current = dummy_head
 
+        # Process the heap until it is empty
         while min_heap:
-            val, node = heapq.heappop(min_heap)
+            val, idx, node = heappop(min_heap)
             current.next = node
             current = current.next
             if node.next:
-                heapq.heappush(min_heap, (node.next.val, node.next))
+                heappush(min_heap, (node.next.val, idx, node.next))
 
-        return dummy.next
+        return dummy_head.next
 
 
 from typing import List, Optional

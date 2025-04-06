@@ -4,7 +4,7 @@
 #         self.val = val
 #         self.next = next
 
-class Solution:
+class Solution: # 1 2 3 4 5 6 7
     def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
         # Base case: empty list or single node list
         if not head or not head.next:

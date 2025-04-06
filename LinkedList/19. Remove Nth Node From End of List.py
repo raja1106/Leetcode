@@ -1,5 +1,5 @@
 class Solution:
-    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]: # 2nd Efficient
         def get_length(node):
             i = 0
             curr = node
