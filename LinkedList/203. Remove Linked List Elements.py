@@ -4,14 +4,18 @@
 #         self.val = val
 #         self.next = next
 
-class Solution_Efficient:
+class Solution_Template:
     def removeElements(self, head: Optional[ListNode], val: int) -> Optional[ListNode]:
-        dummy = ListNode(0, head)
-        current = dummy
-        while current.next:
-            if current.next.val == val:
-                current.next = current.next.next
+        if not head:
+            return head
+        dummy_head = ListNode(-1,head)
+        current = head
+        prev = dummy_head
+        while current:
+            if current.val == val:
+                prev.next = current.next
             else:
-                current = current.next
-        return dummy.next
+                prev = current
+            current = current.next
+        return dummy_head.next
 

@@ -3,6 +3,42 @@
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
+
+class Solution_Template:
+    def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
+        dummy_head = ListNode(0, head)
+        curr = head
+        index = 1
+        prev = dummy_head
+
+        # Move prev and curr to the 'left' position.
+        while index < left:
+            prev = prev.next
+            curr = curr.next
+            index += 1
+
+        # Temporarily disconnect the sublist to be reversed.
+        prev.next = None
+        tail_left = prev
+        tail_middle = curr
+
+        # Reverse the sublist from [left, right].
+        while index != right + 1:
+            next_node = curr.next
+            curr.next = prev
+            prev = curr
+            curr = next_node
+            index += 1
+
+        # prev now points to the head of the reversed sublist
+        head_middle = prev
+
+        # Reconnect the reversed sublist back to the main list.
+        tail_middle.next = curr
+        prev = tail_left
+        prev.next = head_middle
+
+        return dummy_head.next
 class Solution:
     def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
         def reverseList(head: Optional[ListNode]) -> Optional[ListNode]:
