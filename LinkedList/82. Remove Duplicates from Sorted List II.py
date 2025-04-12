@@ -4,7 +4,29 @@
 #         self.val = val
 #         self.next = next
 
+
 class Solution:
+    def deleteDuplicates(self, head):
+        dummy_head = ListNode(float("inf"), head)
+        prev = dummy_head
+        current = head
+
+        while current:
+            # If current is the first of a bunch of duplicates, remove them all
+            if current.next and current.next.val == current.val:
+                next_distinct = current
+                while next_distinct and next_distinct.val == current.val:
+                    next_distinct = next_distinct.next
+                prev.next = next_distinct
+                current = next_distinct
+            else:
+                prev = current
+                current = current.next
+
+        return dummy_head.next
+
+
+class Solution_another_Approach:
     def deleteDuplicates(self, head: ListNode) -> ListNode:
         # Edge case: If the list is empty or has only one node
         if not head or not head.next:

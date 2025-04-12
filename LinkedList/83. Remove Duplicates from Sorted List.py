@@ -4,19 +4,17 @@ class ListNode:
         self.next = next
 
 class Solution:
-
-    def deleteDuplicates(self,head: ListNode) -> ListNode:
-        # Edge case: If the list is empty or has only one node
-        if not head or not head.next:
+    def deleteDuplicates(self, head: Optional[ListNode]):
+        if not head:
             return head
-
+        dummy_head = ListNode(float('-inf'),head)
+        prev = dummy_head
         current = head
-        while current and current.next:
-            if current.val == current.next.val:
-                # Skip the duplicate node
-                current.next = current.next.next
-            else:
-                # Move to the next node
+        while current:
+            if current.val == prev.val: #removing node
+                prev.next = current.next
                 current = current.next
-
-        return head
+            else: # doing work for your sub-ordinate
+                prev = current
+                current = current.next
+        return dummy_head.next

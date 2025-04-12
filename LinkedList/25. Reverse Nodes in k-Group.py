@@ -1,40 +1,37 @@
 class Solution:
     def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
-        # Helper function to reverse k nodes and return the new head and tail
-        def reverse_k_nodes(start, k):
-            prev, curr = None, start
-            for _ in range(k):
-                next_node = curr.next
-                curr.next = prev
-                prev = curr
-                curr = next_node
-            # prev is the new head of the reversed segment, start becomes the new tail
-            return prev, start
+        def reverse_list(node):
+            prev = None
+            current = node
 
-        # Dummy node to handle edge cases
-        dummy_head = ListNode(0)
-        dummy_head.next = head
-        prev_tail = dummy_head  # This will eventually connect to the new head of each reversed segment
+            while current:
+                next_node = current.next
+                current.next = prev
+                prev = current
+                current = next_node
+            return (prev, node)
 
-        while head:
-            # Check if there are at least k nodes left to reverse
-            end = head
-            for _ in range(k - 1):
-                end = end.next
-                if not end:
-                    # Fewer than k nodes left, no need to reverse
-                    return dummy_head.next
-
-            # Reverse k nodes starting from `head`
-            next_segment = end.next
-            new_head, new_tail = reverse_k_nodes(head, k)
-
-            # Connect the previous part to the reversed segment
-            prev_tail.next = new_head
-            new_tail.next = next_segment
-
-            # Move the pointers to the next segment
-            prev_tail = new_tail
-            head = next_segment
+        if not head or not head.next:
+            return head
+        dummy_head = ListNode(-1)
+        prev_tail = dummy_head
+        current = head
+        while current:
+            current_head = current
+            is_size_k = True
+            for i in range(k - 1):
+                if current:
+                    current = current.next
+                else:
+                    is_size_k = False
+            if not is_size_k or current is None:
+                prev_tail.next = current_head
+            else:
+                next_head = current.next
+                current.next = None
+                new_head, new_tail = reverse_list(current_head)
+                prev_tail.next = new_head
+                prev_tail = new_tail
+                current = next_head
 
         return dummy_head.next
