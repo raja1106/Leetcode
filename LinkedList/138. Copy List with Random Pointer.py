@@ -3,7 +3,7 @@ class Node:
         self.val = val
         self.next = next
         self.random = random
-class Solution:
+class Solution: # S(n) = O(1), T(n) = O(n)
     def copyRandomList(self, head: 'Node') -> 'Node':
         # If the original list is empty, return None.
         if not head:
@@ -36,3 +36,43 @@ class Solution:
             original_current = original_current.next
         # Return the head of the cloned linked list
         return cloned_head
+
+
+# Definition for a Node.
+class Node:
+    def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
+
+
+class Solution_More_Intuitive: # S(n) = O(n), T(n) = O(n)
+    def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        # Handle empty input
+        if not head:
+            return None
+
+        # First pass: create new nodes and store the mapping from original to copy.
+        node_map = {}  # Renamed from 'map' to avoid overshadowing built-in function.
+        current = head
+        dummy_head = Node(0)
+        prev = dummy_head
+
+        while current:
+            new_node = Node(current.val)
+            node_map[current] = new_node
+            prev.next = new_node
+            prev = new_node
+            current = current.next
+
+        # Second pass: assign random pointers for the new nodes.
+        current_new = dummy_head.next
+        current_old = head
+
+        while current_new:
+            if current_old.random is not None:
+                current_new.random = node_map[current_old.random]
+            current_old = current_old.next
+            current_new = current_new.next
+
+        return dummy_head.next

@@ -42,3 +42,24 @@ class Solution:
 
         dfs(root)
         return max_path_sum
+
+
+class Solution_April_2025:
+    def maxPathSum(self, root: Optional[TreeNode]) -> int:
+        max_path_sum = float('-inf')
+
+        def max_path_sum_helper(node):
+            nonlocal max_path_sum
+            if node.left is None and node.right is None:
+                max_path_sum = max(max_path_sum, node.val)
+                return node.val
+            left_max = max_path_sum_helper(node.left) if node.left else 0
+            right_max = max_path_sum_helper(node.right) if node.right else 0
+            local_path_sum = node.val + max(left_max, 0) + max(right_max, 0)
+            max_path_sum = max(max_path_sum, local_path_sum)
+            return node.val + max(left_max, right_max, 0)
+
+        if not root:
+            return 0
+        max_path_sum_helper(root)
+        return max_path_sum

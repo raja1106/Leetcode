@@ -14,6 +14,10 @@ class Solution:
 class Solution_Using_Prefix_sum:
     def maxSubArray(self, nums: List[int]) -> int:
         # Initialize prefix sum and min_prefix_sum
+        """
+        f(x,y) = f(y)-f(x) --> I am looking for smallest f(x) to find
+                 max sub array sum ending at y
+        """
         max_sum = nums[0]
         prefix_sum = 0
         min_prefix_sum = 0

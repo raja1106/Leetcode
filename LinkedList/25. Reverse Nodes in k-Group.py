@@ -27,11 +27,11 @@ class Solution:
             if not is_size_k or current is None:
                 prev_tail.next = current_head
             else:
-                next_head = current.next
+                next_segment = current.next
                 current.next = None
                 new_head, new_tail = reverse_list(current_head)
                 prev_tail.next = new_head
                 prev_tail = new_tail
-                current = next_head
+                current = next_segment
 
         return dummy_head.next

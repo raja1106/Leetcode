@@ -17,6 +17,29 @@ class Solution:
         # Return the new head of this swapped pair
         return second
 
+class Solution_More_Intuitive:
+    def swapPairs(self, head):
+        dummy_head = ListNode(0)
+        dummy_head.next = head
+        prev = dummy_head
+
+        while head and head.next:
+            first_node = head
+            second_node = head.next
+
+            # Save the next pair
+            next_pair = second_node.next
+
+            # Swap
+            prev.next = second_node
+            second_node.next = first_node
+            first_node.next = next_pair
+
+            # Move pointers forward
+            prev = first_node
+            head = next_pair
+
+        return dummy_head.next
 
 def swap_pairs(head: ListNode) -> ListNode:
     dummy = ListNode(0)

@@ -61,3 +61,39 @@ class Solution_Topological_sort:
                             queue.append((nr, nc))
 
         return max_length
+
+
+from collections import deque
+
+
+class Solution_BFS_April_2025:
+    def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
+        directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        longest_increasing_path = 0
+        num_rows = len(matrix)
+        num_cols = len(matrix[0])
+        memo = {}
+        def find_longest_increasing_path(row, col):
+            if (row, col) in memo:
+                return memo[(row, col)]
+            nonlocal longest_increasing_path
+            local_increasing_path = 0
+            seen = set()
+            seen.add((row, col))
+            queue = deque()
+            queue.append((matrix[row][col], 1, row, col))
+            while queue:
+                current_val, current_seq, current_row, current_col = queue.popleft()
+                local_increasing_path = max(current_seq, local_increasing_path)
+                for dr, dc in directions:
+                    new_row = current_row + dr
+                    new_col = current_col + dc
+                    if 0 <= new_row < num_rows and 0 <= new_col < num_cols and matrix[new_row][new_col] > current_val:
+                        seen.add((new_row, new_col))
+                        queue.append((matrix[new_row][new_col], current_seq + 1, new_row, new_col))
+            memo[(row, col)] = local_increasing_path
+            longest_increasing_path = max(longest_increasing_path, local_increasing_path)
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                find_longest_increasing_path(i, j)
+        return longest_increasing_path

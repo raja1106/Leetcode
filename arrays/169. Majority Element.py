@@ -21,3 +21,19 @@ class Solution:
             return majority_candidate
         else:
             return -1  # Indicate no majority element
+
+
+class Solution_Using_Map:
+    def majorityElement(self, nums: List[int]) -> int:
+        count_map = Counter(nums)
+
+        for k, v in count_map.items():
+            if v > len(nums) // 2:
+                return k
+
+        return -1
+
+class Solution_using_most_common:
+    def majorityElement(self, nums: List[int]) -> int:
+        candidate, count = Counter(nums).most_common(1)[0]
+        return candidate if count > len(nums) // 2 else -1

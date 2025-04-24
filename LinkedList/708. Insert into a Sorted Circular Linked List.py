@@ -78,8 +78,8 @@ class Solution_April_2025:
                 break
 
         # Insert the new node between prev and current.
-        new_node.next = prev.next
         prev.next = new_node
+        new_node.next = current
         return head
 
 

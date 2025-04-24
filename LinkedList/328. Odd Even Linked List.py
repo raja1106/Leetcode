@@ -38,3 +38,34 @@ current = reordered_head
 while current:
     print(current.value, end=" -> " if current.next else "\n")
     current = current.next
+
+class Solution_April_2025:
+    def oddEvenList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head or not head.next:
+            return head  # Edge case: 0 or 1 node
+
+        even_dummy = ListNode()  # Head node of the even-indexed list
+        even_tail = even_dummy   # Tail pointer for the even list
+
+        position = 1
+        current_node = head
+        last_odd = None
+
+        while current_node:
+            next_node = current_node.next
+
+            if position % 2 == 0:
+                # Move even-indexed node to the even list
+                last_odd.next = next_node
+                even_tail.next = current_node
+                even_tail = even_tail.next
+                current_node.next = None  # Detach from original list
+            else:
+                last_odd = current_node  # Update last odd pointer
+
+            current_node = next_node
+            position += 1
+
+        last_odd.next = even_dummy.next  # Append even list to the odd list
+        return head
+

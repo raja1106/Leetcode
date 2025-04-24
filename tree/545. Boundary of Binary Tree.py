@@ -1,10 +1,55 @@
-from typing import List
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
 #         self.val = val
 #         self.left = left
 #         self.right = right
+
+class Solution:
+    def boundaryOfBinaryTree(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return []
+
+        left_boundary = []
+        right_boundary = []
+        leaf_nodes = []
+
+        def collect_left_boundary(node):
+            if node.left is None and node.right is None:
+                return
+            left_boundary.append(node.val)
+            if node.left:
+                collect_left_boundary(node.left)
+            else:
+                collect_left_boundary(node.right)
+
+        def collect_right_boundary(node):
+            if node.left is None and node.right is None:
+                return
+            right_boundary.append(node.val)
+            if node.right:
+                collect_right_boundary(node.right)
+            else:
+                collect_right_boundary(node.left)
+
+        def collect_leaves(node):
+            if node.left is None and node.right is None:
+                leaf_nodes.append(node.val)
+                return
+            if node.left:
+                collect_leaves(node.left)
+            if node.right:
+                collect_leaves(node.right)
+
+        if root.left:
+            collect_left_boundary(root.left)
+        collect_leaves(root)
+        if root.right:
+            collect_right_boundary(root.right)
+
+        boundary = [root.val] if root.left or root.right else []
+        return boundary + left_boundary + leaf_nodes + right_boundary[::-1]
+
 class Solution:
     def boundaryOfBinaryTree(self, root: Optional[TreeNode]) -> List[int]:
         boundary_values = []
