@@ -69,6 +69,72 @@ class SparseVector_Using_Binary_Search:
 
         return result
 
+class SparseVector_TwoPointers:
+    def __init__(self, nums):
+        # Store (index, value) pairs, sorted by index
+        self.non_zero = [(i, num) for i, num in enumerate(nums) if num != 0]
+
+    def dotProduct(self, vec: 'SparseVector_TwoPointers') -> int:
+        result = 0
+        p1 = p2 = 0
+        list1, list2 = self.non_zero, vec.non_zero
+
+        while p1 < len(list1) and p2 < len(list2):
+            index1, value1 = list1[p1]
+            index2, value2 = list2[p2]
+
+            if index1 == index2:
+                result += value1 * value2
+                p1 += 1
+                p2 += 1
+            elif index1 < index2:
+                p1 += 1
+            else:
+                p2 += 1
+
+        return result
+
+
+import heapq
+
+
+class SparseVector_HeapMerge:
+    def __init__(self, nums):
+        self.non_zero = [(i, num) for i, num in enumerate(nums) if num != 0]
+
+    def dotProduct(self, vec: 'SparseVector_HeapMerge') -> int:
+        result = 0
+        heap = []
+
+        # Initialize heap with first element from both lists
+        if self.non_zero:
+            heapq.heappush(heap, (self.non_zero[0][0], 0, 'self'))
+        if vec.non_zero:
+            heapq.heappush(heap, (vec.non_zero[0][0], 0, 'vec'))
+
+        while heap:
+            current_index, idx, owner = heapq.heappop(heap)
+
+            # Advance the pointer of the current owner
+            if owner == 'self':
+                list_self = self.non_zero
+                if idx + 1 < len(list_self):
+                    heapq.heappush(heap, (list_self[idx + 1][0], idx + 1, 'self'))
+                # Check if next item is from vec and has same index
+                if heap and heap[0][0] == current_index and heap[0][2] == 'vec':
+                    _, idx2, _ = heapq.heappop(heap)
+                    result += list_self[idx][1] * vec.non_zero[idx2][1]
+            else:
+                list_vec = vec.non_zero
+                if idx + 1 < len(list_vec):
+                    heapq.heappush(heap, (list_vec[idx + 1][0], idx + 1, 'vec'))
+                # Check if next item is from self and has same index
+                if heap and heap[0][0] == current_index and heap[0][2] == 'self':
+                    _, idx2, _ = heapq.heappop(heap)
+                    result += vec.non_zero[idx][1] * self.non_zero[idx2][1]
+
+        return result
+
 
 # Example usage:
 if __name__ == "__main__":
