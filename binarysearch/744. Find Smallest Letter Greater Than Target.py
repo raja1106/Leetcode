@@ -13,6 +13,9 @@ class Solution:
                 my plan is to move start into right region and end into left region
                 by that way I will get "start" is the correct ans
                 if start is len(nums), then return 0
+                # llllLRrrrrr
+        # here left region <= target, right_region>target
+                
         """
 
         while start <= end:

@@ -1,3 +1,30 @@
+
+class Solution_Best:
+    def missingElement(self, nums: List[int], k: int) -> int:
+        """
+        lllllLRrrrrr
+        Binary Search:
+        Left region  --> missing_count < k
+        Right region --> missing_count >= k
+        missing_count = actual_value - expected_value = nums[mid] - (nums[0] + mid)
+        """
+        start = 0
+        end = len(nums) - 1
+
+        while start <= end:
+            mid = start + (end - start) // 2
+            expected_value = nums[0] + mid
+            actual_value = nums[mid]
+            missing_count = actual_value - expected_value
+
+            if missing_count < k:
+                start = mid + 1
+            else:
+                end = mid - 1
+
+        total_missing_until_end = nums[end] - (nums[0] + end)
+        return nums[end] + (k - total_missing_until_end)
+
 class Solution:
     def missingElement(self, nums: List[int], k: int) -> int:
         # 4,7,9,10   k=3, ans=8
@@ -48,3 +75,4 @@ class Solution_With_comments:
         ans = nums[end] + (k - missing)
 
         return ans  # Return the k-th missing element
+

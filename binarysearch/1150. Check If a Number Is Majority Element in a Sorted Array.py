@@ -15,3 +15,14 @@ class Solution:
             else:
                 start = mid + 1
         return start
+
+import bisect
+class Solution_Using_Bisect:
+    def isMajorityElement(self, nums: List[int], target: int) -> bool:
+        # Find first occurrence using binary search
+        left_index = bisect.bisect_left(nums, target)
+        right_index = bisect.bisect_right(nums, target)
+        # Number of times target appears
+        count = right_index - left_index #1 2 2 2 3
+        # Return True if count is greater than half of the array size
+        return count > len(nums) // 2

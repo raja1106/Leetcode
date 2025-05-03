@@ -5,6 +5,25 @@
 #         self.left = left
 #         self.right = right
 
+class Solution_April_2025:
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        max_diameter = 0
+
+        def dfs(node):
+            nonlocal max_diameter
+            if node.left is None and node.right is None:
+                return 1
+            left_length = right_length = 0
+            if node.left:
+                left_length = dfs(node.left)
+            if node.right:
+                right_length = dfs(node.right)
+            local_diameter = left_length + right_length
+            max_diameter = max(max_diameter, local_diameter)
+            return 1 + max(left_length, right_length)
+
+        dfs(root)
+        return max_diameter
 class Solution_March_2025:
     def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
         globa_dia = 0
