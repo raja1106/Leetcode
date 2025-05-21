@@ -1,5 +1,21 @@
 from typing import List
 
+
+class Solution_Bruteforce:
+    def maxSubarraySumCircular(self, nums: List[int]) -> int:
+        n = len(nums)
+        extended = nums + nums  # simulate circularity
+        max_sum = float('-inf')
+
+        for i in range(n):
+            current_sum = 0
+            for l in range(n):
+                current_sum += extended[i + l]
+                max_sum = max(max_sum, current_sum)
+
+        return max_sum
+
+
 class Solution:
     def maxSubarraySumCircular(self, nums: List[int]) -> int:
         # Step 1: Find the maximum sum subarray using Kadane's algorithm

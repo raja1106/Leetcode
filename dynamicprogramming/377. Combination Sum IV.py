@@ -7,7 +7,7 @@ class Solution_Top_Down_Way:
 
         def dfs(current_sum):
             if current_sum == target:
-                return 1
+                return 1 # One valid combination
             if current_sum > target:
                 return 0
             if current_sum in memo:

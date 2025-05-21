@@ -7,7 +7,7 @@ Determines the minimum eating speed required to eat all banana piles within the 
         right region denotes --> by these  speed values in right region, you can eat all items within h hours.. since question is min_val
         from the right region, we are returning "R", and that is "start"
 
-        llllllllllRrrrrrrrrr
+        lllllllllLRrrrrrrrrr
         
         'R' --> this 'R' we are trying to find. 'R' which is "starting of the right region". As any Binary Search Problem,
         here we are moving "start" pointer to "right region" and moving "end" pointer to "left region".

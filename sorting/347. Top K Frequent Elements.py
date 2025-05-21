@@ -17,6 +17,26 @@ Input: nums = [1], k = 1
 Output: [1]
 """
 
+from collections import Counter
+
+
+class Solution_bucket_sort: #Best_one O(n)
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        freq_map = Counter(nums)  # O(n)
+        max_freq = max(freq_map.values())
+
+        # Create buckets: index represents frequency
+        buckets = [[] for _ in range(max_freq + 1)]
+        for num, freq in freq_map.items():
+            buckets[freq].append(num)
+
+        result = []
+        # Traverse buckets from highest frequency to lowest
+        for freq in range(max_freq, 0, -1):
+            # for num in buckets[freq]:
+            result.extend(buckets[freq])
+            if len(result) >= k:
+                return result[:k]
 
 
 import random
@@ -140,3 +160,16 @@ class Solution_latest_quick_select:
                 top_elements.append(num)
 
         return top_elements
+
+from collections import Counter
+from heapq import heappush,heappop,heapify
+class Solution_Using_max_heap:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        count_freq = Counter(nums)
+        max_heap = [(-freq,val) for val,freq in count_freq.items()]
+        heapify(max_heap)
+        result = []
+        for _ in range(k):
+            result.append(heappop(max_heap)[1])
+
+        return result

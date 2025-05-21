@@ -70,6 +70,8 @@ class Solution_Greedy_Approach: #O(n)
         while left > 0 or right < n - 1:
             # Choose the side to expand based on which value is greater
             expand_right = (right < n - 1 and (left == 0 or nums[right + 1] >= nums[left - 1]))
+            #a and (b or c) = b or (a and c)
+            #if (left == 0) or (right < n - 1 and nums[right + 1] >= nums[left - 1]):
 
             if expand_right:
                 right += 1

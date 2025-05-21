@@ -67,6 +67,33 @@ class Solution:
         return left  # The kth smallest number
 
 
+from heapq import heappush, heappop
+
+
+class Solution_Using_max_heap:
+    def kthSmallest(self, matrix: List[List[int]], k: int) -> int:
+        """
+        [1,2,99]
+        [10,12,13]
+        [3,15,15]
+            k =2,   k == 3
+        1
+        5
+        9
+
+        """
+        n = len(matrix)
+        max_heap = []
+        for col in range(n):
+            for row in range(n):
+                if len(max_heap) == k:
+                    if matrix[row][col] > (-1 * max_heap[0]):
+                        continue
+                heappush(max_heap, -matrix[row][col])
+                if len(max_heap) > k:
+                    heappop(max_heap)
+
+        return (-1) * max_heap[0]
 
 
 

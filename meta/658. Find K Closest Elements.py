@@ -15,6 +15,22 @@ class Solution_Using_Max_Heap: # Not efficient one.. But understandable
         result = sorted([-num for _, num in max_heap])  # Convert back from negative values
         return result
 
+class Solution_Best_Binary_search:
+    def findClosestElements(self, arr: List[int], k: int, x: int) -> List[int]:
+        # Binary search for the best starting index of the window
+        start = 0
+        end = len(arr) - k
+
+        while start <= end:
+            mid = (start + end) // 2
+            # Compare distances to decide direction
+            if mid+k < len(arr) and x - arr[mid] > arr[mid + k] - x:
+                start = mid + 1  # Shift window to the end
+            else:
+                end = mid-1  # Shift window to the start
+
+        return arr[start:start + k]
+
 class Solution_Using_linear: #O(n) time complexity
     def findClosestElements(self, arr: List[int], k: int, x: int) -> List[int]:
         left,right = 0, len(arr)-1
@@ -32,6 +48,11 @@ class Solution_Using_linear: #O(n) time complexity
 class Solution_Understandable_one:
     def findClosestElements(self, arr: List[int], k: int, x: int) -> List[int]:
         start, end = 0, len(arr) - 1
+        """
+        lllllLRrrrrr
+        start = 0
+        end = n-1
+        """
         # Binary search to find the closest value to x
         closest_value, closest_index = arr[0], 0
         while start <= end:
@@ -74,7 +95,6 @@ class Solution:
         while start < end:
             # Calculate the middle index between left and end.
             mid = (start + end) // 2
-
             # Check the distances to x from the mid element and the element at mid + k position.
             # If the element at mid is closer to x or equally distant compared to the element at mid + k,
             # move the end pointer to mid. Otherwise, move the left pointer to mid + 1.

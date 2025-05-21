@@ -25,3 +25,25 @@ class Solution:
                     total_requests += age_count[age_x] * age_count[age_y]
 
         return total_requests
+
+
+class Solution_Binary_Search:
+    def numFriendRequests(self, ages: List[int]) -> int:
+        bucket = [0] * 121
+        for age in ages:
+            bucket[age] += 1
+
+        prefix = [0] * 121
+        for i in range(1, 121):
+            prefix[i] = prefix[i - 1] + bucket[i]
+
+        res = 0
+        for age in range(15, 121):  # no one <15 can send requests
+            if bucket[age] == 0:
+                continue
+            min_age = int(age / 2 + 7)
+            count = prefix[age] - prefix[min_age]
+            res += bucket[age] * (count - 1)  # subtract self
+
+        return res
+

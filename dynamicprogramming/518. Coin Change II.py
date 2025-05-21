@@ -23,6 +23,8 @@ class Solution_TopDown_Memo:
     def change(self, amount: int, coins: List[int]) -> int:
         memo = {}  # Memoization dictionary
 
+        # Returns the number of combinations to reach 'amount' starting from 'current_amount',
+        # using coin denominations from index 'i' onward (can reuse coins[i])
         def dfs(i, current_amount):  # How many ways you can form amount from index 'i'
             if current_amount == amount:
                 return 1  # Found one valid way

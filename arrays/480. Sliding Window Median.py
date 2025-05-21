@@ -34,40 +34,40 @@ Output: [2.00000,3.00000,3.00000,3.00000,2.00000,3.00000,2.00000]
 class MedianFinder:
     def __init__(self, k: int):
         self.k = k  # size of the sliding window
-        self.lower_heap = []  # max heap to store the smaller half of numbers
-        self.upper_heap = []  # min heap to store the larger half of numbers
+        self.left_heap = []  # max heap to store the smaller half of numbers
+        self.right_heap = []  # min heap to store the larger half of numbers
         self.pending_removals = defaultdict(int)  # count of delayed elements for lazy deletion
-        self.lower_size = 0  # size of lower_heap (not necessarily len(lower_heap))
-        self.large_size = 0  # size of upper_heap (not necessarily len(upper_heap))
+        self.left_size = 0  # size of left_heap (not necessarily len(left_heap))
+        self.right_size = 0  # size of right_heap (not necessarily len(right_heap))
 
     def add_num(self, num: int):
         # Add a number to one of the heaps
-        if not self.lower_heap or num <= -self.lower_heap[0]:
-            heappush(self.lower_heap, -num)
-            self.lower_size += 1
+        if not self.left_heap or num <= -self.left_heap[0]:
+            heappush(self.left_heap, -num)
+            self.left_size += 1
         else:
-            heappush(self.upper_heap, num)
-            self.large_size += 1
+            heappush(self.right_heap, num)
+            self.right_size += 1
         self._rebalance_heaps()
 
     def find_median(self) -> float:
         # Find the median of the current numbers
-        return -self.lower_heap[0] if self.k % 2 == 1 else (-self.lower_heap[0] + self.upper_heap[0]) / 2
+        return -self.left_heap[0] if self.k % 2 == 1 else (-self.left_heap[0] + self.right_heap[0]) / 2
 
     def delete_num(self, num: int):
         # Lazily remove a number (the number will be pending_removals later during pruning)
         self.pending_removals[num] += 1
-        if num <= -self.lower_heap[0]:
-            self.lower_size -= 1
-            if num == -self.lower_heap[0]:
-                self._trim_lower_heap(self.lower_heap)
+        if num <= -self.left_heap[0]:
+            self.left_size -= 1
+            if num == -self.left_heap[0]:
+                self._prune_left_heap(self.left_heap)
         else:
-            self.large_size -= 1
-            if num == self.upper_heap[0]:
-                self._trim_upper_heap(self.upper_heap)
+            self.right_size -= 1
+            if num == self.right_heap[0]:
+                self._prune_right_heap(self.right_heap)
         self._rebalance_heaps()
 
-    def _trim_upper_heap(self, heap: List[int]):
+    def _prune_right_heap(self, heap: List[int]):
         # Remove elements that have been flagged for removal
         while heap and self.pending_removals[heap[0]] > 0:
             self.pending_removals[heap[0]] -= 1
@@ -75,7 +75,7 @@ class MedianFinder:
                 del self.pending_removals[heap[0]]
             heappop(heap)
 
-    def _trim_lower_heap(self, heap: List[int]):
+    def _prune_left_heap(self, heap: List[int]):
         # Remove elements that have been flagged for removal
         while heap and self.pending_removals[-heap[0]] > 0:
             self.pending_removals[-heap[0]] -= 1
@@ -84,17 +84,17 @@ class MedianFinder:
             heappop(heap)
 
     def _rebalance_heaps(self):
-        # Balance the two heaps to maintain the invariant lower_heap.size() > upper_heap.size()
-        while self.lower_size > self.large_size + 1:
-            heappush(self.upper_heap, -heappop(self.lower_heap))
-            self.lower_size -= 1
-            self.large_size += 1
-            self._trim_lower_heap(self.lower_heap)
-        while self.lower_size < self.large_size:
-            heapq.heappush(self.lower_heap, -heapq.heappop(self.upper_heap))
-            self.large_size -= 1
-            self.lower_size += 1
-            self._trim_upper_heap(self.upper_heap)
+        # Balance the two heaps to maintain the invariant left_heap.size() > right_heap.size()
+        while self.left_size > self.right_size + 1:
+            heappush(self.right_heap, -heappop(self.left_heap))
+            self.left_size -= 1
+            self.right_size += 1
+            self._prune_left_heap(self.left_heap)
+        while self.left_size < self.right_size:
+            heapq.heappush(self.left_heap, -heapq.heappop(self.right_heap))
+            self.right_size -= 1
+            self.left_size += 1
+            self._prune_right_heap(self.right_heap)
 class Solution:
 
     def medianSlidingWindow(self, nums: List[int], k: int) -> List[float]:

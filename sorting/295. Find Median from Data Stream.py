@@ -31,3 +31,41 @@ class MedianFinder:
 # obj = MedianFinder()
 # obj.addNum(num)
 # param_2 = obj.findMedian()
+
+from heapq import heappush, heappop, heappushpop
+
+
+class MedianFinder_May_2025:
+
+    def __init__(self):
+        self.left_heap = []  # max_heap
+        self.right_heap = []  # min_heap
+        self.size = 0
+
+    def rebalance(self):
+        if len(self.left_heap) > len(self.right_heap) + 1:
+            element = -heappop(self.left_heap)
+            heappush(self.right_heap, element)
+        elif len(self.right_heap) > len(self.left_heap):
+            element = heappop(self.right_heap)
+            heappush(self.left_heap, -element)
+
+    def addNum(self, num: int) -> None:
+        if not self.left_heap or -self.left_heap[0] >= num:
+            heappush(self.left_heap, -num)
+        else:
+            heappush(self.right_heap, num)
+        self.rebalance()
+        self.size += 1
+
+    def findMedian(self) -> float:
+        n = self.size
+        if n % 2 == 1:
+            return -self.left_heap[0]
+        else:
+            return (-self.left_heap[0] + self.right_heap[0]) / 2
+
+# Your MedianFinder object will be instantiated and called as such:
+# obj = MedianFinder()
+# obj.addNum(num)
+# param_2 = obj.findMedian()

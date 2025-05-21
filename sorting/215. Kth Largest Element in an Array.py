@@ -39,6 +39,14 @@ class Solution:
     from typing import List
 
     class Solution_Using_Min_heap:
+
+        def findKthLargest_Template_Way(self, nums: List[int], k: int) -> int:
+            min_heap = []
+            for num in nums:
+                heappush(min_heap, num)  # Add until heap size reaches k
+                if len(min_heap) > k:
+                    heappop(min_heap)
+            return min_heap[0]  # The root of the heap is the Kth largest element
         def findKthLargest(self, nums: List[int], k: int) -> int:
             min_heap = []
 

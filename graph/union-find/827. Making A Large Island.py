@@ -131,3 +131,123 @@ class Solution:
 # grid = [[1, 0], [0, 1]]
 # sol = Solution()
 # print(sol.largestIsland(grid))  # Output: 3
+from typing import List
+
+class UnionFind:
+    def __init__(self, size: int):
+        self.parent = list(range(size))
+        self.size = [1] * size  # Size of each component
+        self.components = size
+
+    def find(self, x: int) -> int:
+        # Path compression
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+
+    def union(self, x: int, y: int):
+        rootX, rootY = self.find(x), self.find(y)
+        if rootX == rootY:
+            return
+        # Union by size: attach smaller tree under larger
+        if self.size[rootX] < self.size[rootY]:
+            self.parent[rootX] = rootY
+            self.size[rootY] += self.size[rootX]
+        else:
+            self.parent[rootY] = rootX
+            self.size[rootX] += self.size[rootY]
+        self.components -= 1
+
+    def get_size(self, x: int) -> int:
+        return self.size[self.find(x)]
+
+class Solution_Union_Find_Easy_To_understand:
+    def largestIsland(self, grid: List[List[int]]) -> int:
+        n = len(grid)
+        uf = UnionFind(n * n)
+
+        def index(r, c):
+            return r * n + c
+
+        # Step 1: Union all adjacent land cells (1s)
+        for r in range(n):
+            for c in range(n):
+                if grid[r][c] == 1:
+                    for dr, dc in [(1, 0), (0, 1)]:  # Down and Right
+                        nr, nc = r + dr, c + dc
+                        if 0 <= nr < n and 0 <= nc < n and grid[nr][nc] == 1:
+                            uf.union(index(r, c), index(nr, nc))
+
+        # Step 2: Compute the initial max island size without flipping
+        max_island = max(uf.size) if any(1 in row for row in grid) else 0
+
+        # Step 3: Try flipping each 0 to 1 and compute possible island size
+        for r in range(n):
+            for c in range(n):
+                if grid[r][c] == 0:
+                    seen = set()
+                    size = 1  # This flipped cell
+
+                    for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                        nr, nc = r + dr, c + dc
+                        if 0 <= nr < n and 0 <= nc < n and grid[nr][nc] == 1:
+                            root = uf.find(index(nr, nc))
+                            if root not in seen:
+                                seen.add(root)
+                                size += uf.get_size(root)
+
+                    max_island = max(max_island, size)
+
+        return max_island
+from typing import List
+from collections import deque
+
+class Solution_Best_BFS:
+    def largestIsland(self, grid: List[List[int]]) -> int:
+        n = len(grid)
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        island_sizes = {}  # island id -> size
+        island_id = 2  # start from 2 since 0 and 1 are used
+
+        # Step 1: BFS to label each island with a unique id and store its size
+        def bfs(r: int, c: int, island_id: int) -> int:
+            queue = deque([(r, c)])
+            grid[r][c] = island_id
+            size = 1
+
+            while queue:
+                x, y = queue.popleft()
+                for dx, dy in directions:
+                    nx, ny = x + dx, y + dy
+                    if 0 <= nx < n and 0 <= ny < n and grid[nx][ny] == 1:
+                        grid[nx][ny] = island_id
+                        size += 1
+                        queue.append((nx, ny))
+            return size
+
+        for r in range(n):
+            for c in range(n):
+                if grid[r][c] == 1:
+                    size = bfs(r, c, island_id)
+                    island_sizes[island_id] = size
+                    island_id += 1
+
+        # If the entire grid is already land
+        max_island = max(island_sizes.values(), default=0)
+
+        # Step 2: Try flipping each 0 to 1 and compute max possible island
+        for r in range(n):
+            for c in range(n):
+                if grid[r][c] == 0:
+                    seen = set()
+                    total = 1  # include flipped cell
+                    for dx, dy in directions:
+                        nr, nc = r + dx, c + dy
+                        if 0 <= nr < n and 0 <= nc < n:
+                            island = grid[nr][nc]
+                            if island > 1 and island not in seen:
+                                total += island_sizes[island]
+                                seen.add(island)
+                    max_island = max(max_island, total)
+
+        return max_island if max_island > 0 else 1

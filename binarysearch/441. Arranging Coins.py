@@ -14,8 +14,11 @@ class Solution:
         return end
 
 
-class Solution_With_Two_Split:
+class Solution_Two_regions:
     def arrangeCoins(self, n: int) -> int:
+        """
+        lllllllLMRrrrrr
+        """
         # Initialize the search range
         start = 0  # Minimum possible number of rows
         end = n  # Maximum possible number of rows
@@ -39,5 +42,4 @@ class Solution_With_Two_Split:
 
         # Return the last valid number of rows (stored in 'end')
         return end
-
 

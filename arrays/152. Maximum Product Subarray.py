@@ -1,6 +1,20 @@
 from typing import List
 
-from typing import List
+class Solution_more_intituve:
+    def maxProduct(self, nums: List[int]) -> int:
+        max_product = nums[0]
+        current_min_product = nums[0]
+        current_max_product = nums[0]
+        for i in range(1,len(nums)):
+            if nums[i] >= 0:
+                current_max_product = max(current_max_product*nums[i],nums[i]) #6
+                current_min_product = min(current_min_product*nums[i],nums[i])#3
+            else:
+                temp=current_max_product #6
+                current_max_product = max(current_min_product*nums[i],nums[i])
+                current_min_product = min(temp*nums[i],nums[i])
+            max_product = max(max_product,current_max_product)
+        return max_product
 
 
 class Solution:
