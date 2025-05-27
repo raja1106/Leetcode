@@ -1,6 +1,47 @@
 from collections import deque
 from typing import List
 
+from collections import deque
+from typing import List
+
+
+class Solution_Best_One_May_2025:
+    def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
+        rows = len(mat)
+        cols = len(mat[0])
+        distance_matrix = [[-1] * cols for _ in range(rows)]
+        queue = deque()
+        ones_remaining = 0
+
+        for row in range(rows):
+            for col in range(cols):
+                if mat[row][col] == 0:
+                    distance_matrix[row][col] = 0
+                    queue.append((row, col, 0))  # (row, col, distance)
+                else:
+                    ones_remaining += 1
+
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # up, down, left, right
+
+        while queue and ones_remaining > 0:
+            current_row, current_col, current_distance = queue.popleft()
+
+            for delta_row, delta_col in directions:
+                neighbor_row = current_row + delta_row
+                neighbor_col = current_col + delta_col
+
+                if (
+                        0 <= neighbor_row < rows and
+                        0 <= neighbor_col < cols and
+                        distance_matrix[neighbor_row][neighbor_col] == -1
+                ):
+                    queue.append((neighbor_row, neighbor_col, current_distance + 1))
+                    distance_matrix[neighbor_row][neighbor_col] = current_distance + 1
+                    ones_remaining -= 1
+
+        return distance_matrix
+
+
 class Solution_Without_Having_Extra_memory:
     def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
         rows, cols = len(mat), len(mat[0])
