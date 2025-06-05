@@ -1,3 +1,31 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution_June_2025:
+    def deleteNodes(self, head: Optional[ListNode], m: int, n: int) -> Optional[ListNode]:
+        dummy_node = ListNode()
+        current = head
+        prev = dummy_node
+        while current:
+
+            for _ in range(m): # 0 1
+                prev.next = current #dummy->11
+                prev = prev.next
+                if current:
+                    current = current.next
+                else:
+                    return dummy_node.next
+            #end of for loop 3
+            prev.next = None
+
+            for _ in range(n): # 0 1 2
+                if current:
+                    current = current.next # 4 5 6
+                else:
+                    return dummy_node.next
+        return  dummy_node.next
 class Solution:
     def deleteNodes(self, head: ListNode, m: int, n: int) -> ListNode:
         if head is None:

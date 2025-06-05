@@ -20,7 +20,7 @@ class Solution:
                 prev.next = next_distinct
                 current = next_distinct
             else:
-                prev = current
+                prev = current # or prev = prev.next
                 current = current.next
 
         return dummy_head.next

@@ -1,5 +1,36 @@
 from collections import defaultdict
 
+
+from typing import List
+from collections import deque, defaultdict
+
+class Solution_BFS:
+    def possibleBipartition(self, n: int, dislikes: List[List[int]]) -> bool:
+        # Step 1: Build the undirected graph (1-based indexing)
+        graph = defaultdict(list)
+        for u, v in dislikes:
+            graph[u].append(v)
+            graph[v].append(u)
+
+        # Step 2: Apply BFS-based 2-coloring
+        color = [-1] * (n+1)  # -1 means unvisited
+
+        for start_node in range(1,n):
+            if color[start_node] == -1:
+                queue = deque([start_node])
+                color[start_node] = 0  # Start with color 0
+
+                while queue:
+                    node = queue.popleft()
+                    for neighbor in graph[node]:
+                        if color[neighbor] == -1:
+                            color[neighbor] = 1 - color[node]
+                            queue.append(neighbor)
+                        elif color[neighbor] == color[node]:
+                            return False  # Conflict detected
+
+        return True
+
 class UnionFind:
     def __init__(self, size):
         self.parent = list(range(size))  # Initialize parent array
