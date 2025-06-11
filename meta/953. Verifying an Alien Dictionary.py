@@ -1,6 +1,25 @@
 from typing import List
 
 
+class Solution_Best_Way:
+    def isAlienSorted(self, words: List[str], order: str) -> bool:
+        order_map = defaultdict(int)
+        if len(words) == 1:
+            return True
+        for i, v in enumerate(order):
+            order_map[v] = i
+        for i in range(len(words) - 1):
+            word1 = words[i]
+            word2 = words[i + 1]
+            if word1 != word2 and word1.startswith(word2):
+                return False
+            for ch1, ch2 in zip(word1, word2):
+                if order_map[ch1] > order_map[ch2]:
+                    return False
+                elif order_map[ch1] < order_map[ch2]:
+                    break
+        return True
+
 class Solution:
     def isAlienSorted(self, words: List[str], order: str) -> bool:
         # Create a mapping of each character to its rank according to the alien dictionary

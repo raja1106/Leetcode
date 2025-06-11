@@ -1,6 +1,45 @@
 from collections import defaultdict
 from typing import List
 
+from collections import defaultdict, deque
+from typing import List
+
+
+class Solution_BFS:
+    def validTree(self, n: int, edges: List[List[int]]) -> bool:
+        # Early exit: tree must have exactly n - 1 edges
+        if len(edges) != n - 1:
+            return False
+
+        graph = defaultdict(list)
+
+        # Build the undirected graph
+        def create_graph():
+            for src, dst in edges:
+                graph[src].append(dst)
+                graph[dst].append(src)
+
+        visited = set()
+        create_graph()
+
+        # BFS to check for cycles and connectivity
+        def bfs(node):
+            queue = deque([(node, -1)])
+            visited.add(node)
+            while queue:
+                current_node, parent = queue.popleft()
+                for neighbor in graph[current_node]:
+                    if neighbor not in visited:
+                        visited.add(neighbor)
+                        queue.append((neighbor, current_node))
+                    elif neighbor != parent:
+                        # A back edge exists — cycle detected
+                        return False
+            return True
+
+        # Check for both connectivity and absence of cycles
+        return bfs(0) and len(visited) == n
+
 
 class Solution:
     def validTree(self, n: int, edges: List[List[int]]) -> bool:

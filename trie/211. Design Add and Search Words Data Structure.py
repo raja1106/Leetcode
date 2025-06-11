@@ -4,7 +4,7 @@ class TrieNode:
         self.is_end = False
 
 
-class WordDictionary:
+class WordDictionary:#Trie
     def __init__(self):
         self.root = TrieNode()
         # Remove the following line if you do not want the empty string to be a valid word.
