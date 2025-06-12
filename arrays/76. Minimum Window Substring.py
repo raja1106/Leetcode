@@ -78,14 +78,14 @@ class Solution_Feb_2024:
                     return False
             return True
 
-        for right in range(len(s)):
-            window_counter[s[right]] += 1
+        for i in range(len(s)):
+            window_counter[s[i]] += 1
 
-            while left <= right and is_valid_window():
+            while left <= i and is_valid_window():
                 # Update the minimum window if the current one is smaller.
-                if (right - left + 1) < min_length:
-                    min_length = right - left + 1
-                    min_window = s[left:right + 1]
+                if (i - left + 1) < min_length:
+                    min_length = i - left + 1
+                    min_window = s[left:i + 1]
                 # Shrink the window from the left regardless of whether we updated the minimum.
                 window_counter[s[left]] -= 1
                 if window_counter[s[left]] == 0:
