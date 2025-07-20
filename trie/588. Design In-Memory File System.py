@@ -9,7 +9,7 @@ class FileSystem:
         self.root = TrieNode()
 
     def _traverse(self, path: str) -> TrieNode:
-        node = self.root
+        node = self.root#test
         if path == "/":
             return node
         parts = path.strip("/").split("/")
