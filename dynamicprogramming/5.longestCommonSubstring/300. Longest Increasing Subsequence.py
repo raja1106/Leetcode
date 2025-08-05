@@ -1,5 +1,28 @@
 from typing import List
 
+class Solution_Top_Down:
+    def lengthOfLIS(self, nums):
+        memo = {}  # Dictionary for memoization
+
+        def dfs(i, previous_index):
+            if i == len(nums):
+                return 0  # No elements left to include
+
+            if (i, previous_index) in memo:
+                return memo[(i, previous_index)]
+
+            # Exclude current number
+            option1 = dfs(i + 1, previous_index)
+
+            # Include current number if it forms an increasing sequence
+            option2 = 0
+            if previous_index == -1 or nums[i] > nums[previous_index]:
+                option2 = 1 + dfs(i + 1, i)  # Update previous index
+
+            memo[(i, previous_index)] = max(option1, option2)
+            return memo[(i, previous_index)]
+
+        return dfs(0, -1)  # Start with index 0 and previous_index as -1 (no previous element)
 
 class Solution_Bottom_Up_Approach:
     def lengthOfLIS(self, nums: List[int]) -> int:
@@ -18,7 +41,7 @@ class Solution_Bottom_Up_Approach:
 
         return maxLength
 
-
+""" ---------------------------------------------------------------------"""
 class Solution_Bruteforce1_0125:
     def lengthOfLIS(self, nums: List[int]) -> int:
         max_val = 1
@@ -59,29 +82,6 @@ class Solution_Bruteforce2_0125:
         return dfs(0, -1)  # Start with index 0 and previous_index as -1 (no previous element)
 
 
-class Solution_Using_memo_Jan2025:
-    def lengthOfLIS(self, nums):
-        memo = {}  # Dictionary for memoization
-
-        def dfs(i, previous_index):
-            if i == len(nums):
-                return 0  # No elements left to include
-
-            if (i, previous_index) in memo:
-                return memo[(i, previous_index)]
-
-            # Exclude current number
-            option1 = dfs(i + 1, previous_index)
-
-            # Include current number if it forms an increasing sequence
-            option2 = 0
-            if previous_index == -1 or nums[i] > nums[previous_index]:
-                option2 = 1 + dfs(i + 1, i)  # Update previous index
-
-            memo[(i, previous_index)] = max(option1, option2)
-            return memo[(i, previous_index)]
-
-        return dfs(0, -1)  # Start with index 0 and previous_index as -1 (no previous element)
 
 
 # Test Case
