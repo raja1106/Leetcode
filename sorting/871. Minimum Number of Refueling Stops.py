@@ -32,6 +32,42 @@ and refuel from 10 liters to 50 liters of gas.  We then drive to and reach the t
 We made 2 refueling stops along the way, so we return 2.
 """
 
+class Solution_Best:
+
+    def minRefuelStops(self, target: int, startFuel: int, stations: List[List[int]]) -> int:
+        # Max-heap to store available fuel at stations we have passed
+        fuel_maxheap = []
+        # The position of the last station we processed
+        last_station_position = 0
+        # The number of refueling stops we have made
+        refuel_stops = 0
+        # Add the target as a station to make sure we process the journey's end
+        stations.append([target, 0])
+
+        current_fuel = startFuel
+
+        # Process each station on the route
+        for position, fuel in stations:
+            # Distance to this station (or target)
+            distance = position - last_station_position
+
+            while current_fuel < distance and fuel_maxheap:
+                current_fuel += -heappop(fuel_maxheap)  # Get fuel from the heap (invert the negative value)
+                refuel_stops += 1  # Increment the refuel counter
+
+            # If we cannot reach the next station/target and there is no more fuel in the heap, return -1
+            if current_fuel < distance:
+                return -1
+
+            current_fuel = current_fuel - distance
+            heappush(fuel_maxheap, -fuel)
+
+            last_station_position = position
+
+        return refuel_stops
+
+
+
 
 class Solution:
 

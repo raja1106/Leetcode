@@ -83,6 +83,22 @@ class MedianFinder:
                 del self.pending_removals[-heap[0]]
             heappop(heap)
 
+    def _prune(self, heap: List[int], *, is_left: bool):
+        """
+        Remove heap-top elements that are marked in pending_removals.
+        For left heap (max-heap via negatives), the actual value is -heap[0].
+        For right heap (min-heap), the actual value is heap[0].
+        """
+        while heap:
+            top_actual = -heap[0] if is_left else heap[0]
+            if self.pending_removals.get(top_actual, 0) == 0:
+                break
+            # Consume one pending removal for this value
+            self.pending_removals[top_actual] -= 1
+            if self.pending_removals[top_actual] == 0:
+                del self.pending_removals[top_actual]
+            heapq.heappop(heap)
+
     def _rebalance_heaps(self):
         # Balance the two heaps to maintain the invariant left_heap.size() > right_heap.size()
         while self.left_size > self.right_size + 1:

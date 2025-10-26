@@ -37,6 +37,47 @@ from collections import Counter, deque
 from heapq import heapify, heappop, heappush
 from typing import List
 
+from collections import Counter, deque
+from heapq import heapify, heappop, heappush
+from typing import List, Deque, Tuple
+
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        """
+        Greedy simulation:
+        - Max-heap always picks the task with the highest remaining count.
+        - Queue holds (ready_at_time, remaining_count) for tasks in cooldown.
+        - Each time unit: release cooled tasks, run highest-count task if any, else idle.
+        """
+        if n == 0:
+            return len(tasks)  # no cooldown; just run them back-to-back
+
+        counts = Counter(tasks)
+        # Max-heap via negatives
+        heap = [-c for c in counts.values()]
+        heapify(heap)
+
+        cooldown = deque()
+        time = 0
+
+        while heap or cooldown:
+            time += 1
+
+            # 1) Release tasks whose cooldown finished at or before 'time'
+            while cooldown and cooldown[0][0] <= time:
+                ready_at, remaining = cooldown.popleft()
+                heappush(heap, -remaining)
+
+            # 2) Execute a task if available; else this tick is idle
+            if heap:
+                remaining = -heappop(heap)  # positive count
+                remaining -= 1
+                if remaining > 0:
+                    # Next time this task can run is time + n + 1
+                    cooldown.append((time + n + 1, remaining))
+
+        return time
+
 
 class Solution_Best_Approach:
     def leastInterval(self, tasks: List[str], n: int) -> int:

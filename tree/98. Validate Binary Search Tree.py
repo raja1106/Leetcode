@@ -4,7 +4,41 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
-class Solution: #Time Complexity: O(N)
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution_Best_Readable:
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        def dfs(node):
+            min_val = max_val = node.val
+            if node.left is None and node.right is None:
+                return min_val, max_val, True
+            is_left_bst = is_right_bst = True
+            if node.left:
+                left_min_val, left_max_val, is_left_bst = dfs(node.left)
+                min_val = left_min_val
+                if left_max_val > node.val:
+                    is_left_bst = False
+            if node.right:
+                right_min_val, right_max_val, is_right_bst = dfs(node.right)
+                max_val = right_max_val
+                if right_min_val < node.val:
+                    is_right_bst = False
+            if is_left_bst and is_right_bst and (min_val <= node.val <= max_val):
+                return min_val, max_val, True
+            else:
+                return min_val, max_val, False
+
+        if not root:
+            return False
+        return dfs(root)[2]
+
+
+class Solution_Top_Down: #Time Complexity: O(N)
     def isValidBST(self, root: Optional[TreeNode]) -> bool:
         def dfs(node, min_value, max_value):
             if node.val >= max_value or node.val <= min_value:

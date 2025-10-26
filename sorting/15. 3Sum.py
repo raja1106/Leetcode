@@ -8,7 +8,8 @@ class Solution_Best_Solution:
             # Skip duplicate elements for 'i'
             if i > 0 and nums[i] == nums[i - 1]:
                 continue
-
+            if nums[i] > 0:
+                break
             left, right = i + 1, n - 1
             target = -nums[i]
 
