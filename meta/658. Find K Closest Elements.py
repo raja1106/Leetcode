@@ -2,6 +2,26 @@ from typing import List
 
 from heapq import heappush, heappop
 
+from heapq import heapify, heappush, heappop
+
+
+class Solution_Min_heap:
+    def findClosestElements(self, arr: List[int], k: int, x: int) -> List[int]:
+        min_heap = []
+
+        for i, v in enumerate(arr):
+            abs_val = abs(v - x)
+            heappush(min_heap, (abs_val, i))
+
+        result = []
+
+        for i in range(k):
+            idx = heappop(min_heap)[1]
+            result.append(arr[idx])
+
+        result.sort()
+        return result
+
 class Solution_Using_Max_Heap: # Not efficient one.. But understandable
     def findClosestElements(self, arr: List[int], k: int, x: int) -> List[int]:
         max_heap = []
@@ -34,15 +54,15 @@ class Solution_Best_Binary_search:
 class Solution_Using_linear: #O(n) time complexity
     def findClosestElements(self, arr: List[int], k: int, x: int) -> List[int]:
         left,right = 0, len(arr)-1
-        K = len(arr)-k
-        while K!=0:
+        to_remove = len(arr)-k
+        while to_remove!=0:
             diff_1 = abs(x-arr[left])
             diff_2 = abs(x-arr[right])
             if diff_1 <= diff_2:
                 right -= 1
             else:
                 left += 1
-            K -= 1
+            to_remove -= 1
         return arr[left:right+1]
 
 class Solution_Understandable_one:

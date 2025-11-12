@@ -70,30 +70,20 @@ class Solution:
 from heapq import heappush, heappop
 
 
-class Solution_Using_max_heap:
+class Solution_Using_Max_Heap:
     def kthSmallest(self, matrix: List[List[int]], k: int) -> int:
-        """
-        [1,2,99]
-        [10,12,13]
-        [3,15,15]
-            k =2,   k == 3
-        1
-        5
-        9
-
-        """
-        n = len(matrix)
+        if not matrix or not matrix[0]:
+            return -1
+        rows = len(matrix)
+        cols = len(matrix[0])
         max_heap = []
-        for col in range(n):
-            for row in range(n):
-                if len(max_heap) == k:
-                    if matrix[row][col] > (-1 * max_heap[0]):
-                        continue
-                heappush(max_heap, -matrix[row][col])
+        for i in range(rows):
+            for j in range(cols):
+                heappush(max_heap, -matrix[i][j])
                 if len(max_heap) > k:
                     heappop(max_heap)
+        return -max_heap[0]
 
-        return (-1) * max_heap[0]
 
 
 

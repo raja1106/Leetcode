@@ -1,3 +1,68 @@
+class Solution_Using_TopDown:
+    def splitArray(self, nums: List[int], k: int) -> int:
+        n = len(nums)
+        memo = {}
+
+        def dfs(i, m):
+            # If we consumed all nums, valid only if m == 0
+            if i == n:
+                return 0 if m == 0 else float("inf")
+
+            # If we still need to create subarrays but no elements left
+            if m == 0:
+                return float("inf")
+
+            # Check memo
+            if (i, m) in memo:
+                return memo[(i, m)]
+
+            res = float("inf")
+            curSum = 0
+
+            # Try every possible end point j for the current subarray
+            for j in range(i, n - m + 1):
+                curSum += nums[j]
+                res = min(res, max(curSum, dfs(j + 1, m - 1)))
+
+            memo[(i, m)] = res
+            return res
+
+        return dfs(0, k)
+
+
+class Solution_Bruteforce:
+    def splitArray(self, nums: List[int], k: int) -> int:
+        """
+        nums = [7,2,5,10,8], k = 2 --> n-k index
+        7 2 5 10   8
+        """
+        global_min = float('inf')
+
+        # r --> subarrays remaining
+        def helper(i, r, path):
+            nonlocal global_min
+            if r == 1:
+                current_subarray_sum = sum(nums[i:])
+                path.append(current_subarray_sum)  # path : list of sub arrays (list of list elements)
+                local_max = max(path)
+                global_min = min(global_min, local_max)
+                path.pop()
+                return
+
+            for start in range(i, len(nums) - k + 1):
+                path.append(sum(nums[i:start + 1]))
+                helper(start + 1, r - 1, path)
+                path.pop()
+            return
+
+        helper(0, k, [])
+        return global_min
+
+
+
+
+
+
 class Solution:
 
 

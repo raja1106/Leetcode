@@ -27,7 +27,32 @@ class Solution:
 
         return trapped_water
 
-    from typing import List
+
+class Solution_With_constant_space:
+    def trap(self, height: List[int]) -> int:
+        n = len(height)
+        if n < 3:
+            return 0
+
+        left, right = 0, n - 1
+        left_max, right_max = 0, 0
+        total = 0
+
+        while left < right:
+            if height[left] <= height[right]:
+                if height[left] >= left_max:
+                    left_max = height[left]
+                else:
+                    total += left_max - height[left]
+                left += 1
+            else:
+                if height[right] >= right_max:
+                    right_max = height[right]
+                else:
+                    total += right_max - height[right]
+                right -= 1
+
+        return total
 
 class Solution_Using_Monotoic_Stack:
     def trap(self, height: List[int]) -> int:
