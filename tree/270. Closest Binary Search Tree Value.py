@@ -4,6 +4,36 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+
+class Solution_Using_DFS:
+    def closestValue(self, root: Optional[TreeNode], target: float) -> int:
+        if root is None:
+            return -1
+
+        closest = root.val
+
+        def dfs(node: Optional[TreeNode]):
+            nonlocal closest
+            if not node:
+                return
+
+            diff = abs(node.val - target)
+            best_diff = abs(closest - target)
+            if diff < best_diff or (diff == best_diff and node.val < closest):
+                closest = node.val
+
+            # BST-based pruning:
+            if target < node.val:
+                dfs(node.left)
+            elif target > node.val:
+                dfs(node.right)
+            else:
+                # Exact match
+                return
+
+        dfs(root)
+        return closest
+
 class Solution:
     def closestValue(self, root: Optional[TreeNode], target: float) -> int:
         # Initialize the closest_value with the root's value
