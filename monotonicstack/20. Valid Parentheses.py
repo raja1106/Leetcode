@@ -1,3 +1,26 @@
+class Solution_Latest:
+    def isValid(self, s: str) -> bool:
+        """
+        {}[
+        last inserted
+        """
+        st = []
+
+        opened = {'[', '{', '('}
+        closed_map = {']': '[', '}': '{', ')': '('}
+
+        for ch in s:
+            if ch in closed_map:
+                if st and st[-1] == closed_map[ch]:
+                    st.pop()
+                else:
+                    return False
+            else:
+                st.append(ch)
+
+        return False if st else True
+
+
 class Solution:
 
     def isValid(self, s: str) -> bool:
