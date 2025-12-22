@@ -1,3 +1,6 @@
+from typing import List
+
+
 class Solution:
     def sumSubarrayMins(self, arr: List[int]) -> int:
         MOD = 10 ** 9 + 7
@@ -66,4 +69,76 @@ class Solution_Bruteforce:
                 total_sum += min_element
 
         return total_sum % mod
+
+
+class Solution_with_examples:
+    def sumSubarrayMins(self, arr: List[int]) -> int:
+        """
+        Input: arr = [3,1,2,4]
+
+        3 1 2 4
+
+        2 -> 2
+      1 2 -> 1
+    3 1 2 -> 1
+             4
+        4
+        2
+        1
+        1
+        =
+        8
+
+        1
+        1
+        =
+        2
+
+        3
+        =
+        3
+
+        dp = [3,2,4,8]
+
+        """
+        MOD = 10 ** 9 + 7
+        total_count = arr[0]
+        n = len(arr)
+        dp = [0] * n
+        st = []  # (val,idx)
+        dp[0] = arr[0]
+        st.append((arr[0], 0))
+        for i in range(1, n):
+            while st and st[-1][0] > arr[i]:
+                st.pop()
+
+            if st:
+                span = i - st[-1][1]
+                local_sum = span * arr[i] + dp[st[-1][1]]
+            else:
+                span = i + 1
+                local_sum = span * arr[i]
+
+            dp[i] = local_sum
+            total_count += local_sum
+            st.append((arr[i], i))
+
+        return total_count % MOD
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

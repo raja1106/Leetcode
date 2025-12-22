@@ -7,7 +7,6 @@ class Solution:
         next_greater_map = {}
 
         for i in range(len(nums2) - 1, -1, -1):
-            print(nums2[i])
             while st and st[-1] <= nums2[i]:
                 st.pop()
             if st:
