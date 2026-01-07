@@ -1,3 +1,4 @@
+from typing import List
 class Solution_Bruteforce_Way:
     def change(self, amount: int, coins: List[int]) -> int:
         total_count = 0

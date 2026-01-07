@@ -1,5 +1,40 @@
 from typing import List
+from typing import List
 
+
+class Solution_Topdown_Best:
+    def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
+        word_set = set(wordDict)
+        memo = {}
+
+        def dfs(start):
+            # If we've already calculated results for this suffix, return them
+            if start in memo:
+                return memo[start]
+            res = []
+            # Base case: reached the end of the string
+            if start == len(s):
+                res.append("")
+                return res
+
+            # Try every possible end position for a word starting at 'start'
+            for end in range(start, len(s)):
+                word = s[start:end + 1]
+
+                if word in word_set:
+                    # Get all possible completions for the rest of the string
+                    sub_sentences = dfs(end + 1)
+
+                    for sub in sub_sentences:
+                        # If sub is empty (base case), just add the word
+                        # Otherwise, join word and sub-sentence with a space
+                        sentence = word + ("" if sub == "" else " " + sub)
+                        res.append(sentence)
+
+            memo[start] = res
+            return res
+
+        return dfs(0)
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
         dict_set = set(wordDict)

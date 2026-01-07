@@ -1,4 +1,46 @@
 class Solution:
+    def calculate(self, s: str) -> int:
+        st = []
+        sign_operator = 1
+
+        def parse_number(k):
+            j = k
+            while j< len(s) and s[j].isdigit(): #(111) k=1, j=4
+                j += 1
+            return (j-1,s[k:j])
+
+        i = 0
+        while i < len(s):
+            ch = s[i]
+            if ch == '(':
+                if sign_operator == -1:
+                    st.append('-')
+                sign_operator = 1
+                st.append(ch)
+            elif ch == '+':
+                sign_operator = 1
+            elif ch == '-':
+                sign_operator = -1
+            elif ch.isdigit():
+                new_index,new_number_str = parse_number(i)
+                new_number = int(new_number_str)
+                i = new_index
+                st.append(new_number*sign_operator)
+            elif ch == ')':
+                local_calculation = 0
+                while st and st[-1] != '(':
+                    local_calculation += st.pop()
+                st.pop() #to pop '('
+                if st and st[-1] == '-':
+                    st.pop()
+                    st.append(local_calculation*-1)
+                else:
+                    st.append(local_calculation)
+            i += 1
+
+        return sum(st)
+
+class Solution_Old_approach:
     def calculate(self, expression: str) -> int:
         def parse_number(expression, index):
             """Parses multi-digit numbers and returns the number and updated i."""

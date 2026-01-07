@@ -23,6 +23,27 @@ class Solution:
         # If the string is a palindrome or can be made into one by removing a single character
         return True
 
+
+class Solution_Another_Approach:
+    def validPalindrome(self, s: str) -> bool:
+        """
+        s = "abca"
+        """
+        def is_palindrome(left, right, deletions_left):
+            if left >= right:
+                return True
+
+            match_case = skip_left = skip_right = False
+
+            if s[left] == s[right]:
+                match_case = is_palindrome(left + 1, right - 1, deletions_left)
+            elif deletions_left > 0:
+                skip_left = is_palindrome(left + 1, right, deletions_left - 1)
+                skip_right = is_palindrome(left, right - 1, deletions_left - 1)
+
+            return match_case or skip_left or skip_right
+
+        return is_palindrome(0, len(s) - 1, 1)
 print(Solution().validPalindrome('radadkar'))
 
 

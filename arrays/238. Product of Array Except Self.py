@@ -3,6 +3,17 @@ from typing import List
 
 class Solution_1:#Time: O(n)  Space: O(n)
     def productExceptSelf(self, nums: List[int]) -> List[int]:
+        """
+                [1,2,3,4]
+
+                a b c d
+
+                1    a  ab  abc
+                bcd  cd  d     1
+
+                bcd acd abd abc
+
+        """
         array_length = len(nums)
         prefix_products = [1] * array_length
         suffix_products = [1] * array_length

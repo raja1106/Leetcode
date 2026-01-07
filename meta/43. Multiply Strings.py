@@ -1,3 +1,38 @@
+class Solution_easier:
+    """
+    456
+    123
+    ----
+    1368
+      2
+    """
+
+    def multiply(self, num1: str, num2: str) -> str:
+        multiply_arrays = []
+        row_count = 0
+        for i in range(len(num2) - 1, -1, -1):
+            local_array = []
+            local_array.extend(['0'] * row_count)
+            carry = 0
+            digit = 0
+            for j in range(len(num1) - 1, -1, -1):
+                digit = carry + int(num1[j]) * int(num2[i])
+                carry = digit // 10
+                digit = digit % 10
+                local_array.append(str(digit))
+            local_array.append(str(carry))
+            local_array.reverse()
+            multiply_arrays.append(''.join(local_array))
+            row_count += 1
+
+        result = 0
+
+        for arr in multiply_arrays:
+            result += int(arr)
+
+        return str(result)
+
+
 class Solution:
     def multiply(self, num1: str, num2: str) -> str:
         # Handle edge cases where either num1 or num2 is '0'

@@ -1,5 +1,27 @@
 from typing import List
 
+class Solution_Top_Down_Way_Latest:
+    def combinationSum4(self, nums: List[int], target: int) -> int:
+        memo = {}  # Memoization dictionary
+
+        def dfs(current_amount): # min number of coins needed
+            if current_amount == target:
+                return 1  # valid path found
+            if current_amount > target:
+                return 0  # no valid path available
+            if current_amount in memo:
+                return memo[current_amount]  # Return cached result
+
+            current_total = 0
+
+            for coin in nums:
+                current_total = current_total + dfs(current_amount+coin)
+
+            memo[current_amount] = current_total
+            return memo[current_amount]
+
+        result = dfs(0)
+        return result
 
 class Solution_Top_Down_Way:
     def combinationSum4(self, nums: List[int], target: int) -> int:
