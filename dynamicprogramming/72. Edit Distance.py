@@ -1,3 +1,69 @@
+class Solution_Another_Top_Down:
+    def minDistance(self, word1: str, word2: str) -> int:
+        len1, len2 = len(word1), len(word2)
+        memo = {}
+
+        def dp(i: int, j: int) -> int:
+            """
+            Minimum edit distance to convert
+            word1[i:] into word2[j:]
+            """
+            if (i, j) in memo:
+                return memo[(i, j)]
+
+            # If word1 is exhausted, insert remaining chars of word2
+            if i == len1:
+                memo[(i, j)] = len2 - j
+                return memo[(i, j)]
+
+            # If word2 is exhausted, delete remaining chars of word1
+            if j == len2:
+                memo[(i, j)] = len1 - i
+                return memo[(i, j)]
+
+            # Characters match → no operation needed
+            if word1[i] == word2[j]:
+                cost = dp(i + 1, j + 1)
+            else:
+                insert_cost  = 1 + dp(i, j + 1)
+                delete_cost  = 1 + dp(i + 1, j)
+                replace_cost = 1 + dp(i + 1, j + 1)
+                cost = min(insert_cost, delete_cost, replace_cost)
+
+            memo[(i, j)] = cost
+            return cost
+        return dp(0, 0)
+
+class Solution_Another_Bottom_Up_Approach_Best:
+    def minDistance(self, word1: str, word2: str) -> int:
+        m, n = len(word1), len(word2)
+
+        # Create DP table
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
+
+        # Base Cases:
+        # If word1 is exhausted, insert all remaining characters from word2
+        for j in range(n + 1):
+            dp[m][j] = n - j  # Remaining insertions required
+
+        # If word2 is exhausted, delete all remaining characters from word1
+        for i in range(m + 1):
+            dp[i][n] = m - i  # Remaining deletions required
+
+        # Fill the DP table bottom-up (reverse order)
+        for i in range(m - 1, -1, -1):  # Start from last row
+            for j in range(n - 1, -1, -1):  # Start from last column
+                if word1[i] == word2[j]:  # Characters match, move diagonally
+                    dp[i][j] = dp[i + 1][j + 1]
+                else:
+                    dp[i][j] = 1 + min(
+                        dp[i + 1][j],  # Delete
+                        dp[i][j + 1],  # Insert
+                        dp[i + 1][j + 1]  # Replace
+                    )
+
+        return dp[0][0]  # The answer is now at the top-left cell
+
 class Solution_Using_Bruteforce:
     def minDistance(self, word1: str, word2: str) -> int:
         """
@@ -94,34 +160,4 @@ class Solution_Using_BottomUP:
         # The final answer is stored in dp[m][n], which represents transforming word1[:m] to word2[:n]
         return dp[m][n]
 
-
-class Solution_Another_Bottom_Up_Approach:
-    def minDistance(self, word1: str, word2: str) -> int:
-        m, n = len(word1), len(word2)
-
-        # Create DP table
-        dp = [[0] * (n + 1) for _ in range(m + 1)]
-
-        # Base Cases:
-        # If word1 is exhausted, insert all remaining characters from word2
-        for j in range(n + 1):
-            dp[m][j] = n - j  # Remaining insertions required
-
-        # If word2 is exhausted, delete all remaining characters from word1
-        for i in range(m + 1):
-            dp[i][n] = m - i  # Remaining deletions required
-
-        # Fill the DP table bottom-up (reverse order)
-        for i in range(m - 1, -1, -1):  # Start from last row
-            for j in range(n - 1, -1, -1):  # Start from last column
-                if word1[i] == word2[j]:  # Characters match, move diagonally
-                    dp[i][j] = dp[i + 1][j + 1]
-                else:
-                    dp[i][j] = 1 + min(
-                        dp[i + 1][j],  # Delete
-                        dp[i][j + 1],  # Insert
-                        dp[i + 1][j + 1]  # Replace
-                    )
-
-        return dp[0][0]  # The answer is now at the top-left cell
 

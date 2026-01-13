@@ -1,4 +1,4 @@
-class Solution:
+class Solution:##O(mn(m+n))
     def shortestCommonSupersequence(self, str1: str, str2: str) -> str:
         memo = {}
 
@@ -14,7 +14,7 @@ class Solution:
             # If characters match, include the character and move both pointers
             if s1[i] == s2[j]:
                 memo[(i, j)] = s1[i] + dfs(i + 1, j + 1, s1, s2)
-                return s1[i] + dfs(i + 1, j + 1, s1, s2)
+                return  memo[(i, j)]
 
             # Try both possibilities (either taking s1[i] or s2[j]) and return the shorter one
             option1 = s1[i] + dfs(i + 1, j, s1, s2)  # Include s1[i] and move forward in s1
@@ -23,6 +23,48 @@ class Solution:
             return option1 if len(option1) < len(option2) else option2  # Return the shortest
 
         return dfs(0, 0, str1, str2)
+
+from typing import List
+from functools import lru_cache
+
+class Solution_TopDown_efficient:#O(mn)
+    def shortestCommonSupersequence(self, str1: str, str2: str) -> str:
+        m, n = len(str1), len(str2)
+
+        @lru_cache(None)
+        def lcs(i: int, j: int) -> int:
+            # LCS length of str1[i:] and str2[j:]
+            if i == m or j == n:
+                return 0
+            if str1[i] == str2[j]:
+                return 1 + lcs(i + 1, j + 1)
+            return max(lcs(i + 1, j), lcs(i, j + 1))
+
+        # Build SCS using LCS decisions (still recursive)
+        res: List[str] = []
+
+        def build(i: int, j: int) -> None:
+            if i == m:
+                res.append(str2[j:])
+                return
+            if j == n:
+                res.append(str1[i:])
+                return
+
+            if str1[i] == str2[j]:
+                res.append(str1[i])
+                build(i + 1, j + 1)
+            else:
+                # Choose the direction that keeps LCS as large as possible
+                if lcs(i + 1, j) >= lcs(i, j + 1):
+                    res.append(str1[i])
+                    build(i + 1, j)
+                else:
+                    res.append(str2[j])
+                    build(i, j + 1)
+
+        build(0, 0)
+        return "".join(res)
 
 class Solution_Bottom_UP_DP:
     def shortestCommonSupersequence(self, str1: str, str2: str) -> str:
