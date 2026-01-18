@@ -25,6 +25,33 @@ class Solution_BFS:
 
         return 0
 
+
+class Solution_DFS:
+    def jump(self, nums: List[int]) -> int:
+        memo = {}
+
+        def dfs(i):
+            if i in memo:
+                return memo[i]
+
+            if i == len(nums) - 1:
+                return 0
+
+            if i >= len(nums):
+                return float('inf')
+
+            min_steps = float('inf')
+
+            # FIX: start from 1, not 0
+            for j in range(1, nums[i] + 1):
+                current_steps = 1 + dfs(i + j)
+                min_steps = min(min_steps, current_steps)
+
+            memo[i] = min_steps
+            return min_steps
+
+        return dfs(0)
+
 class Solution_DP_Approach: #T(n) = O(n^2)
     def jump(self, nums: List[int]) -> int:
         n = len(nums)
