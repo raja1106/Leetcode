@@ -68,6 +68,6 @@ class Solution_BottomUP2:
 
 
 # Test cases
-sol = Solution()
+sol = Solution_BottomUP2()
 print(sol.numDistinct("rabbbit", "rabbit"))  # Output: 3
 print(sol.numDistinct("babgbag", "bag"))  # Output: 5
