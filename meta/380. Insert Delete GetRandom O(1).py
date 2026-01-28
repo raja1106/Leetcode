@@ -1,4 +1,5 @@
-from random import choice
+import random
+
 
 class RandomizedSet:
     def __init__(self):

@@ -15,6 +15,27 @@ class Solution:
                 next_non_zero += 1
 
 
+class Solution_Other_Approach:
+    def moveZeroes(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        write = 0
+        read = 0
+
+        while read < len(nums):
+            if nums[read] != 0:
+                nums[write] = nums[read]
+                write += 1
+
+            read += 1
+
+        while write < len(nums):
+            nums[write] = 0
+            write += 1
+
+        return
+
 # Example 1
 nums1 = [0, 1, 0, 3, 12]
 obj = Solution()
