@@ -1,8 +1,11 @@
+from typing import Optional
+
 # Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
+class ListNode:
+      def __init__(self, val=0, next=None):
+          self.val = val
+          self.next = next
+
 
 class Solution_second_Middle:  # 1 2 3 4 5 6 7
     def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:

@@ -1,3 +1,12 @@
+from typing import Optional
+
+# Definition for singly-linked list.
+class ListNode:
+     def __init__(self, val=0, next=None):
+         self.val = val
+         self.next = next
+
+
 class Solution:
     def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
         if not head or not head.next:
@@ -15,6 +24,7 @@ class Solution:
                     slow = slow.next
                 return start
         return None
+
 class Solution_Extra_memory:
     def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
         visited = set()  # This set will store node references
@@ -25,12 +35,6 @@ class Solution_Extra_memory:
             visited.add(current)
             current = current.next
         return None  # No cycle detected
-
-# Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
 
 class Solution_cycleLength:
     def cycleLength(self, head: Optional[ListNode]) -> int:
