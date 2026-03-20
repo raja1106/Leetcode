@@ -30,3 +30,27 @@ class Solution:
                 else:
                     is_node_missing = True
         return True
+
+
+
+
+class Solution_Another_BFS:
+    def isCompleteTree(self, root: TreeNode) -> bool:
+        if not root: return True
+        queue = deque([root])
+        found_null = False
+
+        while queue:
+            node = queue.popleft()
+            if not node:
+                found_null = True
+                continue
+
+            # If we already saw a null, and this node is not null# it's not a complete tree
+            if found_null:
+                return False
+
+            queue.append(node.left)
+            queue.append(node.right)
+
+        return True

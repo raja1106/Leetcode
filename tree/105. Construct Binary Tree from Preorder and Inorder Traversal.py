@@ -5,6 +5,27 @@
 #         self.left = left
 #         self.right = right
 
+class Solution_2026:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        inorder_map = {val: i for i, val in enumerate(inorder)}
+        pre_idx = 0
+
+        def build_subtree(start, end):
+            nonlocal pre_idx
+            if start > end:
+                return None
+
+            root_val = preorder[pre_idx]
+            pre_idx += 1
+
+            root = TreeNode(root_val)
+            mid = inorder_map[root_val]
+            root.left = build_subtree(start, mid - 1)
+            root.right = build_subtree(mid + 1, end)
+            return root
+
+        return build_subtree(0, len(inorder) - 1)
+
 class Solution:
     def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
         # Precompute a mapping from node value to its index in the inorder array for O(1) lookups.
@@ -35,3 +56,4 @@ class Solution:
             return root
 
         return build_subtree(0, len(preorder) - 1, 0, len(inorder) - 1)
+

@@ -15,7 +15,7 @@ class Solution_BFS:
         # Step 2: Apply BFS-based 2-coloring
         color = [-1] * (n+1)  # -1 means unvisited
 
-        for start_node in range(1,n):
+        for start_node in range(1,n+1):
             if color[start_node] == -1:
                 queue = deque([start_node])
                 color[start_node] = 0  # Start with color 0
@@ -33,33 +33,29 @@ class Solution_BFS:
 
 class UnionFind:
     def __init__(self, size):
-        self.parent = list(range(size))  # Initialize parent array
-        self.rank = [0] * size  # Initialize rank array
-        self.components = size  # Number of connected components
+        self.parent = list(range(size)) # [0,1,2,3,1,5]
+        self.size = [1] * size  #[1,1,1,1,1,1]
+        self.components = size #5
+
     def find(self, x):
-        # return root as usual after doing path compression
-        # Base case
         if x == self.parent[x]:
             return x
-        # Recursive case
-        root_x = self.find(self.parent[x])  # Path compression
-        self.parent[x] = root_x
-        return root_x
+        self.parent[x] = self.find(self.parent[x])  # Path compression
+        return self.parent[x]
+
     def union(self, x, y):
-        rootX = self.find(x)  # Find root of x
-        rootY = self.find(y)  # Find root of y
+        rootX = self.find(x) # 1
+        rootY = self.find(y) # 2
 
         if rootX != rootY:
-            # Union by size: Attach the smaller tree under the larger tree
-            if self.size[rootX] < self.size[rootY]:
+            # Union by size
+            if self.size[rootX] < self.size[rootY]: #rooty- admk(100), rootx -bjp(25)
                 self.parent[rootX] = rootY
-                self.size[rootY] += self.size[rootX]  # Update the size of rootY
+                self.size[rootY] += self.size[rootX]
             else:
                 self.parent[rootY] = rootX
-                self.size[rootX] += self.size[rootY]  # Update the size of rootX
-            # Decrease the number of components after a successful union
+                self.size[rootX] += self.size[rootY]
             self.components -= 1
-
 
 class Solution:
     def possibleBipartition(self, n, dislikes):

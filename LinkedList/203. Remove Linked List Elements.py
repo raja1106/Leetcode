@@ -1,8 +1,9 @@
 # Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
+class ListNode:
+      def __init__(self, val=0, next=None):
+          self.val = val
+          self.next = next
+from typing import Optional
 
 class Solution_Template:
     def removeElements(self, head: Optional[ListNode], val: int) -> Optional[ListNode]:
@@ -19,7 +20,6 @@ class Solution_Template:
             current = current.next
         return dummy_head.next
 
-from typing import Optional
 
 class ListNode:
     def __init__(self, val=0, next=None):
@@ -60,7 +60,7 @@ def create_linked_list(arr):
     return dummy.next
 
 # Example Test
-sol = Solution()
+sol = Solution_Template()
 head = create_linked_list([1, 2, 6, 3, 4, 5, 6])
 val_to_remove = 6
 

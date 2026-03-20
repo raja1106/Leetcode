@@ -26,6 +26,27 @@ class Solution: #T(n) = O(n)
         # Start constructing the BST with initial bounds set to negative and positive infinity.
         return construct_tree(float('-inf'), float('inf'))
 
+class Solution_Easy_Solution: #O(nlog(n))
+    def bstFromPreorder(self, preorder: List[int]) -> Optional[TreeNode]:
+        inorder = sorted(preorder)
+        inorder_map = {val: i for i, val in enumerate(inorder)}
+        pre_idx = 0
+
+        def build(start, end):
+            nonlocal pre_idx
+            if start > end:
+                return None
+
+            root_val = preorder[pre_idx]
+            pre_idx += 1
+
+            root = TreeNode(root_val)
+            mid = inorder_map[root_val]
+            root.left = build(start, mid - 1)
+            root.right = build(mid + 1, end)
+            return root
+
+        return build(0, len(inorder) - 1)
 
 # Definition for a binary tree node.
 # class TreeNode:

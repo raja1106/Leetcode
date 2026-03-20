@@ -4,6 +4,28 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+
+class Solution_2026:
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+        inorder_map = {val: i for i, val in enumerate(inorder)}
+        post_idx = len(postorder)-1
+
+        def build_subtree(start, end):
+            nonlocal post_idx
+            if start > end:
+                return None
+
+            root_val = postorder[post_idx]
+            post_idx -= 1
+
+            root = TreeNode(root_val)
+            mid = inorder_map[root_val]
+            root.right = build_subtree(mid + 1, end)
+            root.left = build_subtree(start, mid - 1)
+            return root
+
+        return build_subtree(0, len(inorder) - 1)
+
 class Solution_Template:
     def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
         # Build a dictionary to quickly locate the index of values in inorder.

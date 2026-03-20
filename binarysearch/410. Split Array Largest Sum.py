@@ -1,3 +1,69 @@
+class Solution_Best:
+    def splitArray(self, nums: List[int], k: int) -> int:
+        """
+        Split nums into k non-empty subarrays such that the
+        largest subarray sum is minimized.
+
+        Example:
+        nums = [7,2,5,10,8], k = 2
+
+        Possible splits:
+        [7]        [2,5,10,8] -> largest sum = 25
+        [7,2]      [5,10,8]   -> largest sum = 23
+        [7,2,5]    [10,8]     -> largest sum = 18
+        [7,2,5,10] [8]        -> largest sum = 24
+
+        Minimum answer = max(nums)
+        Maximum answer = sum(nums)
+
+        For a candidate largest sum `max_allowed_sum`:
+        - if we can split into <= k parts, it is feasible
+        - if we need > k parts, it is not feasible
+         This feasibility is monotonic, so we use binary search.
+
+        llllllLRrrrrr
+        left side >k
+        right_side <=k
+
+        The idea is correct, but it should say:
+
+        smaller allowed sum => need more subarrays
+        larger allowed sum => need fewer subarrays
+        More precisely:
+        left side: requires > k subarrays → invalid
+        right side: requires <= k subarrays → valid
+        That is the monotonic property that makes binary search work.
+        """
+
+        def is_feasible(max_allowed_sum: int) -> bool:
+            subarray_count = 1
+            current_subarray_sum = 0
+
+            for num in nums:
+                if current_subarray_sum + num > max_allowed_sum:
+                    subarray_count += 1
+                    current_subarray_sum = 0
+
+                current_subarray_sum += num
+
+                if subarray_count > k:
+                    return False
+
+            return True
+
+        left = max(nums)
+        right = sum(nums)
+
+        while left <= right:
+            mid = left + (right - left) // 2
+
+            if is_feasible(mid):
+                right = mid - 1
+            else:
+                left = mid + 1
+
+        return left
+
 class Solution_Using_TopDown:
     def splitArray(self, nums: List[int], k: int) -> int:
         n = len(nums)

@@ -30,7 +30,7 @@ class Solution:
         uf = UnionFind(len(accountList))
 
         email_to_index = {}
-        index_to_emails = defaultdict(list)
+        root_to_emails = defaultdict(list)
 
         # Step 1: Union accounts with the same emails
         for i, account in enumerate(accountList):
@@ -38,16 +38,17 @@ class Solution:
             for email in account[1:]:
                 if email in email_to_index:
                     uf.union(i, email_to_index[email])
-                email_to_index[email] = i
+                else:
+                    email_to_index[email] = i
 
         # Step 2: Group emails by the root account index
         for email, index in email_to_index.items():
             root = uf.find(index)
-            index_to_emails[root].append(email)
+            root_to_emails[root].append(email)
 
         # Step 3: Build the final merged accounts
         merged_accounts = []
-        for root, emails in index_to_emails.items():
+        for root, emails in root_to_emails.items():
             # accountList[root][0] is the name (e.g. "John")
             merged_accounts.append([accountList[root][0]] + sorted(emails))
 

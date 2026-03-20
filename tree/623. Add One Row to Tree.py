@@ -32,8 +32,8 @@ class Solution:
                     cached_right = node.right
                     node.left = TreeNode(val)
                     node.right = TreeNode(val)
-                    node.left.head = cached_left
-                    node.right.tail = cached_right
+                    node.left.left = cached_left
+                    node.right.right = cached_right
             if level == depth - 1:
                 break
         return root
@@ -53,8 +53,8 @@ class Solution:
             cached_right = node.right
             node.left = TreeNode(val)
             node.right = TreeNode(val)
-            node.left.head = cached_left
-            node.right.tail = cached_right
+            node.left.left = cached_left
+            node.right.right = cached_right
             return
 
         #   recursive case

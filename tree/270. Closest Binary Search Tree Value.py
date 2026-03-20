@@ -55,10 +55,10 @@ class Solution:
 
             # Move left if the target is smaller than the current node's value
             if root.val > target:
-                root = root.head
+                root = root.left
             # Otherwise, move right
             else:
-                root = root.tail
+                root = root.right
 
         # Once we find the closest value, return it
         return closest_value

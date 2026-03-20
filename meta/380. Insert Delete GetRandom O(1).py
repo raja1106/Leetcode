@@ -6,16 +6,16 @@ class RandomizedSet:
         """
         Initialize the RandomizedSet with an empty dictionary and list.
         """
-        self.index_dict = {}  # Mapping of values to their indices in the list
+        self.val_to_idx = {}  # Mapping of values to their indices in the list
         self.values_list = []  # List to store the values
 
     def insert(self, val: int) -> bool:
         """
         Inserts a value to the set. Returns True if the value was successfully inserted, False if it already exists.
         """
-        if val in self.index_dict:
+        if val in self.val_to_idx:
             return False  # Value already exists
-        self.index_dict[val] = len(self.values_list)  # Map value to its index in the list
+        self.val_to_idx[val] = len(self.values_list)  # Map value to its index in the list
         self.values_list.append(val)  # Add value to the list
         return True
 
@@ -23,14 +23,14 @@ class RandomizedSet:
         """
         Removes a value from the set. Returns True if the value was successfully removed, False if it does not exist.
         """
-        if val not in self.index_dict:
+        if val not in self.val_to_idx:
             return False  # Value does not exist
-        index_to_remove = self.index_dict[val]  # Get the index of the value to remove
+        index_to_remove = self.val_to_idx[val]  # Get the index of the value to remove
         last_element = self.values_list[-1]  # Get the last element in the list
         self.values_list[index_to_remove] = last_element  # Replace removed element with the last one
-        self.index_dict[last_element] = index_to_remove  # Update the index of the last element
+        self.val_to_idx[last_element] = index_to_remove  # Update the index of the last element
         self.values_list.pop()  # Remove the last element
-        del self.index_dict[val]  # Delete the value from the dictionary
+        del self.val_to_idx[val]  # Delete the value from the dictionary
         return True
 
     def getRandom(self) -> int:

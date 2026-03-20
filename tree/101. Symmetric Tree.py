@@ -39,7 +39,30 @@ class Solution:
             if node1 is None or node2 is None or node1.val != node2.val:
                 return False
             # Check the outer and inner pairs of subtrees
-            return is_mirror(node1.head, node2.tail) and is_mirror(node1.tail, node2.head)
+            return is_mirror(node1.left, node2.right) and is_mirror(node1.right, node2.left)
 
         # Start the recursion with root as both parameters, as the check is for the tree with itself
         return is_mirror(root, root)
+
+
+class Solution_BFS:
+    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        if root is None:
+            return True
+
+        queue = deque([(root.left, root.right)])
+
+        while queue:
+            left, right = queue.popleft()
+
+            if left is None and right is None:
+                continue
+            if left is None or right is None:
+                return False
+            if left.val != right.val:
+                return False
+
+            queue.append((left.left, right.right))
+            queue.append((left.right, right.left))
+
+        return True
