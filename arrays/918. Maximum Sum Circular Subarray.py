@@ -1,5 +1,30 @@
 from typing import List
 
+class Solution_2026:
+    def maxSubarraySumCircular(self, nums: List[int]) -> int:
+        total_sum = nums[0]
+
+        current_max_ending_here = nums[0]
+        current_min_ending_here = nums[0]
+        global_max = nums[0]
+        global_min = nums[0]
+
+        for i in range(1, len(nums)):
+            num = nums[i]
+            total_sum += num
+
+            current_max_ending_here = max(num, current_max_ending_here + num)
+            current_min_ending_here = min(num, current_min_ending_here + num)
+
+            global_max = max(global_max, current_max_ending_here)
+            global_min = min(global_min, current_min_ending_here)
+
+        # all numbers are negative
+        if global_max < 0:
+            return global_max
+
+        circular_max = total_sum - global_min
+        return max(global_max, circular_max)
 
 class Solution_Bruteforce:
     def maxSubarraySumCircular(self, nums: List[int]) -> int:

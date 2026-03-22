@@ -1,6 +1,11 @@
 
 class Codec:
+    '''
+    "Two traversals solve a different problem — reconstructing a tree when you're handed those traversals as input with no choice.
+     Here, I control the serialization format, so I can encode null markers and get full reconstruction from a single traversal.
+     It's simpler, handles duplicates, and the serialize/deserialize are symmetric. No reason to add the complexity of coordinating two sequences."
 
+    '''
     def serialize(self, root):
         def preorder_traversal(node):
             if node is None:
