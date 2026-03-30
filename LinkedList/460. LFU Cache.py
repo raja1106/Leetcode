@@ -119,3 +119,115 @@ if __name__ == "__main__":
     print(lfu.get(1))  # returns -1 or valid value based on internal state
     print(lfu.get(3))  # returns value if not evicted
     print(lfu.get(4))  # returns 4
+import threading
+
+
+class Node:
+    def __init__(self, key: int, value: int):
+        self.key = key
+        self.value = value
+        self.freq = 1
+        self.prev = None
+        self.next = None
+
+
+class DoublyLinkedList:
+    def __init__(self):
+        self.head = Node(0, 0)
+        self.tail = Node(0, 0)
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def add_node(self, node: Node):
+        node.next = self.head.next
+        node.prev = self.head
+        self.head.next.prev = node
+        self.head.next = node
+
+    def remove_node(self, node: Node):
+        if node.prev and node.next:
+            node.prev.next = node.next
+            node.next.prev = node.prev
+
+    def pop_tail(self) -> Node:
+        if self.tail.prev == self.head:
+            return None
+        node = self.tail.prev
+        self.remove_node(node)
+        return node
+
+    def is_empty(self) -> bool:
+        return self.head.next == self.tail
+
+
+class LFUShard:
+    """A thread-safe sub-section of the cache."""
+
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.size = 0
+        self.min_freq = 0
+        self.key_table = {}
+        self.freq_table = {}
+        self.lock = threading.Lock()
+
+    def _update_node(self, node: Node):
+        freq = node.freq
+        self.freq_table[freq].remove_node(node)
+        if freq == self.min_freq and self.freq_table[freq].is_empty():
+            self.min_freq += 1
+
+        node.freq += 1
+        new_freq = node.freq
+        if new_freq not in self.freq_table:
+            self.freq_table[new_freq] = DoublyLinkedList()
+        self.freq_table[new_freq].add_node(node)
+
+    def get(self, key: int) -> int:
+        with self.lock:
+            if key not in self.key_table:
+                return -1
+            node = self.key_table[key]
+            self._update_node(node)
+            return node.value
+
+    def put(self, key: int, value: int):
+        if self.capacity == 0: return
+        with self.lock:
+            if key in self.key_table:
+                node = self.key_table[key]
+                node.value = value
+                self._update_node(node)
+            else:
+                if self.size >= self.capacity:
+                    node_to_evict = self.freq_table[self.min_freq].pop_tail()
+                    if node_to_evict:
+                        del self.key_table[node_to_evict.key]
+                        self.size -= 1
+
+                new_node = Node(key, value)
+                self.key_table[key] = new_node
+                if 1 not in self.freq_table:
+                    self.freq_table[1] = DoublyLinkedList()
+                self.freq_table[1].add_node(new_node)
+                self.min_freq = 1
+                self.size += 1
+
+
+class ScalableLFUCache:
+    def __init__(self, total_capacity: int, num_shards: int = 16):
+        self.num_shards = num_shards
+        # Distribute capacity across shards
+        shard_capacity = total_capacity // num_shards
+        self.shards = [LFUShard(shard_capacity) for _ in range(num_shards)]
+
+    def _get_shard(self, key: int) -> LFUShard:
+        # Simple modulo hashing to pick a shard
+        shard_index = hash(key) % self.num_shards
+        return self.shards[shard_index]
+
+    def get(self, key: int) -> int:
+        return self._get_shard(key).get(key)
+
+    def put(self, key: int, value: int):
+        self._get_shard(key).put(key, value)

@@ -3,7 +3,6 @@ from heapq import heapify, heappop, heappush
 class Solution:
     def rearrangeString(self, s: str, k: int) -> str:
         char_frequency = Counter(s)
-        max_freq = max(char_frequency.values())
 
         if k == 0:
             return s
@@ -31,46 +30,61 @@ class Solution:
                 result.append(element[1])
 
         return ''.join(result)
+'''
+'''
 
-    def rearrangeString_monst(self, s: str, k: int) -> str:
-        # If k is 0 or 1, no rearrangement is needed, just return the original string.
+class Solution_2026:
+    def rearrangeString(self, s: str, k: int) -> str:
         if k <= 1:
             return s
 
-        # Create a max heap based on the frequency of characters in the string
-        # where the most frequent character is at the top.
-        # Negate the frequency counts as Python has a min-heap by default.
-        frequency_heap = [(-frequency, char) for char, frequency in Counter(s).items()]
-        heapify(frequency_heap)
+        freq = Counter(s)
+        # Max-heap: use negative frequency
+        max_heap = [(-count, char) for char, count in freq.items()]
+        heapq.heapify(max_heap)
 
-        # Use a queue to keep track of characters that have been used, to maintain
-        # the distance of 'k' between the same characters.
-        wait_queue = deque()
+        queue = deque()  # (neg_count, char, release_index)
+        result = []
 
-        # This list will contain the rearranged characters.
-        rearranged_string = []
+        while max_heap:
+            neg_count, char = heapq.heappop(max_heap)
+            result.append(char)
+            # Schedule this char to be available again after k positions
+            queue.append((neg_count + 1, char, len(result) - 1 + k))
+            #              ^^ +1 because neg_count is negative, so +1 = decrement freq
 
-        # Process the heap until all characters are rearranged.
-        while frequency_heap:
-            # Pop the character with the highest frequency.
-            frequency, char = heappop(frequency_heap)
-            # Reverse the negation to get the positive frequency count.
-            frequency = -frequency
+            # Release characters whose cooldown has expired
+            if queue and queue[0][2] <= len(result):
+                released = queue.popleft()
+                if released[0] < 0:  # still has remaining occurrences.. You can do this check before appending to queue as well
+                    heapq.heappush(max_heap, (released[0], released[1]))
 
-            # Append the character to the result.
-            rearranged_string.append(char)
+        if len(result) != len(s):
+            return ""
+        return "".join(result)
 
-            # Record the character in the queue with its updated frequency,
-            # to be pushed back into the heap when it's allowed (after 'k' placements).
-            wait_queue.append((frequency - 1, char))
+    #Another version
+    def rearrange_string_k_apart(s: str, k: int) -> str:
+        if k <= 1:
+            return s
 
-            # If the waiting queue has 'k' elements, it's time to add an element back
-            # to the heap (if it still has a non-zero frequency).
-            if len(wait_queue) == k:
-                wait_frequency, wait_char = wait_queue.popleft()
-                if wait_frequency > 0:
-                    heappush(frequency_heap, (-wait_frequency, wait_char))
+        freq = Counter(s)
+        max_heap = [(-count, ch) for ch, count in freq.items()]
+        heapify(max_heap)
 
-        # If the length of the rearranged string equals the original string length,
-        # return the rearranged string as it's valid. Otherwise, return an empty string.
-        return "".join(rearranged_string) if len(rearranged_string) == len(s) else ""
+        cooldown = deque()
+        result = []
+
+        while max_heap:
+            neg_count, ch = heappop(max_heap)
+            result.append(ch)
+            cooldown.append((neg_count + 1, ch))
+
+            if len(cooldown) >= k:
+                neg_cnt, prev_ch = cooldown.popleft()
+                if neg_cnt < 0:  # still has remaining count You can do this check only here unlike the above approach
+                    heappush(max_heap, (neg_cnt, prev_ch))
+
+        if len(result) != len(s):
+            return ""
+        return "".join(result)
