@@ -50,7 +50,66 @@ class Node:
         self.prev = prev
         self.next = next
 
+from sortedcontainers import SortedList
 
+class Node:
+    def __init__(self, val: int, seq: int):
+        self.val = val
+        self.seq = seq
+        self.prev = None
+        self.next = None
+
+
+class MaxStack_Using_SortedList:
+    def __init__(self):
+        # Sentinel nodes for doubly linked list
+        self.head = Node(-1, -1)
+        self.tail = Node(-1, -1)
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+        # Stores tuples: (value, sequence_id, node)
+        # sequence_id ensures duplicates are ordered by recency
+        self.sorted_values = SortedList()
+        self.seq = 0
+
+    def _add_last(self, node: Node) -> None:
+        prev_node = self.tail.prev
+        prev_node.next = node
+        node.prev = prev_node
+        node.next = self.tail
+        self.tail.prev = node
+
+    def _remove_node(self, node: Node) -> None:
+        prev_node = node.prev
+        next_node = node.next
+        prev_node.next = next_node
+        next_node.prev = prev_node
+        node.prev = None
+        node.next = None
+
+    def push(self, x: int) -> None:
+        self.seq += 1
+        node = Node(x, self.seq)
+        self._add_last(node)
+        self.sorted_values.add((x, self.seq, node))
+
+    def pop(self) -> int:
+        node = self.tail.prev
+        self._remove_node(node)
+        self.sorted_values.remove((node.val, node.seq, node))
+        return node.val
+
+    def top(self) -> int:
+        return self.tail.prev.val
+
+    def peekMax(self) -> int:
+        return self.sorted_values[-1][0]
+
+    def popMax(self) -> int:
+        value, seq, node = self.sorted_values.pop(-1)  # largest value, latest seq among ties
+        self._remove_node(node)
+        return value
 class MaxStack_Using_Linked_List:
     def __init__(self):
         self.head = Node(-1, -1)

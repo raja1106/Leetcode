@@ -7,6 +7,10 @@ class Solution:
         L --> you can cut into k pieces
         R --> you can not cut into k pieces
         return L that is end
+        
+        answer range ===  1 to max(ribbons)
+        left_side --> possible
+        right_side --> not possible
         """
         if k > sum(ribbons):
             return 0
