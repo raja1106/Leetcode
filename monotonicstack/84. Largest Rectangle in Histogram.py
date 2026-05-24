@@ -40,7 +40,40 @@ class Solution_May_2025:
             max_area = max(max_area, area)
 
         return max_area
+class Solution_SinglePassBest:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        """
+        Single-pass monotonic increasing stack.
 
+        Key idea: when we pop bar `h` from the stack, we've found both its
+        boundaries simultaneously:
+          - right boundary: the current index `i` (it triggered the pop because
+            heights[i] < h, so i is the first smaller bar to the right)
+          - left boundary: the new stack top after popping (it's smaller than h
+            by the monotonic invariant, so it's the first smaller bar to the left)
+
+        Width = i - left_boundary - 1, where left_boundary = stack[-1] after pop,
+        or -1 if the stack is empty.
+
+        Sentinel trick: append 0 to heights so every real bar eventually gets
+        popped — no separate cleanup loop needed.
+        """
+        stack = []          # indices, heights[stack] is strictly increasing
+        max_area = 0
+        heights.append(0)   # sentinel forces all bars to flush
+
+        for i, h in enumerate(heights):
+            # Pop every bar taller than (or equal to) the current one;
+            # for each popped bar, current `i` is its right boundary.
+            while stack and heights[stack[-1]] >= h:
+                top = stack.pop()
+                left_boundary = stack[-1] if stack else -1
+                width = i - left_boundary - 1
+                max_area = max(max_area, heights[top] * width)
+            stack.append(i)
+
+        heights.pop()       # restore input (good hygiene if caller reuses it)
+        return max_area
 
 class Solution:
     def largestRectangleArea(self, heights: List[int]) -> int:
@@ -98,3 +131,28 @@ class Solution_nearst_Smallest_element:
             max_area = max(max_area, heights[i] * (right[i] - left[i] - 1))
 
         return max_area
+
+
+class Solution_Bruteforce:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        largest_area = -1
+
+        for i in range(len(heights)):
+            right_span = 1
+            for j in range(i + 1, len(heights)):
+                if heights[j] >= heights[i]:
+                    right_span += 1
+                else:
+                    break
+
+            left_span = 1
+
+            for k in range(i - 1, -1, -1):
+                if heights[k] >= heights[i]:
+                    left_span += 1
+                else:
+                    break
+            local_area = (left_span + right_span - 1) * heights[i]
+            largest_area = max(largest_area, local_area)
+
+        return largest_area

@@ -59,3 +59,53 @@ def swap_pairs(head: ListNode) -> ListNode:
         current = first
 
     return dummy.next
+
+
+class Solution_Two_Iterations:
+    def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        dummy_head = ListNode()
+
+        odd_head_dummy = ListNode()
+        even_head_dummy = ListNode()
+
+        odd_head = odd_head_dummy
+        even_head = even_head_dummy
+
+        current = head
+        count = 1
+
+        while current:
+            if count % 2 == 1:
+                odd_head.next = current
+                odd_head = odd_head.next
+            else:
+                even_head.next = current
+                even_head = even_head.next
+
+            current = current.next
+            count += 1
+
+        odd_head.next = None
+        even_head.next = None
+
+        odd_current = odd_head_dummy.next
+        even_current = even_head_dummy.next
+
+        current = dummy_head
+
+        while odd_current and even_current:
+            current.next = even_current
+            even_current = even_current.next
+            current = current.next
+
+            current.next = odd_current
+            odd_current = odd_current.next
+            current = current.next
+
+        if odd_current:
+            current.next = odd_current
+
+        if even_current:
+            current.next = even_current
+
+        return dummy_head.next
