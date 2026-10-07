@@ -1,5 +1,44 @@
 from typing import List
 
+from collections import deque
+from typing import List
+
+
+'''
+For Linear graph, there is always possible for Bipartition and it is always True. 
+Only if it is having Cycle, it is True for even length cycle and False for Odd Cycle
+'''
+
+class Solution_2026_Best:
+    def isBipartite(self, graph: List[List[int]]) -> bool:
+        n = len(graph)
+        # 0: uncolored, 1: color A, -1: color B
+        colors = [0] * n
+
+        def bfs(start_node: int) -> bool:
+            queue = deque([start_node])
+            colors[start_node] = 1  # Assign initial color
+
+            while queue:
+                curr = queue.popleft()
+
+                for neighbor in graph[curr]:
+                    # If the neighbor hasn't been colored yet, assign the opposite color
+                    if colors[neighbor] == 0:
+                        colors[neighbor] = -colors[curr]
+                        queue.append(neighbor)
+                    # If the neighbor has the SAME color, the graph is not bipartite
+                    elif colors[neighbor] == colors[curr]:
+                        return False
+            return True
+
+        # Check every node in case the graph has disconnected components
+        for i in range(n):
+            if colors[i] == 0:
+                if not bfs(i):
+                    return False
+
+        return True
 
 class UnionFind:
     def __init__(self, size):

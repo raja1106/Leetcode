@@ -73,3 +73,48 @@ class Solution_Using_Memozation:
             memo[memo_key] = exclude_current or include_current
             return exclude_current or include_current
         return dfs(0, 0)
+
+class Solution_Using_Tabulation:
+    def canPartition(self, nums: List[int]) -> bool:
+
+        partition_sum, remain = divmod(sum(nums), 2)
+
+        if remain == 1:
+            return False
+
+        n = len(nums)
+
+        # dp[i][j] means:
+        # Starting from index i, with current_sum = j,
+        # can we eventually reach partition_sum?
+        dp = [
+            [False] * (partition_sum + 1)
+            for _ in range(n + 1)
+        ]
+
+        # Base case:
+        # dfs(n, partition_sum) = True
+        dp[n][partition_sum] = True
+
+        # Build from bottom to top because:
+        #
+        # dp[i][j] depends on dp[i+1][...]
+        #
+        # So row i+1 must already be calculated.
+        for i in range(n - 1, -1, -1):
+
+            for j in range(partition_sum, -1, -1):
+
+                # exclude nums[i]
+                exclude_current = dp[i + 1][j]
+
+                # include nums[i]
+                include_current = False
+
+                if j + nums[i] <= partition_sum:
+                    include_current = dp[i + 1][j + nums[i]]
+
+                dp[i][j] = exclude_current or include_current
+
+        # Equivalent to dfs(0, 0)
+        return dp[0][0]

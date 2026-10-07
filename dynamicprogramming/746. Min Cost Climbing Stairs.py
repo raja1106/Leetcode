@@ -67,6 +67,24 @@ class Solution_2:
 
         # The answer is the minimum cost to reach the last or the second-last step.
         return min(one_step_back, two_steps_back)
+
+class Solution_DFS_2026:
+    def minCostClimbingStairs(self, cost: list[int]) -> int:
+        memo = {}
+        def dfs(i):
+            if i in memo:
+                return memo[i]
+            if i >= len(cost):
+                return 0
+            #one jump
+            cost1 = cost[i]+dfs(i+1)
+            cost2 = cost[i]+dfs(i+2)
+            memo[i] = min(cost1,cost2)
+            return min(cost1,cost2)
+        start_from_zero = dfs(0)
+        start_from_one = dfs(1)
+        min(start_from_zero,start_from_one)
+        return min(start_from_zero,start_from_one)
 import sys
 
 print(sys.getrecursionlimit())

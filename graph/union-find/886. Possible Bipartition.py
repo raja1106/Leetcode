@@ -1,5 +1,42 @@
 from collections import defaultdict
+from collections import defaultdict
 
+'''
+For Linear graph, there is always possible for Bipartition and it is always True. 
+Only if it is having Cycle, it is True for even length cycle and False for Odd Cycle
+'''
+class Solution_2026:
+    def possibleBipartition(self, n: int, dislikes: list[list[int]]) -> bool:
+        # form a graph
+        graph = defaultdict(list)
+
+        for src, dst in dislikes:
+            graph[src].append(dst)
+            graph[dst].append(src)
+        queue = collections.deque()
+        colors = [0] * (n + 1)  # 0 is no color, -1 is groupA,1 is groupB
+
+        def bfs(start_node):
+            colors[start_node] = -1
+            queue.append(start_node)
+
+            while queue:
+                node = queue.popleft()
+
+                for neighbour in graph[node]:
+                    if colors[neighbour] == 0:
+                        colors[neighbour] = -colors[node]
+                        queue.append(neighbour)
+                    elif colors[neighbour] == colors[node]:
+                        return False
+
+            return True
+
+        for node in range(1, n + 1):
+            if colors[node] == 0 and not bfs(node):
+                return False
+
+        return True
 
 from typing import List
 from collections import deque, defaultdict
