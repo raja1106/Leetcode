@@ -32,7 +32,43 @@ and refuel from 10 liters to 50 liters of gas.  We then drive to and reach the t
 We made 2 refueling stops along the way, so we return 2.
 """
 
-class Solution_Best:
+from heapq import heappush, heappop
+
+class Solution_Best_2026:
+    def minRefuelStops(self, target: int,startFuel: int,stations: list[list[int]]) -> int:
+
+        # Maximum distance we can currently reach
+        current_reach = startFuel
+
+        if current_reach >= target:
+            return 0
+
+        max_heap = []
+        stops = 0
+        all_stations = stations + [[target, 0]]
+
+        for station_distance, station_fuel in all_stations:
+
+            # If we cannot reach this station,
+            # refuel from previously passed stations
+            while max_heap and current_reach < station_distance:
+                max_fuel = -heappop(max_heap)
+
+                current_reach += max_fuel
+                stops += 1
+
+            # Still cannot reach this station
+            if current_reach < station_distance:
+                return -1
+
+            # We reached this station.
+            # Save its fuel as an option for later.
+            heappush(max_heap, -station_fuel)
+
+
+        return stops
+
+class Solution_Best_2025:
 
     def minRefuelStops(self, target: int, startFuel: int, stations: List[List[int]]) -> int:
         # Max-heap to store available fuel at stations we have passed

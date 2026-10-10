@@ -113,7 +113,7 @@ class Solution_Best_Approach:
                 time = wait_queue[0][1]
 
             # Check and release any tasks from cooldown
-            while wait_queue and wait_queue[0][1] <= time:
+            if wait_queue and wait_queue[0][1] <= time:
                 cnt_ready, _ = wait_queue.popleft()
                 heappush(max_heap, -cnt_ready)
 

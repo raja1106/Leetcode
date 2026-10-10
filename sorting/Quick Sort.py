@@ -6,6 +6,50 @@ import random
 from typing import List
 import random
 
+import random
+
+
+class Solution_Best_2026:
+    def quickSort(self, nums):
+        # Swap helper defined in the outer scope so it can be reused
+        def swap(i, j):
+            nums[i], nums[j] = nums[j], nums[i]
+
+        def helper(start, end):
+            if start >= end:
+                return
+
+            partition_idx = partition(start, end)
+            helper(start, partition_idx - 1)
+            helper(partition_idx + 1, end)
+
+        def partition(start, end):
+            # Randomized pivot to avoid O(N^2) on sorted data
+            random_idx = random.randint(start, end)
+            swap(start, random_idx)
+
+            # Cache the pivot value to avoid repeated array lookups
+            pivot_val = nums[start]
+            left = start + 1
+            right = end
+
+            while left <= right:
+                if nums[left] > pivot_val and nums[right] < pivot_val:
+                    swap(left, right)
+                    # Advance pointers immediately after swap
+                    left += 1
+                    right -= 1
+                elif nums[left] <= pivot_val:
+                    left += 1
+                else:
+                    right -= 1
+
+            # Place pivot in its final sorted position
+            swap(start, right)
+            return right
+
+        helper(0, len(nums) - 1)
+        return nums
 
 class Solution_LC912:
     def sortArray(self, nums: List[int]) -> List[int]:
